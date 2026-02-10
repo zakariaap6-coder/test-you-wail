@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>INSEL - TEST B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* جميع أنماط CSS الأصلية تبقى كما هي بدون تغيير */
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .theme-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .answer-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
+        .question {
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.08);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.6rem 0;
+            padding: 0.8rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .dark-mode .option {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border: 1px solid #4CAF50;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border: 1px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .text-content {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        /* Lesen Teil 1 - تصميم محسن */
+        .headings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .heading-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .heading-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .ad-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .ad-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        .dark-mode .ad-letter {
+            color: #90CAF9;
+        }
+
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+        }
+
+        .dark-mode .ad-title {
+            color: var(--light);
+        }
+
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
+        .fill-blanks {
+            margin: 1.2rem 0;
+        }
+
+        .blank-text {
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .blank-text {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 6px;
+            transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .dark-mode .blank {
+            background: rgba(26, 35, 126, 0.8);
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border-color: #4CAF50;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* تحسينات للهواتف */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
+            }
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
+            }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
+        </div>
+        
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">INSEL - TEST B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
+            <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
+            <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الأسئلة والإجابات المأخوذة من INSEL.html
+        const examData = {
+            headings: [
+                {id: "a", text: "Deutscher Forscher startet Expedition auf Vogelinsel in Südamerika"},
+                {id: "b", text: "Die beliebtesten Reiseziele unter den europäischen Inseln"},
+                {id: "c", text: "Fernreisen in eine unberührte Tierwelt"},
+                {id: "d", text: "Geführte Bootsausflüge zu einsamen Badebuchten"},
+                {id: "e", text: "Grüne Geisterinsel in Asien"},
+                {id: "f", text: "Immer mehr Reiseunternehmen streichen Thailand aus ihrem Angebot"},
+                {id: "g", text: "Inseln zählen weltweit zu den wichtigsten Reisedestinationen"},
+                {id: "h", text: "Nachhaltiger Tourismus auf chinesischen Inseln"},
+                {id: "i", text: "Tierparadies auf einer Nordseeinsel"},
+                {id: "j", text: "Umstrittener Umgang mit Tieren als Touristenmagnet"}
+            ],
+            
+            texts: [
+                {
+                    id: "text1",
+                    content: `Die Shengsi-Inseln liegen im Ostchinesischen Meer. Nicht einmal 20 der rund 400 Inseln sind bewohnt, und manche, auf denen einst Menschen lebten, wurden wieder verlassen. Ein altes Dorf auf der nun unbewohnten Insel Shengsan ist zu einer Sehenswürdigkeit geworden. Die Einwohner haben das ehemalige Fischerdorf auf der viereinhalb Quadratkilometer großen Insel längst verlassen. Sie sind aus wirtschaftlichen Gründen auf das Festland gezogen. Dort ist es für sie leichter, ihren Fischfang zu verarbeiten und zu verkaufen. Das Dorf aber, das sie zurückgelassen haben, ist in kürzester Zeit von der Natur zurückerobert worden. Farne und Gräser überwuchern Häuser und Wege. Die Grenzen zwischen den von Menschenhand geschaffenen Gebäuden und dem umgebenden Urwald verschwinden: Mauerwerk, von wildem Wein überwuchert; Grün, so weit das Auge reicht. An diesem Ort lebt keine Menschenseele mehr.`,
+                    correctAnswer: "e",
+                    correctAnswerText: "e) Grüne Geisterinsel in Asien"
+                },
+                {
+                    id: "text2",
+                    content: `Der Reiseveranstalter TOURIMARS hat kürzlich eine Befragung durchgeführt. Er wollte wissen, welche Inseln in Europa unter Reisenden besonders populär sind. Nach dieser Umfrage führt die griechische Insel Santorin die Liste an. Auf Platz zwei steht Madeira, die grüne Insel im Atlantik. Mit Kreta und Zakynthos schaffen es an dritter und vierter Stelle noch zwei weitere griechische Inseln in die Liste - übrigens wird die Attraktivität griechischer Inseln auch in anderen Umfragen bestätigt. Platz fünf nimmt die Badeinsel Fuerteventura ein. Rang sechs kommt der britischen Kanalinsel Jersey zu. Mallorca folgt auf Platz sieben, gefolgt von der italienischen Insel Capri und der Kanareninsel Teneriffa. Gerade noch in die Top Ten schaffte es auch die französische Mittelmeerinsel Korsika, die sowohl für Wanderer als auch für Badeurlauber interessant ist. Für die Umfrage waren Erfahrungsberichte von Urlaubern über einen Zeitraum von 12 Monaten ausgewertet worden. Sie bewerteten dabei die Hotels, Restaurants und Sehenswürdigkeiten der besuchten Insel.`,
+                    correctAnswer: "b",
+                    correctAnswerText: "b) Die beliebtesten Reiseziele unter den europäischen Inseln"
+                },
+                {
+                    id: "text3",
+                    content: `Das ostfriesische Memmert ist für seltene Vögel reserviert. Auf der Düneninsel, die vor ein paar Jahrhunderten aus der Nordsee auftauchte, leben Zigtausende von Vögeln. Nur der Inselvogt lebt zeitweise dort. Von Anfang März bis Ende Oktober ist der Forscher das einzige menschliche Wesen auf der kleinen Vogelschutzinsel im Wattenmeer. Im Auftrag des Landes Niedersachsen ist der Inselvogt zuständig für den Schutz von Natur und Vögeln auf Memmert. Von Mai bis Ende Juli ist Brutzeit auf der Insel. 100.000 Tiere, Vertreter von 60 verschiedenen Vogelarten, kommen Jahr für Jahr zum Brüten nach Memmert. Während dieser Zeit besteht ein absolutes Betretungsverbot - ausgenommen für Personen, die in Seenot geraten sind oder eine schriftliche Genehmigung haben. Ab August, dem Ende der Brutzeit, haben auch Urlauber für kurze Zeit die Chance auf einen Besuch, aber ausschließlich im Rahmen einer geführten Expedition. Nur mit einem Experten dürfen sie die Düneninsel im Wattenmeer erkunden.`,
+                    correctAnswer: "i",
+                    correctAnswerText: "i) Tierparadies auf einer Nordseeinsel"
+                },
+                {
+                    id: "text4",
+                    content: `Die südamerikanischen Galapagosinseln locken nicht mit weißen Sandstränden und Palmen. Dennoch sind sie das Ziel so mancher Reisesehnsüchte. Für viele Menschen gelten die fernen Inseln als eine Art Paradies. Und tatsächlich kommt man wohl nirgendwo sonst ungezähmten Tieren so nahe wir auf diesen Inseln: Auf den unbewohnten Galapagosinseln verhalten sich die Tiere so, als ob keine Menschen gäbe. Für die Besucher genauso faszinierend wie für die Entdeckungsreisenden früherer Jahrhunderte ist dabei die Zutraulichkeit, die sich die Tiere durch das Fehlen von natürlichen Feinden auf den Inseln bewahrt haben. Man kann das ganze Jahr über zu den Galapagosinseln reisen. Die bewohnten Inseln kann man dabei ganz gut allein besuchen. Anders sieht es bei den unbewohnten Inseln aus. Hier lassen die Behörden seit einigen Jahren nur eine begrenzte Zahl an Schiffen zu, und ohne Führer ist das Betreten nicht erlaubt. Die Inseln und ihre Tiere bleiben sich selbst überlassen, damit das Naturparadies auch weiterhin erhalten bleibt.`,
+                    correctAnswer: "c",
+                    correctAnswerText: "c) Fernreisen in eine unberührte Tierwelt"
+                },
+                {
+                    id: "text5",
+                    content: `Dass Elefanten in Thailand teurer sein können als ein 3er-BMW in München, liegt an ihrem enormen wirtschaftlichen Potenzial: Sie sind eine der Hauptattraktionen der thailändischen Tourismusindustrie. Jeder dritte Besucher des Landes möchte mit Elefanten in Kontakt kommen oder hat das bereits hinter sich, zeigt die Umfrage einer Tierschutzgruppe. Die Organisation schätzt, dass in dem Land mehr als 2000 Elefanten im Einsatz sind, um die Nachfrage der Urlauber zu bedienen - so viele wie in keinem anderen Land der Welt. Was für die Besitzer ein gutes Geschäft ist, steht immer häufiger bei Tierschützern in der Kritik: Elefantenreiten sei die grausamste Tierattraktion der Welt. Sie sprechen von einer lebenslangen Qual für die Elefanten. Mehr als 100 Reiseveranstalter haben solche Angebote schon aus den Katalogen gestrichen. Dies feiern Tierschützer als Sieg: "Elefanten sind Wildtiere, keine Entertainer." Dass die Lebensbedingungen der Tourismuselefanten nicht artgerecht sind, ist bekannt. Doch selbst wenn sie nicht mehr als Einnahmequelle dienen, wird das an ihren Lebensumständen wenig ändern.`,
+                    correctAnswer: "j",
+                    correctAnswerText: "j) Umstrittener Umgang mit Tieren als Touristenmagnet"
+                }
+            ],
+
+            longText: {
+                content: `Krista ist die schönste Kuh Deutschlands. Und jetzt auch noch ein Kinostar. Am letzten Donnerstag kam ein Film über die schwarz-weiß gefleckte Kuh und ihre Besitzer in einige norddeutsche Kinos. Wovon der Film handelt? Von Kristas Leben auf dem Hof der Familie Seeger in Bissel, einem kleinen Dorf in Norddeutschland.
+
+Antje Schneider und Carsten Waldbauer sind Filmemacher. Vor einigen Jahren hatten sie die Idee, eine Dokumentation über Kühe zu machen, genauer gesagt über Holstein-Rinder. Die Holstein-Rinder sind eine der wichtigsten Rinderrassen weltweit, kommen aber trotz des deutschen Namens aus Nordamerika. Diese Kühe werden überwiegend als Milchvieh gehalten. Die Holstein-Rinder sind so verbreitet, dass sie inzwischen andere Rassen fast vollständig verdrängt haben.
+
+Das gilt vor allem für die vielen Bauernhöfe in Deutschland, die ausschließlich Milch produzieren. Auf einem dieser Höfe wollten Antje Schneider und Carsten Waldbauer Aufnahmen für ihre Dokumentation machen, und die Wahl fiel auf den Hof der Familie Seeger. Doch als die beiden Filmemacher mit den Dreharbeiten beginnen wollten, sahen sie plötzlich Krista. Krista änderte alles. Die Schönheit vom Lande beeindruckte Schneider und Waldbauer so sehr, dass sie den Plan für ihre Dokumentation gegen den Willen ihres Senders komplett änderten. Im Mittelpunkt sollte nun Krista stehen, die schönste Holstein-Kuh Deutschlands.
+
+Krista gehört zur Welteilte. Auf Veranstaltungen wird sie immer wieder ausgezeichnet. Bei einer Tierschau in Italien erhielt sie zwar nicht den ersten Preis, aber trotzdem war sie unter den schönsten Kühen Europas. Kristas Besitzer Jörg Seeger ist begeistert von seinem Star im Stall.
+
+Jörg und Janine Seeger erlauben dem Kinozuschauer interessante Einblicke in ihren Alltag auf dem Bauernhof. Die Kamera verfolgt zwar immer den Weg von Kuh Krista, aber zu sehen ist dabei natürlich auch die Arbeit der gesamten Familie auf dem Hof. Manchmal ist das auch ein romantisches Leben, es ist aber vor allem immer sehr arbeitsreich.
+
+"Für meiner sind Kühe nicht nur Nutztiere", sagt die Bäuerin Janine Seeger. Schon als Kind hätten ihr die Tiere Geborgenheit, manchmal Trost gespendet. Aber sie weiß, dass die Kühe Geld bringen müssen, entweder durch möglichst viel Milch oder durch viel Nachwuchs. Die kleinen Kälber lassen sich zu recht guten Preisen verkaufen, das lohnt sich für die Seegers.
+
+Krista kann zunächst aus gesundheitlichen Gründen keine Kälber bekommen. Auch diese Problematik wird im Film gezeigt. Der Zuschauer merkt, dass Jörg Seeger enttäuscht ist: Seine beste Kuh kann kein Kalb bekommen. Aber es geht gut aus, denn Krista wird operiert und nach Ende der Dreharbeiten klappt es dann doch mit dem Nachwuchs für die Kuh.
+
+Während der jahrelangen Dreharbeiten hat sich auch die Familie entwickelt. Mittlerweile haben die Seegers zwei Kinder. "Deshalb verändert sich im Film mein Gewicht etwas", erzählt Janine Seeger und lacht. Und wie ist es so, vor der Kamera zu stehen? "Erst ungewohnt, dann irgendwie vertraut", sagt die 32-Jährige. Zu den Filmemachern habe sich ein freundschaftliches Verhältnis entwickelt. "Wie schön, Carsten und Antje sind wieder da", habe es dann nur noch geheißen, wenn das Team anrückte.
+
+Der Film zeigt aber auch, wie sich im Laufe der Jahre das Leben auf dem Hof der Seegers verändert hat und wie schwierig it auch hier geworden ist, mit Milchkühen Geld zu verdienen. Der Markt ist hart umkämpft und die Preise sinken immer weiter, denn die Verbraucher im Supermarkt greifen gerne zum günstigsten Produkt. Für viele ist es da nicht wichtig, wie die Milch produziert wurde. Auch das zeigt der Film, wenngleich eher nebenbei.
+
+Familie Seeger ist stolz drauf, dass ein Film über ihren Hof und über die schöne Kuh Krista gedreht wurde. So heißt nun übrigens auch der Film: "Die schöne Krista". Am vergangenen Wochenende haben die Seegers den Film bei einem Hoffest gezeigt. Familie und Freunde sowie Nachbarn waren zu Gast, und alle haben sich über den Film gefreut.
+
+"Die schöne Krista" ist auch in die Auswahl für den Deutschen Filmpreis gekommen, als einer der fünfzehn besten Dokumentarfilme. Die 500 Filmkritiker, die diese 15 Filme ausgewählt haben, waren begeistert. Schwieriger sei es, so die Produktionsfirma, die Kinobetreiber vom Film zu überzeugen. "Was sollen wir mit einer Kuh?", sei eine häufige Reaktion. Vielleicht würden sie ihre Meinung ändern, wenn Sie Krista einmal auf dem Hof gesehen hätten.`,
+                questions: [
+                    {
+                        id: "q1",
+                        question: "Holstein-Rinder...",
+                        options: [
+                            "sind in der Milchproduktion beliebter als andere Rinderrassen.",
+                            "spielen in der Milchproduktion kaum eine Rolle.",
+                            "stammen aus Norddeutschland."
+                        ],
+                        correctAnswer: "sind in der Milchproduktion beliebter als andere Rinderrassen."
+                    },
+                    {
+                        id: "q2",
+                        question: "Die Kuh Krista...",
+                        options: [
+                            "hat bereits einige Preise gewonnen.",
+                            "war Siegerin bei einer Veranstaltung in Italien.",
+                            "wurde als schönste Kuh Europas ausgezeichnet."
+                        ],
+                        correctAnswer: "hat bereits einige Preise gewonnen."
+                    },
+                    {
+                        id: "q3",
+                        question: "Während der Filmaufnahmen...",
+                        options: [
+                            "bekam Krista ein Kalb.",
+                            "wäre Krista fast gestorben.",
+                            "wurde Krista operiert."
+                        ],
+                        correctAnswer: "wurde Krista operiert."
+                    },
+                    {
+                        id: "q4",
+                        question: "Die wirtschaftlichen Probleme von Milchbetrieben...",
+                        options: [
+                            "betreffen die Familie Seeger nicht.",
+                            "sind eine Folge des Verbraucherverhaltens.",
+                            "werden im Film ausführlich behandelt."
+                        ],
+                        correctAnswer: "sind eine Folge des Verbraucherverhaltens."
+                    },
+                    {
+                        id: "q5",
+                        question: '"Die schöne Krista"...',
+                        options: [
+                            "begeistert Kinobetreiber bislang nicht.",
+                            "konnte die Kritiker nicht überzeugen.",
+                            "wurde als beste Dokumentation ausgezeichnet."
+                        ],
+                        correctAnswer: "begeistert Kinobetreiber bislang nicht."
+                    }
+                ]
+            },
+
+            // Lesen Teil 3 - البيانات المحدثة
+            situations: [
+                {
+                    id: "11",
+                    text: "Ein Bekannter möchte einen Film sehen, der nach dem Werk eines Schriftstellers gedreht wurde.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "12",
+                    text: "Bekannte interessieren sich für Wintersportveranstaltungen.",
+                    correctAnswer: "L"
+                },
+                {
+                    id: "13",
+                    text: "Sie suchen eine Musiksendung. Sie mögen besonders Klaviermusik.",
+                    correctAnswer: "B"
+                },
+                {
+                    id: "14",
+                    text: "Sie mögen Filme mit viel Action und viel Spaß. Ihre Lieblingshelden können auch mal zuschlagen.",
+                    correctAnswer: "D"
+                },
+                {
+                    id: "15",
+                    text: "Ein Bekannter interessiert sich für kurdische Geschichte.",
+                    correctAnswer: "K"
+                },
+                {
+                    id: "16",
+                    text: "Sie mögen Familienkomödien, besonders mit frechen Kindern.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "17",
+                    text: "Eine Bekannte interessiert sich für die Geschichte des bis 1989 geteilten Berlins.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "18",
+                    text: "Sie sehen gern spannende, aber auch spaßige Agentenfilme.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "19",
+                    text: "Sie würden gern etwas über Großstadtjugendliche erfahren, die am Rand der Gesellschaft leben.",
+                    correctAnswer: "F"
+                },
+                {
+                    id: "20",
+                    text: "Sie möchten im nächsten Urlaub tauchen und sich über die Risiken informieren.",
+                    correctAnswer: "I"
+                }
+            ],
+
+            ads: [
+                {
+                    id: "A",
+                    title: "23.15 3SAT Es geschah im August",
+                    content: "Ullrich Kasten und Hans-Hermann Hertle schildern in ihrer hervorragenden Dokumentation anhand von Archivmaterial minutiös sämtliche Stationen des Mauerbaus. Sie erzählen die Vorgeschichte der Berlin-Krise und beleuchten die Hintergründe der Teilung Deutschlands. Ferner haben sie Zeitzeugen nach ihren Reaktionen auf das einschneidende Ereignis befragt. Zu Wort kommen in dem Film nicht nur namhafte Vertreter der internationalen Politik, sondern auch Grenzsoldaten, Flüchtlinge und Angehörige von Maueropfern."
+                },
+                {
+                    id: "B",
+                    title: "21.00 NDR Joja Wendt",
+                    content: "Ob Klassik, Rock'n'Roll oder Jazz, Joja Wendt, Hamburger Pianist mit enormen Entertainer Qualitäten, variiert bekannte Songs und stellt seine Fingerfertigkeit auch in eigenen Kompositionen unter Beweis. Stargast in dem heutigen Fernseh-Special ist die Schlagersängerin Michelle mit dem Titel 'Ich schicke dir jetzt einen Engel'."
+                },
+                {
+                    id: "C",
+                    title: "20.15 SAT1 Einfach unwiderstehlich",
+                    content: "Gut kochen kann Amanda nicht. Folglich steht ihr kleines, von der Mutter geerbtes Restaurant in Manhattan kurz vor dem Aus. Da entflieht plötzlich ein Krebs aus ihrem Einkaufskorb und sorgt mit seinen Zauberkünsten für lukullische Sensationen. Tom, Manager eines Gourmet Restaurants an der Fifth Avenue, kommt als einer der ersten in deren Genuss. Amanda hat sich in ihn verliebt, als der schon bekannte Krebs unter Toms Hosenbein flüchtet. Seine Zauber-kräfte werden dringend gebraucht, denn Tom gehört zu den Männern, die ziemlich viel Angst vor Liebesbeziehungen haben."
+                },
+                {
+                    id: "D",
+                    title: "22.00 HR New York Express",
+                    content: "Aus Sorge um die nationale Sicherheit versteckt der amerikanische Geheimdienst den genialen, aber vermeintlich psychisch kranken Physiker Arthur Vincenti. Der völlig verrückte New Yorker Psychiater Dr. Snow erhält den Auftrag, ihn zu heilen. Immer nachts wird er mit verbundenen Augen zu dem Versteck gebracht. Aber auch einige Gangster sind hinter dem Wissenschaftler her. Sie haben sich in den Kopf gesetzt, die Welt zu erobern. Snows Patient scheint ihnen dabei behilflich sein zu können."
+                },
+                {
+                    id: "E",
+                    title: "20.15 ARD Der letzte Zeuge",
+                    content: "Der Berliner Rechtsmediziner Professor Boerne und sein Assistent Dr. Koch werden zu einem Tatort gerufen: Ein Mann wurde erschossen in seiner Wohnung aufgefunden. Die Polizei vermutet einen Raubmord. Boerne jedoch kommt zu dem Schluss, dass der Täter den Mord nur wie einen Raubmord aussehen lassen wollte. Der Verdacht fällt auf den Bruder des Opfers, der sich mit diesem über eine Erbschaft gestritten hatte. Als Boerne und Koch den Verdächtigen aufsuchen, finden sie ihn tot auf. Es sieht aus wie Selbstmord, doch Boerne ist anderer Meinung."
+                },
+                {
+                    id: "F",
+                    title: "20.15 ZDF Der Preis der Schönheit",
+                    content: "Der 16-jährige Schüler Timo leidet unter seiner Figur. Er ist zu dick, um bei den Mädchen gut anzukommen. Deshalb beschließt er, eine Diät zu machen. Er will unbedingt abnehmen. Als er nach einiger Zeit tatsächlich 20 Kilo leichter ist, ist er überglücklich. Doch dann beginnt er, sich für viel zu dünn zu halten. Er will wieder zunehmen, schafft es aber nicht, normal zu essen. Er leidet an Magersucht und muss in eine Spezialklinik eingewiesen werden."
+                },
+                {
+                    id: "G",
+                    title: "23.30 WDR Die Nacht der Nächte",
+                    content: "Der Film erzählt die Geschichte von vier jungen Leuten, die in der Silvesternacht in Berlin unterwegs sind. Sie wollen das neue Jahr gebührend feiern. Doch die Nacht nimmt einen überraschenden Verlauf. Der Film zeigt, wie die vier jungen Leute in dieser Nacht ihr Leben für immer verändern. Es geht um Liebe, Freundschaft und die Suche nach dem Glück."
+                },
+                {
+                    id: "H",
+                    title: "21.45 RTL Der Unfall",
+                    content: "Auf der Autobahn bei Köln kommt es zu einem schweren Unfall. Ein LKW ist auf mehrere Pkws aufgefahren. Es gibt mehrere Verletzte. Die Rettungskräfte sind schnell vor Ort und kümmern sich um die Verletzten. Parallel dazu wird die Unfallursache untersucht. War es technisches Versagen oder menschliches Versagen? Die Ermittlungen laufen."
+                },
+                {
+                    id: "I",
+                    title: "22.30 PRO7 Die Insel",
+                    content: "Eine Gruppe von Jugendlichen strandet auf einer einsamen Insel. Sie müssen lernen, ohne Handy und ohne Comfort zu überleben. Schnell wird klar, dass nicht alle gleich gut mit der Situation zurechtkommen. Es bilden sich Grüppchen und Konflikte sind vorprogrammiert. Doch als einer der Jugendlichen schwer verletzt wird, müssen alle zusammenhalten, um zu überleben."
+                },
+                {
+                    id: "J",
+                    title: "19.30 KIKA Die Sendung mit der Maus",
+                    content: "Heute geht es in der Sendung mit der Maus um das Thema 'Feuer'. Wie entsteht Feuer? Wie kann man es löschen? Und warum is Feuer so wichtig für uns Menschen? Die Maus besucht eine Feuerwache und schaut den Feuerwehrleuten bei der Arbeit zu. Außerdem gibt es wie immer die Lach- und Sachgeschichten."
+                },
+                {
+                    id: "K",
+                    title: "23.00 ARTE Die Kunst des Scheiterns",
+                    content: "Der Film porträtiert drei Menschen, die in ihrem Leben gescheitert sind. Eine Unternehmerin, deren Firma pleite ging, ein Sportler, der wegen einer Verletzung seine Karriere beenden musste, und eine Künstlerin, die nie den Durchbruch schaffte. Der Film zeigt, wie sie mit ihrem Scheitern umgehen und was sie daraus gelernt haben. Es ist eine Hommage an die Widerstandskraft des menschlichen Geistes."
+                },
+                {
+                    id: "L",
+                    title: "21.00 VOX Kitchen Impossible",
+                    content: "Sternekoch Tim Mälzer stellt sich heute einer besonderen Herausforderung. Er muss in einer fremden Küche ohne seine gewohnten Utensilien ein Drei-Gänge-Menü zubereiten. Die Zutaten bekommt er erst kurz vor Beginn der Sendung. Schaffen er und sein Team es, pünktlich ein perfektes Menü auf den Tisch zu bringen? Die Spannung ist garantiert."
+                }
+            ],
+
+            // Sprachbausteine Teil 1
+            blankText1: {
+                content: `Hallo Ferdinand,
+
+nun habe ich mich schon so lange nicht bei dir gemeldet – das tut mir wirklich leid! Ich hatte in den vergangenen Monaten viel Stress, weil ich ja nun studiere und nebenbei noch arbeiten muss, ________ meine Miete und alles andere bezahlen zu können. Zum Glück macht mir mein Nebenjob wenigstens Spaß. Ich weiß nicht, ________ ich das sonst durchhalten würde. Vielleicht habe ich dir schon erzählt, dass ich abends und am Wochenende in einer Kneipe in der Küche helfe. Das ist zwar oft sehr anstrengend, ________ anderseits ist dauernd was los, es wird nicht langweilig, und meine Kollegen sind total nett. Erinnerst du dich noch an unsere Zeit in der Grundschule? Mit acht Jahren wollte ich ja ________ Kellnerin werden, weil man da Trinkgeld bekommt. Naja, jetzt bin ich in der Küche gelandet, knapp daneben ist auch vorbei ;)
+
+Was macht denn deine Ausbildung? Wenn ich ________ nicht täusche, bist du ja in einem halben Jahr schon fertig, oder? Das ist ja nicht mehr lang!
+
+Neulich habe ich übrigens Tina und Kevin hier in der Nähe der Uni getroffen – die waren ja schon ein Paar, ________ wir noch in der Schule gegangen sind, und jetzt will sie tatsächlich verheiratet!
+
+Wie sehen denn deine Pläne für die ________ Wochenenden aus? Wir könnten uns ja vielleicht mal wieder treffen und in Ruhe quatschen – hättest du Lust ________ ?
+
+In meiner Straße hat vor einem Monat ein nettes kleines Café aufgemacht, die haben nicht nur sehr leckere Kuchen, ________ auch einige kleine Gerichte zu wirklich günstigen Preisen. Wäre das was ________ dich? Mail wir doch einfach, wenn du magst, ich würde mich freuen.
+
+Viele Grüße,
+
+Nadine`,
+                options: [
+                    ["anstatt", "ohne", "um"],      // 21
+                    ["dass", "ob", "während"],      // 22
+                    ["aber", "denn", "und"],        // 23
+                    ["bestimmt", "unbedingt", "völlig"], // 24
+                    ["dich", "mich", "sich"],       // 25
+                    ["als", "wenn", "wie"],         // 26
+                    ["baldigen", "kommenden", "vergangenen"], // 27
+                    ["danach", "darüber", "dazu"],  // 28
+                    ["aber", "oder", "sondern"],    // 29
+                    ["für", "gegen", "ohne"]        // 30
+                ],
+                answers: ["um", "dass", "aber", "unbedingt", "mich", "als", "kommenden", "dazu", "sondern", "für"]
+            },
+
+            // Sprachbausteine Teil 2
+            blankText2: {
+                content: `Das Fahrrad: ernsthafte Konkurrenz fürs Auto?
+
+Welches Fortbewegungsmittel, denken Sie, wird in Deutschland am häufigsten benutzt? Natürlich das Automobil. Volkswagen, Porsche, Mercedes Benz, BMW, Audi: In ________ einem anderen Land gibt es so viele Automobilfabriken wie in Deutschland, spielt die Automobilindustrie eine so große Rolle. Nahezu jeder Haushalt verfügt über mindestens ein Auto, das Auto spielt im Leben der Deutschen eine große Rolle, sowohl als Fortbewegungsmittel zum Arbeitsplatz oder in den Urlaub als auch als Statussymbol: Zeig mir dein Auto und ich weiß, wer du bist.
+
+Doch hat das Autofahren auch Schattenseiten. Mangelnde Bewegungsmöglichkeiten, gesundheitliche Probleme und Stress bringen zumindest in den Großstädten immer mehr Autofahrer dazu, sich vom Automobil freizumachen und ________ ein anderes Verkehrsmittel umzusteigen, das in dem Ruf steht, gesünder zu sein als das Auto: das Fahrrad. Nicht nur in der Freizeit, sondern auch auf dem Weg zum Arbeitsplatz wird das Rad benutzt. "Ich habe keine Lust, Morgen für Morgen im Stau zu stehen und Zeit zu verlieren", sagt Bettina Meier (25): "Da ist es viel entspannender, auf den zumeist gut ausgebauten Fahrradwegen an den im Stau wartenden Fahrzeugen ________ und ausgeruht am Arbeitsplatz anzukommen."
+
+Dass Fahrradfahren um einiges gesünder ist, als hinter dem Lenkrad zu sitzen, bestätigen auch die Mediziner. Wer Fahrrad fährt ________ zu sitzen, bringt seinen Blutkreislauf in Schwung, stärkt die Abwehrkräfte des Körpers und trainiert seinen Körper. Auch die Bewegung an der frischen Luft tut Menschen gut, die sich sonst die meiste Zeit ________ geschlossener Räume in Büros, Schulen oder Fabriken aufhalten ________.
+
+Auch die Geschäftswelt hat die Fahrradfahrer als Kunden entdeckt. Ein breites Angebot ________ Zubehör für Fahrräder von schicken Radfelgen über sportliche Mehrganggetriebe, mit denen Berge kein Problem mehr darstellen, bis zur Designer-Trinkflasche machen aus dem einfachen Fahrrad ein exlusives Fahrzeug. Und natürlich darf bei keinem Fahrradfahrer eine aufwändige Sicherheitsausstattung mehr fehlen: Schutzhelme, Ellenbogen- und Knieschützer, die das Fahrrad im Falle eines Unfalls fast so sicher wie einen Panzer machen ________.
+
+Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ________ sind die Autoschlangen wieder länger. ________ einen praktischen Wetterschutz für Radfahrer haben die Geschäfte noch nicht im Angebot.`,
+                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
+                answers: ["KAUM", "AUF", "VORBEI", "STATT", "INNERHALB", "MÜSSEN", "AN", "SOLLEN", "DANN", "DENN"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${heading.id})</strong> ${heading.text}
+                `;
+                headingItem.dataset.letter = heading.id;
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Question ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
+            const blankText1 = document.getElementById('blankText1');
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText1.innerHTML = textWithBlanks1;
+
+            // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
+            const blankText2 = document.getElementById('blankText2');
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText2.innerHTML = textWithBlanks2;
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === letter) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+    </script>
+</body>
+</html>

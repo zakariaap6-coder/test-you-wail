@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TANZKURZ - TEST B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .theme-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .answer-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
+        .question {
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.08);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.6rem 0;
+            padding: 0.8rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .dark-mode .option {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border: 1px solid #4CAF50;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border: 1px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .text-content {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        /* Lesen Teil 1 - تصميم محسن */
+        .headings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .heading-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .heading-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .ad-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .ad-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        .dark-mode .ad-letter {
+            color: #90CAF9;
+        }
+
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+        }
+
+        .dark-mode .ad-title {
+            color: var(--light);
+        }
+
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
+        .fill-blanks {
+            margin: 1.2rem 0;
+        }
+
+        .blank-text {
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .blank-text {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 6px;
+            transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .dark-mode .blank {
+            background: rgba(26, 35, 126, 0.8);
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border-color: #4CAF50;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* تحسينات للهواتف */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
+            }
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
+            }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
+        </div>
+        
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">TANZKURZ - TEST B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
+            <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
+            <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الأسئلة والإجابات (مأخوذة من TANZKURZ.html)
+        const examData = {
+            headings: [
+                {id: "a", text: "Befragung bestätigt alte Vorurteile"},
+                {id: "b", text: "Freie Plätze im Tanzkurs"},
+                {id: "c", text: "Hilfen für überforderte Schüler"},
+                {id: "d", text: "Höher, schneller, weiter: Suche nach dem Nervenkitzel"},
+                {id: "e", text: "Keine Zeit für Langeweile"},
+                {id: "f", text: "Neue Lerntechniken präsentiert"},
+                {id: "g", text: "Neue Sportarten"},
+                {id: "h", text: "Stolze Eltern: vom Schüler zum Superstar"},
+                {id: "i", text: "Tanzlehrer fordern moderne Tänze bekannter machen"},
+                {id: "j", text: "Wandel im Freizeitverhalten von Jugendlichen"}
+            ],
+            
+            texts: [
+                {
+                    id: "text1",
+                    content: `Der Begriff Extremsport wird oft subjektiv verwendet. Man kann viele gängige Sportarten als Extremsport bezeichnen, wenn sie mit erhöhtem Risiko für das eigene Leben ausgeübt werden, z.B. Skilaufen auf ungesicherten Pisten oder Klettern ohne Sicherung. Extremsportlern geht es aber nicht darum, das höchste Risiko einzugehen, sondern ihre Grenzen zu erkennen. Extremsport kann man an vielen Orten betreiben: in der Wüste, unter Wasser, auf Klippen oder Bergen, in der Luft oder sogar auf seinem eigenen Hausdach. Es gibt viele Wettbewerbe in verschiedenen extremen Sportarten, zum Beispiel Bungee-Jumping, was früher ursprünglich ein Ritual für junge Männer in der Südsee war. Eine andere Art des Extremsports ist Freedlimbing: Mann klettert ohne jegliche Sicherung an mehreren hundert Meter hohen Felswänden. Kein Berg ist zu hoch, keine Wand ist zu steil, keine Schlucht zu tief, um für den Adrenalinkick zu sorgen. Manchen Sportlern kann es nicht aufregend genug sein. Leider entwickeln nicht wenige Extremsportler dabei eine regelrechte 'Sportsucht', die krankhaft ist. Viele Extremsportler ignorieren die Gefahren, was zu schweren Unfällen führt und sie häufig genug das Leben kostet.`,
+                    correctAnswer: "d",
+                    correctAnswerText: "d) Höher, schneller, weiter: Suche nach dem Nervenkitzel"
+                },
+                {
+                    id: "text2",
+                    content: `Musik, Sport, ehrenamtliches Engagement - die Teilnahme von Jugendlichen an diesen sogenannten bildungsorientierten Freizeitaktivitäten hat in den vergangenen zehn Jahren deutlich zugenommen. So lautet das Ergebnis einer Studie des Deutschen Instituts für Wirtschaftsforschung. Während vor 10 Jahren erst 48 Prozent aller 16- bis 17-Jährigen an bildungsorientierten Aktivitäten teilnahmen, waren es im vergangenen Jahr bereits 62 Prozent. Die Daten zeigen außerdem: Während vor 10 Jahren nur etwa 10 Prozent der 16- bis 17-Jährigen musizierten, waren es im letzten Jahr bereits 18 Prozent. Noch stärker hat im gleichen Zeitraum das ehrenamtliche Engagement der 16- bis 17-Jährigen zugenommen (von 11 auf 22 Prozent). Darüber hinaus ist auch der Anteil der Jugendlichen, die Sport treiben, tanzen oder Theater spielen, gestiegen. Gleichzeitig verzeichnen die Forscher einen Abwärtstrend der sogenannten informellen Freizeitbeschäftigungen. So ist der Anteil derer, die täglich mit der besten Freundin oder dem besten Freund unterwegs sind, im Untersuchungszeitraum von 40 auf 25 Prozent zurückgegangen. Auffallend ist, dass Jugendliche aus sozial schwächeren Haushalten bildungsorientierte Angebote viel seltener nutzen als junge Menschen aus gut situierten Familien.`,
+                    correctAnswer: "j",
+                    correctAnswerText: "j) Wandel im Freizeitverhalten von Jugendlichen"
+                },
+                {
+                    id: "text3",
+                    content: `In Firmen gibt es sie schon, jetzt wollen auch Schulen Entspannungskurse anbieten. Schüler sollen zwischen den Unterrichtsstunden mit Entspannungstechniken lernen, Stress abzubauen. Ein erster Probelauf des Projekts an einer Gesamtschule in Hamburg ist bei den Teilnehmenden gut angekommen. Die Schüler waren zu Beginn zwar skeptisch, dann aber vom Ergebnis überzeugt. 'Ich konnte mich in meiner nächsten Stunde nach der Entspannungsübung viel besser konzentrieren und habe viel mehr mitbekommen', berichtet Jens aus der 12. Klasse. Die Schule hat damit auf Kritik von Schülern und Lehrern reagiert: Nach der Umstrukturierung der Stundenpläne klagten die Schüler zunehmend über Stress und zu wenige Pausen. Gerade Entspannungspausen seien aber wichtig, explizieren Pädagogen und auch Neurowissenschaftler. Nur wer ausreichend Pausen macht, kann sich Dinge auch langfristig merken. Nachdem das Projekt in Hamburg solch einen Erfolg hatte, wollen es jetzt auch andere Schulen anbieten.`,
+                    correctAnswer: "c",
+                    correctAnswerText: "c) Hilfen für überforderte Schüler"
+                },
+                {
+                    id: "text4",
+                    content: `Tanja Kleist ist von modernem Tanz absolut begeistert. Seit ihrem neunten Lebensjahr tanzt sie, früher auf Wettkampfniveau. Seit einigen Jahren engagiert sie sich beim TSV Neustadt. Die Freude, die sie beim Tanzen hat, möchte sie weitergeben und mehr Jugendliche motivieren, diesem einzigartigen Sport eine Chance zu geben. Und diese Chance ist nun für alle Interessierten besonders groß. Für ihre Hip-Hop-Tanzgruppe sucht Frau Kleist neue tanzbegeisterte Teilnehmerinnen und Teilnehmer, da im vergangenen Sommer viele nach dem Abitur die Gruppe verlassen haben. Das abwechslungsreiche Training vereint Kreatives mit 'Handwerklichem'. Im Mittelpunkt der Übungsstunden steht die Erarbeitung kleiner choreografierter Sequenzen auf Basis von Musikvideos bekannter Hip-Hopper, aber auch das Techniktraining und die Schulung von akrobatischen Grundelementen kommen nicht zu kurz. Es entstehen Choreografien, die die Gruppe bei öffentlichen Auftritten vorführt. Ein tolles Tanzangebot mit viel Spaß, das es ab sofort beim TSV Neustadt für Jugendliche ab 14 Jahren gibt!`,
+                    correctAnswer: "b",
+                    correctAnswerText: "b) Freie Plätze im Tanzkurs"
+                },
+                {
+                    id: "text5",
+                    content: `Montags Tennis, dienstags Klavierunterricht, mittwochs Jazztanz in der Gruppe und donnerstags Treffen der Astronomie-Gruppe. Was klingt wie der Terminkalender eines vielbeschäftigten Erwachsenen, ist heute oft eine ganz normale Woche im Leben von Kindern und Jugendlichen. Nicht genug damit, dass sie sechs oder sieben Stunden Schule haben, dann vielleicht noch Hausaufgaben machen und natürlich auch etwas essen müssen - in ihrer Freizeit haben sie dann gleich weitere Termine. Dabei suchen sich das viele Kinder und Jugendliche gar nicht selbst aus, sondern die Eltern wollen, dass Ihr Nachwuchs möglichst viel unternimmt. Einige hoffen, aus ihrem Sohn könnte ein neuer Spitzensportler werden, andere denken an eine Karriere als Musikerin, meist aber glauben die Eltern 'nur', sie müssten ihre Kindern ständig beschäftigen. Sonst könnte es ihnen ja langweilig werden, und wer weiß, ما sie dann machen. Viele Eltern haben Angst, dass ihre Kinder dann 'auf dumme Gedanken' kommen oder dass sie zuhause nur vor dem Fernseher oder Computer sitzen, wenn sie nicht ständig etwas unternehmen. Ob der Freizeitstress für alle Beteiligten wirklich gut ist?`,
+                    correctAnswer: "e",
+                    correctAnswerText: "e) Keine Zeit für Langeweile"
+                }
+            ],
+
+            longText: {
+                content: `Melanie Hoffmann ist Gedächtnistrainerin. Seit fast zehn Jahren bietet sie nun schon Seminare an Volkshochschulen, in Altenheimen, in Banken und Industriebetrieben an, in denen die Seminarteilnehmer lernen sollen, wie sie Informationen besser im Gedächtnis behalten. Suma Hartmann ist 30 Jahre alt, Bürokauffrau und eine von Melanie Hoffmanns Seminarteilnehmerinnen. "An meinem Arbeitsplatz bekomme ich ständig Massen von neuen Informationen: Texte, die zu lesen sind, Termine, Anrufe, Anfragen von Kunden, Kurzinfos von Kollegen: Diese Informationsflut zu bewältigen und möglichst nichts zu vergessen, ist fast ausgeschlossen", so Hartmann. Wie ihr geht es vielen Menschen in unserer Informationsgesellschaft – und das quer durch alle Altersstufen: vom Schüler bis zum Rentner. Sie fühlen sich den Anforderungen an ihr Gedächtnis nicht mehr gewachsen, und darum besuchen sie Trainingskurse wie die von Melanie Hoffmann.
+
+Während jeder Sekunde, die Suma Hartmann im Trainingsseminar, am Arbeitsplatz oder zu Hause verbringt, nimmt sie über ihre "Eingangskanäle" – die Augen, die Ohren, die Nase, den Mund, die Haut – um die zwei Millionen kleinste Informationen unbewusst auf. Jede kleinste Schwankung in der Licht- oder Farbintensität, Formen und Farben, Licht und Schatten, alle nur erdenklichen Geräusche von der Stimme der Seminarleiterin oder Kollegin bis zum draußen vorbeifahrenden Motorrad, verschiedenste Gerüche vom Schweiß bis zum teuren Parfüm, das Kratzen des Pullovers auf der Haut: All dies nimmt sie unbewusst wahr. Würde sie sich all diese Informationen bewusst merken wollen, wäre – wenn man die Sprache der Computerwelt zu Hilfe nimmt – innerhalb kürzester Zeit der Speicher voll.
+
+Damit dies nicht passiert, vergisst man fast alle Informationseinheiten innerhalb der nächsten 20 Sekunden wieder – und schafft damit Platz für neue Informationen. Erst nach etwa 20 Minuten behalten wir etwas auf lange Zeit. Dann haben die Nervenzellen im Gehirn eine neue Verbindung hergestellt, eine Synapse gebildet – und wir behalten etwas, statt es gleich wieder zu vergessen.
+
+Die Trainerin Melanie Hoffmann sagt: "Starke Sinneseindrücke, die mit Emotionen behaftet sind, behält man ebenso wie das, was interessant ist oder lebensnotwendig. Ein Kind, das einmal eine heiße Herdplatte angefasst hat, vergisst nie mehr, was 'heiß' bedeutet. Ein Hobbyastronom, dem seine Freizeitbeschäftigung großen Spaß bereitet, kennt im Nu alle möglichen Namen von Sternen. Und ich habe noch keinen Seminarteilnehmer gehabt, der sich nicht mehr daran erinnern könnte, was am 11. September 2001 in New York passiert ist".
+
+In unserer heutigen Informationsgesellschaft ist es wichtig, die auf uns einströmende Informationsflut zu bündeln. Daten und Begriffe zu gruppieren oder an Bildern oder Gegenständen festzumachen und sich so "Eselsbrücken" zu bauen, die dabei helfen, mehr im Gedächtnis zu behalten.
+
+Suma Hartmann "sortiert" jetzt im Geiste alle wichtigen Informationen in bestimmte Schubladen ihres Aktenschrankes in ihrem Büro: "Ich habe mir Zahlensymbole ausgedacht, mit denen ich die neuen Informationen bildlich verknüpfe! Die Eins wird zur Kerze, die Zwei zum Schwan usw. Wenn ich nun nicht vergessen möchte, um zwei Uhr eine bestimmte Konferenz vorzubereiten, denke ich mir meine Konferenzmappe im Schnabel des Schwans. Und es funktioniert: Ich vergesse viel weniger".`,
+                questions: [
+                    {
+                        id: "q1",
+                        question: "Melanie Hoffmanns Seminare besuchen",
+                        options: [
+                            "ausschließlich Frauen, die im Büro arbeiten",
+                            "junge und alte Menschen gleichermaßen",
+                            "überwiegend alte Menschen"
+                        ],
+                        correctAnswer: "junge und alte Menschen gleichermaßen"
+                    },
+                    {
+                        id: "q2",
+                        question: "Die Teilnehmer besuchen Frau Hoffmanns Seminar, weil sie",
+                        options: [
+                            "das Gefühl haben, dass ihr Gedächtnis schlechter wird",
+                            "immer mehr vergessen",
+                            "sich von den vielen Informationen überfordert fühlen"
+                        ],
+                        correctAnswer: "sich von den vielen Informationen überfordert fühlen"
+                    },
+                    {
+                        id: "q3",
+                        question: "Jeder Mensch",
+                        options: [
+                            "kann sich alle erdenklichen Geräusche und Gerüche merken",
+                            "kann über einen Zeitraum von 20 Minuten alles behalten",
+                            "vergisst die meisten Informationen innerhalb kürzester Zeit"
+                        ],
+                        correctAnswer: "vergisst die meisten Informationen innerhalb kürzester Zeit"
+                    },
+                    {
+                        id: "q4",
+                        question: "Besonders gut kann man sich",
+                        options: [
+                            "als Kind etwas merken",
+                            "an Daten und Begriffe erinnern",
+                            "emotional aufgeladene Situationen merken"
+                        ],
+                        correctAnswer: "emotional aufgeladene Situationen merken"
+                    },
+                    {
+                        id: "q5",
+                        question: "Suma Hartmann",
+                        options: [
+                            "lehrt andere, wie man sich 'Eselsbrücken' ausdenkt",
+                            "verbindet Informationen mit Bildern",
+                            "verwendat für ihre Aktenablage nur Tiersymbole"
+                        ],
+                        correctAnswer: "verbindet Informationen mit Bildern"
+                    }
+                ]
+            },
+
+            // Lesen Teil 3 - البيانات المحدثة
+            situations: [
+                {
+                    id: "11",
+                    text: "Ein Bekannter möchte einen Film sehen, der nach dem Werk eines Schriftstellers gedreht wurde.",
+                    correctAnswer: "L"
+                },
+                {
+                    id: "12",
+                    text: "Bekannte interessieren sich für Wintersportveranstaltungen.",
+                    correctAnswer: "I"
+                },
+                {
+                    id: "13",
+                    text: "Sie suchen eine Musiksendung. Sie mögen besonders Klaviermusik.",
+                    correctAnswer: "B"
+                },
+                {
+                    id: "14",
+                    text: "Sie mögen Filme mit viel Action und viel Spaß. Ihre Lieblingshelden können auch mal zuschlagen.",
+                    correctAnswer: "H"
+                },
+                {
+                    id: "15",
+                    text: "Ein Bekannter interessiert sich für korsische Geschichte.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "16",
+                    text: "Sie mögen Familienkomödien, besonders mit frechen Kindern.",
+                    correctAnswer: "E"
+                },
+                {
+                    id: "17",
+                    text: "Eine Bekannte interessiert sich für die Geschichte des bis 1989 geteilten Berlins.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "18",
+                    text: "Sie sehen gern spannende, aber auch spaßige Agentenfilme.",
+                    correctAnswer: "D"
+                },
+                {
+                    id: "19",
+                    text: "Sie würden gern etwas über Großstadtjugendliche erfahren, die am Rand der Gesellschaft leben.",
+                    correctAnswer: "F"
+                },
+                {
+                    id: "20",
+                    text: "Sie möchten im nächsten Urlaub bergsteigen und sich über die Risiken informieren.",
+                    correctAnswer: "G"
+                }
+            ],
+
+            ads: [
+                {
+                    id: "A",
+                    title: "Es geschah im August",
+                    content: "23.15 3SAT. Ullrich Kasten und Hans-Hermann Hertle schildern in ihrer hervorragenden Dokumentation anhand von Archivmaterial minutiös sämtliche Stationen des Mauerbaus. Sie erzählen die Vorgeschichte der Berlin-Krise und beleuchten die Hintergründe der Teilung Deutschlands. Ferner haben sie Zeitzeugen nach ihren Reaktionen auf das einschneidende Ereignis befragt. Zu Wort kommen in dem Film nicht nur namhafte Vertreter der internationalen Politik, sondern auch Grenzsoldaten, Flüchtlinge und Angehörige von Maueropfern."
+                },
+                {
+                    id: "B",
+                    title: "Joja Wendt",
+                    content: "21.00 NDR. Ob Klassik, Rock'n'Roll oder Jazz, Joja Wendt, Hamburger Pianist mit enormen Entertainer-Qualitäten, variiert bekannte Songs und stellt seine Fingerfertigkeit auch in eigenen Kompositionen unter Beweis. Stargast in dem heutigen Fernseh-Special ist die Schlagersängerin Michelle mit dem Titel 'Ich schicke dir jetzt einen Engel'."
+                },
+                {
+                    id: "C",
+                    title: "Einfach unwiderstehlich",
+                    content: "20.15 SAT.1. Gut kochen kann Amanda nicht. Folglich steht ihr kleines, von der Mutter geerbtes Restaurant in Manhattan kurz vor dem Aus. Da entflieht plötzlich ein Krebs aus ihrem Einkaufskorb und sorgt mit seinen Zauberkünsten für lukullische Sensationen. Tom, Manager eines Gourmet-Restaurant an der Fifth Avenue, kommt als einer der ersten in deren Genuss. Drew Barrymore und Brendan Fraser in einer romantischen Komödie."
+                },
+                {
+                    id: "D",
+                    title: "New York Express",
+                    content: "22.00 HR. Aus Sorge um die nationale Sicherheit versteckt der amerikanische Geheimdienst den genialen, aber vermeintlich psychisch kranken Physiker Arthur Vincenti. Der völlig verrückte New Yorker Psychiater Dr. Snow erhält den Auftrag, ihn zu heilen. Immer nachts wird er mit verbundenen Augen zu dem Versteck gebracht. Aber auch einige Gangster sind nicht untätig. Sie haben es auf das Wissen des Geheimsitzigers Vincenti abgesehen, das sie fremden Spionen verkaufen möchten."
+                },
+                {
+                    id: "E",
+                    title: "Kein Vater von gestern",
+                    content: "20.15 PRO 7. Er schreit wie am Spieß, wenn er lange Hosen tragen soll, und lacht sich kaputt, wenn er die Katze in eine Mülltüte gesteckt hat. Alles ist einfacher, als sich um den 5-jährigen Calvin zu kümmern. Doch sein liebevoller Vater Russell, der den Jungen allein erzieht, meistert sämtliche Katastrophen mit Bravour und Geduld. Weil sich Kind und Karriere nicht unter einen Hut bringen ließen, verlor der Jurist einen tollen Job in einer renommierten Chicagoer Anwaltskanzlei. Jetzt sitzt er mit seinem Sohn in einem Dorf in Kansas und arbeitet في der Kanzlei eines Freundes. Die Bekanntschaft mit der attraktiven Beth bringt neuen Schwung in sein Leben. Doch da taucht Russells Ex-Ehefrau wieder auf."
+                },
+                {
+                    id: "F",
+                    title: "Nur nich' nach Hause",
+                    content: "22.45 SAT1. Hier in Berlin bei meinen Freunden habe ich mein Zuhause hinter mir gelassen. Hier geht's mir gut. Ich bin endlich frei, sagt Sascha. Der 16-Jährige ist einer der Jugendlichen, die hierzulande auf der Straße leben. Sie schlafen in Notunterkünften, Treppenhäusern und UBahn-Stationen, betteln tagsüber Passanten um Kleingeld an. Peter Schmidt hat Sascha mehrere Wochen lang begleitet und ihn nach seinen Wünschen und Hoffnungen gefragt. Zudem beleuchtet der Filmautor die individuelle Geschichte des Jugendlichen."
+                },
+                {
+                    id: "G",
+                    title: "Großer Kick auf schmalem Grat",
+                    content: "21.15 ARD. Mit Sandalen und T-Shirt hängen sie in den Felswänden, ihr Handy halten sie für eine Lebensversicherung, die Alpen für einen Freizeitpark, Vierzig Menschen verunglücken jedes Jahr tödlich am Montblanc, bis zu eintausend Einsätze fliegt die Bergwacht Chamonix pro Saison. Filmer Oliver Baumgart begleitet die Retter zwei Wochen lang."
+                },
+                {
+                    id: "H",
+                    title: "Zwei Engel mit four Fäusten: Schwere Jungs",
+                    content: "20.15 RTL. Schwere Jungs bildet den Auftakt zu einer sechsteiligen Reihe mit Actionkomödien: Hau-drauf-Filme, wie sie schon unzählige Male mit dem Schläger-Duo Terence Hill und Bud Spencer über den Bildschirm flimmerten. Die Beiden Gauner Joe und Bob fliehen aus dem Gefängnis und finden als Mönche getarnt Unterschlupf einer Missionsstation."
+                },
+                {
+                    id: "I",
+                    title: "Olympia-Highlights",
+                    content: "17.30 ZDF. Nach den Weltcup-Siegen in Willingen und Sapporo stehen die Chancen für das österreichische Team gut, beim Skisprinzen ganz weit vorn zu landen. Überflieger Gregor Schlierenzauer und sein Mannschaftskollege Thomas Morgenstern sind jedenfalls in blendender Verfassung. Die deutschen Springer Martin Schmitt und Jörg Ritzerfeld werden sich anstrengen müssen. Übertragung von der 120-Meter-Skisprungschanze im Utah Olympic Park."
+                },
+                {
+                    id: "J",
+                    title: "Basler Fasnacht",
+                    content: "14.15 DRS. Man darf gespannt sein, wie viel Spott die für ihre spitzen Zungen bekannten Basler Fasnächtler für das vergangene Jahr übrig haben. DRS überträgt die Straßenfasnacht, den Umzug der Pfeifen- und Trommlergruppen, die ihre Themen präsentieren, live. Die fachkundigen Kommentare zum Karneval am Oberrhein liefern Robert Pichler und der Basler Fastnachtsjournalist Roger Thiriet."
+                },
+                {
+                    id: "K",
+                    title: "Rockpalast",
+                    content: "0.05 BR. Dreizehn Alben hat die vielköpfige korsische Gruppe I Murrini um die Brüder Jean Francois und Alain Bernardini bereits veröffentlicht. Hierzulande galten die wilden Schafe noch bis vor Kurzem als Geheimtipp. Inzwischen sind die Musiker mit ihrer Mischung aus korsischer Folklore, afrikanischen und keltischen Elementen, aber auch aus Jazz, Pop und Cajun bei uns bekannt."
+                },
+                {
+                    id: "L",
+                    title: "Mephisto",
+                    content: "20.15 PHOENIX. Man sollte meinen, Schauspieler Hendrik Höfgen wäre gegen unmoralische Angebote gefeit. Schließlich feierte er zur Zeit der Weimarer Republik große Erfolge in der Rolle des Mephisto. Der Mann müsste also wissen, wie schnell es gehen kann, dass man seine Seele verkauft. Als die Nazis die Macht ergreifen, stellt Höfgen seine Kunst ganz in den Dienst der neuen Herrscher. Und bald wird er zum Intendanten des Staatstheaters ernannt. Das Drama um Kunst und Politik entstand nach dem gleichnamigen Roman von Klaus Mann."
+                }
+            ],
+
+            // Sprachbausteine Teil 1
+            blankText1: {
+                content: `Hallo Christopher,
+
+nun habe ich mich schon so lange nicht bei dir gemeldet - das tut mir wirklich leid! Ich hatte in den vergangenen Monaten viel Stress, weil ich ja nun studiere und nebenbei noch arbeiten muss, ________ meine Miete und alles andere bezahlen zu können. Zum Glück macht mir mein Nebenjob wenigstens Spaß. Ich weiß nicht, ________ ich das sonst durchhalten würde. Vielleicht habe ich dir schon erzählt, dass ich abends und am Wochenende in einer Kneipe in der Küche helfe. Das ist zwar oft sehr anstrengend, ________ anderseits ist dauernd was los, es wird nicht langweilig, und meine Kollegen sind total nett. Erinnerst du dich noch an unsere Zeit in der Grundschule? Mit acht Jahren wollte ich ja ________ Kellnerin werden, weil man da Trinkgeld bekommt. Naja, jetzt bin ich in der Küche gelandet, knapp daneben ist auch vorbei ;)
+
+Was macht denn deine Ausbildung? Wenn ich ________ nicht täusche, bist du ja in einem halben Jahr schon fertig, oder? Das ist ja nicht mehr lang!
+
+Neulich habe ich übrigens Tina und Kevin hier in der Nähe der Uni getroffen - die waren ja schon ein Paar, ________ wir noch in der Schule gegangen sind, und jetzt will sie tatsächlich verheiratet!
+
+Wie sehen denn deine Pläne für die ________ Wochenenden aus? Wir könnten uns ja vielleicht mal wieder treffen und in Ruhe quatschen - hättest du Lust ________ ?
+
+In meiner Straße hat vor einem Monat ein nettes kleines Café aufgemacht, die haben nicht nur sehr leckere Kuchen, ________ auch einige kleine Gerichte zu wirklich günstigen Preisen. Wäre das was ________ dich? Mail wir doch einfach, wenn du magst, ich würde mich freuen.
+
+Viele Grüße,
+
+Flora`,
+                options: [
+                    ["anstatt", "ohne", "um"],      // 21
+                    ["dass", "ob", "während"],      // 22
+                    ["aber", "denn", "und"],        // 23
+                    ["bestimmt", "unbedingt", "völlig"], // 24
+                    ["dich", "mich", "sich"],       // 25
+                    ["als", "wenn", "wie"],         // 26
+                    ["baldigen", "kommenden", "vergangenen"], // 27
+                    ["danach", "darüber", "dazu"],  // 28
+                    ["aber", "oder", "sondern"],    // 29
+                    ["für", "gegen", "ohne"]        // 30
+                ],
+                answers: ["um", "dass", "aber", "unbedingt", "mich", "als", "kommenden", "dazu", "sondern", "für"]
+            },
+
+            // Sprachbausteine Teil 2
+            blankText2: {
+                content: `Theater für Kinder und Jugendliche
+
+Theater fördert nicht nur die Kreativität, ________ auch die Körpererfahrung von Kindern. Der Verein "Jugendhilfe Düsseldorf e. V." arbeitet ________ vielen Jahren in der Jugendförderung, und deshalb unterstützt er auch ein neues Theaterprojekt für Kinder. Üben und spielen werden die Teilnehmer im Jugendzentrum. Das Jugendzentrum ist eine Einrichtung des städtischen Jugendamtes und kümmert sich um Kinder, Jugendliche und junge Volljährige, die ________ familiärer und anderer Probleme Hilfe benötigen.
+
+Bis zu zwanzig Mädchen und Jungen werden ________ dem kommenden Jahr die Welt des Theaters kennenlernen. ________ Ende des Projekts werden die Nachwuchsschauspieler bei einem Theaterfestival auftreten, was sicher ein Höhepunkt für alle Teilnehmer sein wird.
+
+Geleitet wird die Gruppe vom Schauspieler Wolfgang Neuhausen. Er arbeitet mit dem Jugendzentrum zusammen und wird von zwei Theaterpädagogen unterstützt. Allen Mitarbeitern ist ________ wichtig, dass die Kinder auf der Bühne Anerkennung für ihre Leistung bekommen. Ohne die finanzielle Unterstützung wäre das Vorhaben unmöglich, ________ bei der Stadt keine Gelder vorhanden waren.
+
+Dieses Theaterprojekt ist nicht das erste, das gefördert wird. Im vergangenen Jahr erhielt das Theaterprojekt "Schiller - das wilde, freie Leben" finanzielle Unterstützung. Allerdings ist nicht nur Geld wichtig: Der Verein kümmert sich auch ________, die Projekte bekannt zu machen. In verschiedenen Theaterhäusern der Stadt werden Plakate aufgehängt, mit denen der Verein für das Jugendtheater wirbt. Man hofft, ________ diese Weise noch mehr Unterstützer zu finden.
+
+Auch unsere Leser können die Jugendlichen unterstützen: Aktuell sammelt das Jugendzentrum Spenden, ________ weitere Projekte finanzieren zu können. Außerdem werden für die Theaterproben und die Aufführungen noch ehrenamtliche Helfer gesucht.`,
+                options: ["AB", "ABER", "AM", "AUF", "DA", "DARUM", "DAZU", "ES", "OHNE", "SEIT", "SONDERN", "TROTZ", "UM", "VOR", "WEGEN"],
+                answers: ["SONDERN", "SEIT", "WEGEN", "AB", "AM", "ES", "DA", "DARUM", "AUF", "UM"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${heading.id})</strong> ${heading.text}
+                `;
+                headingItem.dataset.letter = heading.id;
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Question ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
+            const blankText1 = document.getElementById('blankText1');
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText1.innerHTML = textWithBlanks1;
+
+            // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
+            const blankText2 = document.getElementById('blankText2');
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText2.innerHTML = textWithBlanks2;
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === letter) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+    </script>
+</body>
+</html>

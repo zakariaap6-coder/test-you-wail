@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HACHARAT - TEST B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .theme-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .answer-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
+        .question {
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.08);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.6rem 0;
+            padding: 0.8rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .dark-mode .option {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border: 1px solid #4CAF50;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border: 1px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .text-content {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        /* Lesen Teil 1 - تصميم محسن */
+        .headings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .heading-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .heading-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .ad-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .ad-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        .dark-mode .ad-letter {
+            color: #90CAF9;
+        }
+
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+        }
+
+        .dark-mode .ad-title {
+            color: var(--light);
+        }
+
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
+        .fill-blanks {
+            margin: 1.2rem 0;
+        }
+
+        .blank-text {
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .blank-text {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 6px;
+            transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .dark-mode .blank {
+            background: rgba(26, 35, 126, 0.8);
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border-color: #4CAF50;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* تحسينات للهواتف */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
+            }
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
+            }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
+        </div>
+        
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">HACHARAT - TEST B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
+            <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
+            <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الأسئلة والإجابات (محدثة من HACHARAT.html)
+        const examData = {
+            headings: [
+                {id: "a", text: "Neue Heuschreckenart in Frankreich entdeckt"},
+                {id: "b", text: "Kleine Plagegeister können Krankheiten bringen"},
+                {id: "c", text: "Landwirte wollen Gift gegen schädliche Insekten einsetzen"},
+                {id: "d", text: "Neue Mittel gegen Mücken"},
+                {id: "e", text: "Neue Studie: Nicht nur Affen und Delfine erkennen sich selbst"},
+                {id: "f", text: "Probleme beim Versuchsaufbau: Studie gescheitert"},
+                {id: "g", text: "Rhein nach Chemieunfall noch immer tot"},
+                {id: "h", text: "Rückblick: Fischsterben im Rhein"},
+                {id: "i", text: "Um die Zukunft der Nordsee ist es schlecht bestellt"},
+                {id: "j", text: "WWF zieht positive Bilanz für die Nordsee"}
+            ],
+            
+            texts: [
+                {
+                    id: "text1",
+                    content: `Die anhaltenden außergewöhnlich hohen Temperaturen haben im Süden Frankreichs eine Tierplage bisher unbekannten Ausmaßes ausgelöst. Bei den Plagegeistern handelt es sich um Unmengen von zwei bis dreieinhalb Zentimeter langen Heuschrecken, sogenannten Roten Schnarrschrecken. Die dunklen Insekten fressen Felder und Wiesen kahl und haben innerhalb von rund sechs Wochen die Landschaft in eine trostlose Steppe verwandelt. Die Landwirte der Region sind bereits verzweifelt, denn ihre gesamte Ernte hat sich buchstäblich in Luft aufgelöst. Wenn man über ein befallenes Feld geht, springt bei jedem Schritt ein Schnarrschreckenschwarm auf. Der Name dieser heimischen Tierart hat übrigens einen ganz einfachen Ursprung: Die Heuschrecken machen ein lautes Geräusch beim Springen - sie schnarren also - und man sieht an ihnen leuchtend rote Hinterflügel. Daher also 'Rote Schnarrschrecke'. Manche Experten vermuten, die Heuschreckenplage werde durch einen drastischen Klimawandel ausgelöst. Die damit verbundene Aufheizung mache Südeuropa immer 'afrikanischer'. Ein deutscher Wissenschaftsautor wies kürzlich im Internet mehrfach darauf hin, dass es im Laufe der Erdgeschichte ständig einen Wechsel von Warmzeiten und Kaltzeiten gegeben habe, der keineswegs abgeschlossen sei. Zeitweise habe das Gebiet von Europa nahe dem Äquator gelegen. Der Einsatz von Gift gegen die Heuschrecken ist sehr riskant. Denn dabei darf nur ein Mittel verwendet werden, das ausschließlich für die Heuschrecken tödlich ist, nicht aber für Bienen und andere Insekten. Auch das Vieh der Bauern darf nicht durch verseuchtes Futter gefährdet werden. Die einzige gute Nachricht: für Menschen und andere Tiere sind die Heuschrecken völlig ungefährlich.`,
+                    correctAnswer: "c",
+                    correctAnswerText: "c) Landwirte wollen Gift gegen schädliche Insekten einsetzen"
+                },
+                {
+                    id: "text2", 
+                    content: `Für immer wird eine der größten Umweltkatastrophen mit dem Namen des damals in Basel ansässigen Chemiekonzerns Sandoz verbunden bleiben, der jetzt zu Novartis gehört. 1986 führte ein Brand in einer Lagerhalle des Konzerns zu Verunreinigung des Rheins mit 20 Tonnen hochgiftiger Pestizide und Insektizide. Auf einer Länge von 450 Kilometern kam es zu einem gigantischen Fischsterben. Vor allem Aale waren betroffen. Trinkwasser konnte nicht mehr aus dem Fluss gewonnen werden. Der öffentliche Druck, der als Reaktion auf die Umweltkatastrophe entstanden war, führte zu großen Investitionen für den Gewässerschutz. Im Rahmen des 'Aktionsprogramms Rhein' wurden rund 60 Milliarden Euro in den Ausbau von Kläranlagen entlang des Rheinufters investiert. Viele Schwermetalle wie Kupfer, Cadmium, Blei und Quecksilber konnten reduziert und teilweise sogar ganz aus dem Rhein verbannt werden. Angesichts der getroffenen Maßnahmen spricht die Internationale Kommission zum Schutz des Rheins (IKSR) heute wieder von 'guter Wasserqualität' des Rheins. 63 Fischarten sind wieder im Rhein vertreten, darunter auch Lachse. Die Aufgaben des Gewässerschutzes gehen aber noch weiter. Zink, Kupfer und Cadmium so wie Pestizide und Stickstoff bereiten weiterhin Sorgen. Kürzlich warnte das Verbraucherschutzministerium des Landes Nordrhein-Westfalen vor dem Verzehr von Rheinfischen unterhalb von Duisburg, weil Tenside durch die Nebenfüsse Möhne und Ruhr in den Rhein gelangt waren.`,
+                    correctAnswer: "h",
+                    correctAnswerText: "h) Rückblick: Fischsterben im Rhein"
+                },
+                {
+                    id: "text3",
+                    content: `Der Klimawandel bringt es in Verbindung mit der Globalisierung mit sich, dass auch in Deutschland Tiere heimisch werden, die hier zuvor nicht beobachtet wurden. Zu diesen Neuankömmlingen gehören auch exotische Stechmücken, beispielsweise der japanische Bushmosquito. Mit den exotischen Stechmücken kommen auch neue Infektionserreger nach Deutschland, die möglicherweise auch bisher unbekannte Krankheiten beim Menschen auslösen können. Eine Forschergruppe identifizierte jetzt einige bisher nur in Afrika und Asien vorkommende Erreger. Anfang 2011 wurde ein interdisziplinäres Projekt ins Leben gerufen. Als ein erstes Ziel der Forschungsarbeit wird die Erstellung einer Mückenkarte für Deutschland angestrebt. 'Innerhalb weniger Jahre wollen wir einen Überblick über die Artenverteilung der Mücken haben und wissen was an Viren in ihnen steckt', so der Leiter des Bernhard-Nocht-Institut Professor Dr. Sven Klimpel. Das Bernhard-Nocht-Institut ist eine internationale anerkannte Forschungseinrichtung, die eine langjährige Erfahrung in der Virendiagnostik in das Projekt einbringen kann. Es verfügte über Laboratorien der höchsten Sicherheitsstufe, die erforderlich sind, um neue Viren mit unbekanntem Gefährdungspotential zu untersuchen. Mit der neu entdeckten, aus Asien stammenden Mückenarten könnten in Deutschland bisher 48 Stechmückenarten von den Entomologen nachgewiesen werden. Seit einigen Jahren breitete sich die Malaria-Mücke Anopheles plumbeus in Südwestdeutschland aus. Auch die Asiatische Tigermücke, die unter anderem dagefährliche Dengueieber verbreitet, schaffte es 2018 in die Schlagzeilen, weil sie am Rhein gefunden wurde.`,
+                    correctAnswer: "b",
+                    correctAnswerText: "b) Kleine Plagegeister können Krankheiten bringen"
+                },
+                {
+                    id: "text4",
+                    content: `Forscher haben bei Versuchen im Bronx Zoo in New York eine neue Erkenntnis über Elefanten erlangt: Sie können sich selbst im Spiegel erkennen. Zumindest eines von drei Versuchstieren versuchte, einen auf seinem Kopfe aufgemalten Fleck, der im Spiegelbild zu sehen war, zu entfernen. Bisher war unter anderem von Affen, Delfinen und Elstern ein ähnliches Verhalten bekannt. Und auch bei diesen reagierte nicht immer alle Versuchstiere auf einen Spiegel. Es gab auch schon in der Vergangenheit solche Tests mit Elefanten, die aber auf keine Selbsterkenntnis schließen ließen. Den Grund sieht ein Wissenschaftler im Versuchsaufbau: 'Das große Problem ist, einen Spiegel zu haben, der 'elefantenfest' ist.' Frühere Versuche hätten zu kleine und zu schwer zugängliche Spiegeln verwendet. Die Elefanten aber wollten 'dagegen knallen, dahinter schauen, die Sache ausprobieren, bevor Sie verstehen, was vor sich geht'. Deshalb wurde diesmal mit ein 2,5 mal 2,5 Meter großer Spiegel in einem Elefantengehege mit drei weiblichen asiatischen Elefanten montiert, der stabil genug für ausgiebige Untersuchungen durch die Tiere war. Bei ähnlichen Tests mit Affen und Delfinen gibt es normalerweise vier Phasen der Erkenntnis im Spiegel: Zuerst der Versuch der Kommunikation mit dem vermeintlichen Artgenossen, dann eine physische Inspektion des Spiegels, ein Testen des Verhaltens des Spiegelbilds und schließlich die Selbsterkenntnis. Die Elefanten übersprangen die erste Phase und schauten in Phase zwei hinter den Spiegel und griffen auch mit dem Rüssel dahinter. In Phase drei führten sie verschiedene Bewegungen durch und verglichen sie mit denen des Spiegelbildes. Auch wenn sich dann nur eines der Tiere selbst erkannte, indem es den aufgemalten Fleck untersuchte und nach einiger Zeit dann auch das Interesse an dem Fleck verlor, sehen die Wissenschaftler das Ergebnis als eindeutigen Beweis für die Fähigkeit zur Selbsterkenntnis. Als Nächstes wollen sie die Fähigkeiten von Elefanten auch in ihrer natürlichen Umgebung weiter erforschen.`,
+                    correctAnswer: "e",
+                    correctAnswerText: "e) Neue Studie: Nicht nur Affen und Delfine erkennen sich selbst"
+                },
+                {
+                    id: "text5",
+                    content: `Heute und morgen tagt in Göteborg die Internationale Nordseekonferenz (INK), an der Regierungsvertreter der acht Nordsee-Anrainerstaaten teilnehmen. Der World Wide Fund For Nature (WWF) kritisierte in diesem Zusammenhang, dass dies das letzte Treffen dieser Art sei. Künftig sollen Fragen der Nordsee auf europäischer Ebene behandelt werden. Der WWF befürchtet, dass die Berücksichtigung ökologische Beilage der Nordsee künftig im europäischen Rahmen vernachlässigt werde: 'Es sieht nicht gut aus für die Nordsee'. So fasste WWF Meeresschützer Stefan Lutter diese Besorgnis in Worte. Der WWF ist der Ansicht, dass auf den Treffen der INK richtungsweisende Beschlüsse zum Nordseeschutz gefasst worden seien. Das Problem sei allerdings die Umsetzung dieser Beschlüsse in politisches Handeln in den Anrainerstaaten. Zu diesen Beschlüssen gehörte beispielsweise das 2001 vereinbarte Abkommen zum Verbot giftiger Schiffsfarben sowie ein weiteres Abkommen, das die Verunreinigung der Nordsee durch von Schiffen abgelassenes Ballastwasser bekämpfen sollte. Diese Abkommen wurden erst zum Teil umgesetzt. Der WWF befürchtet nun, dass diese wichtigen INK- Initiativen unter den Tisch fallen könnten. Anlässlich des letzten Treffens der Anrainerstaaten erneuerte der WWF seine Kritik an der Fleischereipolitik. Das Ziel einer nachhaltigen Fischereipolitik stehe zwar auf der Tagesordnung der Konferenz, die alltägliche Praxis in der EU sei jedoch durch die 'Plünderung der Fischbestände' gekennzeichnet. Die Kabeljaubestände stünden kurz vor dem Zusammenbruch, sagte der WWF-Fischereixperte. Ein notwendiger Fangstopp für diese Fischart sei jedoch nicht geplant. Ein weiteres ungelöstes Problem sei das Beifang-Problem. Der WWF-Sprecher brachte dazu folgendes Rechenbeispiel: Auf jedes Kilo Plattfisch, das auf den Tellern lande, gingen über fünf Kilo ungenutzter Beifang in die Netze der Fangflotten.`,
+                    correctAnswer: "i",
+                    correctAnswerText: "i) Um die Zukunft der Nordsee ist es schlecht bestellt"
+                }
+            ],
+
+            longText: {
+                content: `Die deutsche Sehnsucht nach dem Einzelbüro Dieser Artikel entsteht unter katastrophalen Bedingungen. Links vom Autor, keinen halben Meter entfernt, diskutieren die Onlineredakteure gerade über portugiesische Bankgeschäfte. Von rechts eilt nun der befreundete Kollege heran: "Sag mal, hast du eine Ahnung, ob das Bayern- Spiel heute Abend live im Fernsehen übertragen wird?" Und da, die Chefin, ganz aufgeregt winkt sie herüber: "Wann wir denn die Geschichte endlich fertig? Die hätte vor einer halben Stunde ins Korrektorat gemusst. Beeil dich bitte!" Was wir Arbeitenden im Großraumbüro immer schon ahaten, haben Schweizer Forscher nun erstmals auf breiter wissenschaftlicher Basis nachgewiesen: Großraum ist schlecht. Zumindest für diejenigen, die im Großraum arbeiten müssen. Mag sein, dass die Chefs in ihren Einzelbüros da anderer Meinung sind. Gut 1200 Beschäftigte aus unterschiedlichsten Berufen hat die Hochschule in Luzern befragt. Die Ergebnisse der Erhebung sind eindeutig. Beispiel Lärm: In Büros mit mehr als 16 Mitarbeitern fühlen sich 80% der Befragten regelmäßig durch Gespräche oder Telefonate gestört in Zweierbüros sind es nicht mal 30%. Auch was die alltäglichen Büro Probleme betrifft, ist der Großraum von Nachteil. Einerlei, wonach die Forscher nun fragten, ob nach Müdigkeit, Schweregefühl im Kopf, juckende Augen oder verstopfte Nase immer litten Mitarbeiter im Großraumbüro am stärksten. Wundert da, dass vier von zehn Großraumbeschäftigten mit ihrer Bürosituation im Allgemeinen" sehr oder gar außerordentlich unzufrieden sind? Zum Vergleich: Acht von zehn Arbeitnehmern mit Einzelbüro geben an, sie seien ziemlich, sehr oder fast 50% außerordentlich zufrieden." Einzelbüros für alle müsste die Lösung lauten, doch der Trend geht in die andere Richtung: Offene Raumstrukturen nehmen zu. Kritiker dieser Entwicklung sehen dahinter vor allem einen Grund: Arbeitgeber wollen die Mieten und Heizkosten niedrig halten. Aber zumindest ein Argument dürfte auch die Arbeitgeber interessieren: Der Schweizer Studie zufolge ist die Zahl der Krankheitstage bei Beschäftigten in Großraumbüros deutlich höher als bei anderen. deutsche Sehnsucht nach dem Einzelbüro Mein Schreibtisch. Mein Computer. Mein Büro. Das Einzelzimmer war fester Bestandteil der deutschen Bürokultur. Aber auch heute haben es noch viele und wer keines hat, träumt zumindest davon. Diese Sehnsucht ist typisch deutsch. "Verglichen mit den Beschäftigten in anderen Ländern, sitzen wir sehr bequem. Auch wenn alle Mitarbeiter die gleiche Möblierung haben, sitzen wir alle doch an unseren eigenen Schreibtischen, benutzen unsere eigenen Aktienschränke und möchten am liebsten die Tür zumachen können", sagt Robert Menke von der Immobilienberatung Kuschmann & Wakefield. Die hat eine Studie veröffentlicht, wonach deutsche Angestellte im internationalen Vergleich den meisten Platz haben: durchschnittlich 30 Quadratmeter Mietfläche per Kopf. Damit ist natürlich nicht nur das Schreibtisch-Areal gemeint, auch der Flur oder Küchenzeilen sindfalls vorhanden - eingerechnet. Doch umso erstaunlicher sind die Quadratmeterzahlen am anderen Ende der Statistik: In einigen osteuropäischen Ländern, aber auch in Schottland kommt jeder Beschäftigte gerade mal auf 10 Quadratmeter, selbst in Österreich sind es nur zwölf. Im angelsächsischen Raum gibt es viel mehr Großßraumbüros als bei uns. In London, wo Baroraum weltweit mit am tewersten ist, ist etwa eine Zusammenarbeit auf eine Fläche von 600 Quadratmetern und mehr ganz normal, normal "Häufig teilen sich sogar mehrere Mitarbeiter einen Arbeitsplatz. Statt eines festen Schreibtisches verfügt dann jeder über einen Rollcontainer. Der wird immer dorthin mitgenommen, wo gerade ein Arbeitsplatz frei ist. Das geht in der Regel über alle Hierarchiestufen", sagt Menke. Robert Menke erkennt auch in Deutschland "in einigen Bereichen eine Amerikanisierung des Büroraumes". Banken und Unternehmer im Telekommunikationssektor wären da varne dabei. Doch das sind noch Ausnahmen. Nach wie vur arbeiten die meisten Angestellten entweder in kleinen Gruppen in etwas größeren Büros oder in "Einzelzellen" wie Büros für eine Person in der Sprache der Immobilienmakler heißen. Laut der Studie überlegen zwar 40% der befragten Unternehmer, ihre Großraumflächen zu erweitern oder die Arbeitsplätze flexibel zu gestalten, aber "richtige Grofßraumbüros gibt es eher selten", sagt Menke.`,
+                questions: [
+                    {
+                        id: "q1",
+                        question: "Eine Studie aus der Schweiz..",
+                        options: [
+                            "belegt, dass die Mitarbeiter sich über Lärm im Großraumbüro beklagen.",
+                            "brachte keine eindeutigen Ergebnisse zur Zufriedenheit mit unterschiedlichen Büroformen.",
+                            "zeigt, dass Mitarbeiter in Großraumbüros seltener krank sind als andere."
+                        ],
+                        correctAnswer: "belegt, dass die Mitarbeiter sich über Lärm im Großraumbüro beklagen."
+                    },
+                    {
+                        id: "q2",
+                        question: "Großraumbüros…",
+                        options: [
+                            "reduzieren den Krankenstand.",
+                            "sind kostengünstiger zu beheizen.",
+                            "werden immer seltener."
+                        ],
+                        correctAnswer: "sind kostengünstiger zu beheizen."
+                    },
+                    {
+                        id: "q3",
+                        question: "Die deutschen Angestellten…",
+                        options: [
+                            "bevorzugen Einzelbüros.",
+                            "genießen eine individuell ausgewählte Büromöblierung.",
+                            "leiden unter zu engen Einzelbüros."
+                        ],
+                        correctAnswer: "bevorzugen Einzelbüros."
+                    },
+                    {
+                        id: "q4",
+                        question: "Die Arbeitsplatzfläche…",
+                        options: [
+                            "ist in Londoner Großraumbüros für den Chef größer als für andere Mitarbeiter.",
+                            "schließt die gemeinsam genutzten Flächen aus.",
+                            "wird in London oft unter mehreren Mitarbeitern aufgeteilt."
+                        ],
+                        correctAnswer: "ist in Londoner Großraumbüros für den Chef größer als für andere Mitarbeiter."
+                    },
+                    {
+                        id: "q5", 
+                        question: "Großraumbüros…",
+                        options: [
+                            "gibt es vor allem in Banken und Telekommunikationsunternehmen.",
+                            "werden bald in 40% der deutschen Firmen eingeführt.",
+                            "werden meist in Einzelzellen unterteilt."
+                        ],
+                        correctAnswer: "gibt es vor allem في Banken und Telekommunikationsunternehmen."
+                    }
+                ]
+            },
+
+            // Lesen Teil 3 - البيانات المحدثة
+            situations: [
+                {
+                    id: "11",
+                    text: "Sie suchen ein Au-pair Mädchen, das im Haushalt helfen und mit Ihren Kindern Englisch sprechen soll.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "12",
+                    text: "Ihre 14-jährige Nichte möchte sich über einen Auslandsaufenthalt informieren.",
+                    correctAnswer: "C"
+                },
+                {
+                    id: "13",
+                    text: "Ihr Sohn möchte als Koch im Ausland arbeiten. Er sucht nach einer passenden Stelle.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "14",
+                    text: "Eine französische Bekannte ist Übersetzerin und möchte gelegentlich arbeiten.",
+                    correctAnswer: "G"
+                },
+                {
+                    id: "15",
+                    text: "Ihre kinderlose Nachbarsfamilie möchte für einige Zeit einen jungen Menschen aufnehmen.",
+                    correctAnswer: "F"
+                },
+                {
+                    id: "16",
+                    text: "Sie sollen die neue Webseite Ihrer Firma ins Englische übersetzen lassen.",
+                    correctAnswer: "D"
+                },
+                {
+                    id: "17",
+                    text: "Sie kochen gerne und suchen nach Rezepten aus anderen Ländern.",
+                    correctAnswer: "H"
+                },
+                {
+                    id: "18",
+                    text: "Im Herbst beginnt Ihre Tochter ein Studium, Sie möchte ein Bankkonto eröffnen.",
+                    correctAnswer: "E"
+                },
+                {
+                    id: "19",
+                    text: "Sie wollen Geld nach Kanada überweisen, Sie möchten wissen, wie viel Sie für die Überweisung bezahlen müssen.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "20",
+                    text: "Ein Freund aus Salzburg will sich in Frankreich bewerben. Er möchte seine Zeugnisse übersetzen lassen.",
+                    correctAnswer: "B"
+                }
+            ],
+
+            ads: [
+                {
+                    id: "A",
+                    title: "Infos zur Auslandsüberweisung",
+                    content: "Bitte verwenden Sie die Funktion Auslandsüberweisung für Zahlungen in Länder, die nicht zum SEPA-Zahlungsraum gehören. Zum SEPA-Zahlungsraum gehören die Mitgliedsstaaten der Europäischen Union sowie die Länder Island, Norwegen, Liechtenstein, die Schweiz und Monaco. In diesem Raum gilt die Inlandsüberweisung. Bürgerinnen und Bürger können damit günstiger überweisen. Für alle anderen Länder gilt die Auslandsüberweisung. Bitte beachten Sie, dass bei Auslandsüberweisungen in der Regel Spesen zu zahlen sind. Für nähere Auskünfte über deren Höhe wenden Sie sich bitte direkt an die Kundenbetreuung."
+                },
+                {
+                    id: "B",
+                    title: "Französische Muttersprachler bieten Übersetzungen",
+                    content: "Deutsch-Französisch und Englisch-Französisch von Schulzeugnissen, Lebensläufen, Bewerbungen (Anschreiben & Motivationsschreiben), Arbeitszeugnissen usw., Arbeitsverträgen, Versicherungsverträgen. Auf Wunsch erstellen wir Ihre Jobanzeigen für den französischsprachigen Raum, angepasst an die jeweils landesübliche Anzeigengestaltung. Einwandfreie Qualität; schnell, garantiert termingerecht und zu einem fairen Preis. Kostenvoranschlag innerhalb von zwei Tagen. Standort Wien. Lieferungen innerhalb der EU. Nutzen Sie zur Kontaktaufnahme bitte das Online-Formular am Ende dieser Seite."
+                },
+                {
+                    id: "C",
+                    title: "Als Austauschschüler/in verbringst du einige Monate",
+                    content: "oder ein ganzes Jahr im Ausland. Du kannst ein Land in Europa wählen, aber auch Länder auf einem anderen Kontinent, wie zum Beispiel Amerika oder Australien. In dem Land deiner Wahl wohnst du bei einer Gastfamilie. Du besuchst die reguläre Schule, gemeinsam mit Schülerinnen und Schülern aus dem Gastland. So lernst du die Lebensweise und die Traditionen anderer Menschen kennen. Natürlich lernst du auch die Sprache deines Gastlandes. Wir bieten Informationsveranstaltungen in allen Bundesländern an. Dort beantworten wir alle deine Fragen. Schau doch einfach bei uns vorbei! Wir freuen uns auf dich!"
+                },
+                {
+                    id: "D",
+                    title: "Als gebürtige Engländerin",
+                    content: "mit einem Studienabschluss in Englisch, lebe ich seit vielen Jahren in Österreich. Ich biete Übersetzungen vom Deutschen ins Englische an: Lebensläufe, Ausbildungsunterlagen, Präsentationen, Websites, Produktbeschreibungen, Firmenflyer usw. Ich habe 20 Jahre Erfahrung mit Übersetzungen. Zu meinen zufriedenen Kunden zählen namhafte Unternehmen aus dem In- und Ausland. Auf Wunsch schicke ich Ihnen gerne eine Liste mit Referenzen zu. Wenn es einmal besonders schnell gehen muss, übernehme ich Expressarbeiten auch an Wochenenden. Effizient und zu einem angemessenen Preis. susan@language.at www.susanlanguage.at"
+                },
+                {
+                    id: "E",
+                    title: "Mit einem Konto bei der RUFA profitieren Sie",
+                    content: "von attraktiven Angeboten und von persönlicher Beratung. Wir haben das passende Konto für Sie – vom Girokonto bis zum Gratiskonto für Jugendliche. Jetzt aktuell: GRATIS Studentenkonto. Ihnen steht ein persönlicher Berater zur Seite, wenn Sie Auskunft oder Hilfe brauchen. Zusätzlich bietet Ihnen das Konto einige Vorteile, z. B. eine gratis Unfallversicherung bis 24 Jahre. Mit Ihrer RUFA-Clubkarte bekommen Sie außerdem Ermäßigungen in ausgewählten Shops und bei bestimmten Veranstaltungen."
+                },
+                {
+                    id: "F",
+                    title: "Wir laden Sie dazu ein",
+                    content: "internationale Schülerinnen und Schüler bei Ihnen zu Hause aufzunehmen. Dabei bieten Sie einem jungen Menschen mehr als nur einen Platz zum Schlafen und etwas zu essen, Sie helfen ihm, sich in einer fremden Umgebung zurechtzufinden, andere Sitten und Gebräuche und eine fremde Sprache kennenzulernen. Eine Gastschülerin oder einen Gastschüler aufzunehmen ist eine wunderbare Möglichkeit, selbst eine andere Kultur kennenzulernen und gleichzeitig die eigene Kultur zu teilen. Im Alltag können Sie gemeinsam kulturelle Unterschiede entdecken und schätzen lernen. Egal ob Sie selbst Kinder haben, allein oder in einem klassischen Familienhaushold leben: Wir freuen uns auf Ihre Bewerbung!"
+                },
+                {
+                    id: "G",
+                    title: "Französisch ist Ihre Muttersprache?",
+                    content: "Wir suchen eine freie Mitarbeiterin oder einen Mitarbeiter für Übersetzungen vom Deutschen ins Französische. Sie arbeiten fallweise und von zuhause aus (keine feste Anstellung). Ihr Aufgabenbereich: Übersetzung von einfachen kurzen Texten (Anfragen, Beantwortung von Anfragen, Reaktion auf Beschwerden usw.). Wenn nötig führen Sie auch kurze Telefonate mit französischen Kundinnen oder Kunden. Sie werden von uns eingearbeitet. Sie lernen unsere Produkte und das Fachvokabular anhand zweisprachiger Unterlagen kennen. Bei Fragen stehen Ihnen unsere Mitarbeiter gerne zur Verfügung. Interessiert? Wir hören auf Ihre Online-Bewerbung."
+                },
+                {
+                    id: "H",
+                    title: "Ein Tag im Zeichen der guten Nachbarschaft",
+                    content: "Im Rahmen des europäischen Nachbarschaftstages wurde auch heuer wieder in unserem Bezirk zu gemeinsamem Kochen und Genießen eingelangen. Solche Veranstaltungen dienen dazu, andere Menschen und Kulturen besser kennenzulernen. Wie auch in den vergangenen Jahren wurde das Fest wieder sehr gut aufgenommen. Die Veranstalter erhielten begeisterte Mails. Da viele Leute die zahlreichen Spezialitäten aus aller Welt nachkochen möchten, finden Sie hier unser Online-Kochbuch."
+                },
+                {
+                    id: "I",
+                    title: "Konto-Neuheiten",
+                    content: "Mit der neuen BaZa-App erledigen Sie Ihre Bankgeschäfte, wann und wo Sie wollen. Für die schnelle Überweisung unterwegs, mit ein paar Klicks: Geben Sie einfach den Namen Ihres Baza-Kontaktes an, alles andere erledigt die App für Sie. Oder per Smartphone-Kamera: Sie fotografieren einen Zahlschein, und die App erfasst die Daten automatisch. Mit der App können Sie auch direkt mit Ihrer Kundenbetreuerin oder Ihrem Kundenbetreuer Kontakt aufnehmen, eine Nachricht schicken, einen Termin vereinbaren oder um einen Rückruf bitten. Für alle, die schon ein Baza-Konto haben: jetzt die neue App herunterladen. Zum Download."
+                },
+                {
+                    id: "J",
+                    title: "Seit einigen Jahren bietet die Volkshochschule",
+                    content: "Laiendolmetscherinnen und Laiendolmetscher an, die fremdsprachigen Eltern den Kontakt mit der Schule erleichtern sollen. Das Angebot soll dazu beitragen, die Beziehungen zwischen Eltern, Lehrerinnen und Lehrern sowie der Schulleitung zu verbessern. Das Ziel ist ein besseres Miteinander und mehr Verständnis füreinander. Die Laiendolmetscher werden von der VHS auf ihre Aufgabe vorbereitet. Momentan bietet die VHS Laiendolmetscher in den Sprachen Albanisch, Bosnisch, Kroatisch, Serbisch, Slowakisch, Rumänisch, Türkisch, Spanisch, Italienisch und Französisch an. In Zukunft soll das Angebot um weitere Sprachen erweitert werden."
+                },
+                {
+                    id: "K",
+                    title: "Spezialitäten aus der Küche",
+                    content: "Viele klassische Gerichte, die in Österreich auf den Tisch kommen, stammen aus den ehemaligen Kronländern der Monarchie: das Schnitzel aus Italien, die Palatschinken aus Ungarn, Golatschen und Knödel aus dem heutigen Tschechien. Dazu kommen zahlreiche regionale Spezialitäten wie Kasnudeln aus Kärnten, Steirisches Wurzelfleisch oder Salzburger Nockerl. Dies und vieles mehr können Sie bei einem unserer Kochkurse kennenlernen. Besonders willkommen sind Menschen, die aus anderen Ländern zu uns gekommen sind. Die Liste der Veranstaltungen finden Sie weiter unten."
+                },
+                {
+                    id: "L",
+                    title: "Am Weltspartag zur Bank",
+                    content: "Der Weltspartag wurde am 1. Internationalen Sparkassenkongress in Mailand im Oktober 1924 ins Leben gerufen, um die Bevölkerung zum Sparen zu bringen. Offiziell wird der Weltspartang am 31. Oktober gefeiert, in Österreich manchmal auch am letzten Werktag vor dem 31. Oktober. Denn an diesem speziellen Tag sollen die Banken für Kunden geöffnet haben. Besonders bei Kindern ist der Weltspartag sehr beliebt. Sie erhalten nämlich kleine Geschenke, wenn sie an diesem Tag mit ihrem Sparschwein zur Bank kommen. Aber auch für Erwachsene gibt es am Weltspartag oft besondere Angebote."
+                }
+            ],
+
+            // Sprachbausteine Teil 1
+            blankText1: {
+                content: `Lieber Justus,
+
+vielen Dank für deine Urlaubskarte, ________ die ich mich wirklich sehr gefreut habe! Ich wusste ________ nicht, dass ihr gerne wandern geht. Oder habt ihr das jetzt zum ersten Mal gemacht?
+
+Als Kind war ich mit meinen Eltern mal wandern, aber mir hat das damals nicht ________ gefallen. Ich war auch noch klein und hatte keine Lust, so lange zu laufen.
+
+Heute fahre ich lieber an den Strand und mache einen schönen Badeurlaub. Den ganzen Tag lesen, in der Sonne liegen, ab und zu mal ins Wasser gehen ________ habe ich schon im Alltag genug Stress.
+
+Dabei fällt mir ein: Wie ist eigentlich deine neue Stelle? Du arbeitest doch jetzt in dieser internationalen Baufirma, oder? Bist du jetzt schneller im Büro als früher oder ist die Firma sogai noch weiter ________ als deine alte? Du musstest ja immer ziemlich lich lange fahren, fahr daran
+
+erinnere ich mich noch gut!
+
+Ich denke im Moment auch darüber nach, die Stelle zu________ Mein Chef und meine Kollegen sind zwar total nett und die Bezahlung ist auch gut, aber ich mache fast jeden Tag das Gleiche - und das jetzt schon seit über zehn Jahren. Ehrlich ________ langweile ich mich in den letzten Monaten immer häufiger und würde gerne noch mal etwas Neues ausprobieren. Deshalb mache ich ab dem ________ Monat erst mal eine Weiterbildung, sonst hätte ich wohl nicht so gute Chancen, eine neue Stelle zu bekommen. Schließlich wird es auch immer schwieriger, -________ älter man ist. Die meisten Arbeitgeber wollen doch lieber jüngere Angestellte.
+
+Wie ________ es, wenn wir uns demnächst treffen würden? Wir könnten in diesem neuen Restaurant in der Innenstadt essen gehen. Melde dich doch einfach mal wieder!
+
+Viele Grüße
+
+Richard`,
+                options: [
+                    ["an", "für", "über"],      // 21
+                    ["daher", "gar", "sicher"], // 22
+                    ["besonders", "einfach", "kaum"], // 23
+                    ["allerdings", "außerdem", "schließlich"], // 24
+                    ["abgerückt", "entfernt", "weggezogen"], // 25
+                    ["ändern", "verwechseln", "wechseln"], // 26
+                    ["gesagt", "sagend", "zu sagen"], // 27
+                    ["kommende", "kommendem", "kommenden"], // 28
+                    ["als", "je", "weil"], // 29
+                    ["ist", "war", "wäre"] // 30
+                ],
+                answers: ["über", "gar", "besonders", "schließlich", "entfernt", "wechseln", "gesagt", "kommenden", "je", "wäre"]
+            },
+
+            // Sprachbausteine Teil 2
+            blankText2: {
+                content: `Im Restaurant
+
+Eine unterhaltsame, schöne und gesellige Zeit. Das stellt man sich unter einem guten Essen vor. Störend wirkt da der anschauliche Erlebnisbericht der letzten Operation im Krankenhaus oder das Klingeln des Handys. Sowohl Gastgeber als Gast sollen alles dafür tun, dass das gemeinsame Essen Freude macht. Das Handy stellt man selbstverständlich ab. Das Essen beginnt, wenn der Gastgeber zur Serviette greift oder zum Gruß sein Glas erhebt. Besonders bei Kindern ein unbeliebtes Thema: die richtige Körperhaltung beim Essen. Die Arme ________ nicht auf den Tisch und die Hände nicht unter den Tisch. Mal sitzt gerade, ohne unruhig hin und her zu ricken. Die Beine werden nebeneinander gestellt, nicht übereinander gelegt. Die Schuhe ________ in jedem Fall an. Nur keine Angst vor guten Restaurants mit ihrem Luxus! Denn je besser die Küche, umso aufmerksamer ist in der Regel das Personal. Doch schon bei der Anrede der Bedienung steht so ________ vor einem Problem. Die Bedienung ________ 'Fräulein' an den Tisch zu rufen, ist in Zeiten dert Gleichberechtigung veraltet. 'Herr Ober' oder 'Bedienung' ist ________ noch möglich, aber auch schon etwas ungewöhnlich. Am besten versucht man sich Blickkontakt zu verschaffen, um mit einem kleinen ________ mit der Hand den Kellner an den Tisch zu bitten. Zudem gibt es zwischen Gast und Service eine Zeichensprache. Schließt der Gast die Speisekarte und legt sie auf den Tisch, ist dies für den Kellner dasSignal, die Bestellung aufzunehmen. Ist man mit dem Essen ________, legt man das Besteck parallel nebeneinander auf den rechten Tellerrand. Der Kellner wir dann abräumen. Macht man hingegen nur eine Pause, wird es gekreuzt oder offen auf den Teller gelegt. Beim Bezahlen ist ________ gefragt. Übernimmt ein Gastgeber die Kosten, macht er dies dem Kellner ________. Ein 'Bringen Sie mir bitte die Rechnung' reicht da völlig aus. Möchte man hingegen getrennt bezahlen, ________ durchaus üblich ist, teilt man dies ebenfalls rechtzeitig der Bedienung mit. In Deutschland gibt man, je nach Zufriedenheit mit dem Service und der Höhe der Gesamtsumme zwischen drei und zehn Prozent Trinkgeld. Ist man mit dem Service unzufrieden gewesen, gibt man kein Trinkgeld.`,
+                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
+                answers: ["GEHÖREN", "BLEIBT", "MANCHER", "ALS", "FERTIG", "WINK", "MIT", "TAKT", "KLAR", "WAS"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${heading.id})</strong> ${heading.text}
+                `;
+                headingItem.dataset.letter = heading.id;
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Question ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
+            const blankText1 = document.getElementById('blankText1');
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText1.innerHTML = textWithBlanks1;
+
+            // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
+            const blankText2 = document.getElementById('blankText2');
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText2.innerHTML = textWithBlanks2;
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === letter) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+    </script>
+</body>
+</html>

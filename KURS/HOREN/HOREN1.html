@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hörverstehen - test B2 Training</title>
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --white: #ffffff;
+            --radius: 10px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--light);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        body.dark-mode {
+            background: var(--dark);
+            color: var(--white);
+        }
+
+        /* أزرار التحكم العلوية */
+        .header-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: var(--transition);
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* أزرار التبديل بين الأجزاء */
+        .section-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 80px auto 30px;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .section-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--white);
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex: 1;
+            max-width: 200px;
+            text-align: center;
+        }
+
+        .dark-mode .section-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+        }
+
+        .section-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .section-btn.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .dark-mode .header h1 {
+            color: var(--light);
+        }
+
+        .page-subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #ccc;
+        }
+
+        /* أزرار التحكم */
+        .answer-controls {
+            background: var(--white);
+            padding: 15px;
+            border-radius: var(--radius);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .dark-mode .answer-controls {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .answer-btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .show-answers {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section-content {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .dark-mode .section-content {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .dark-mode .section-title {
+            color: var(--light);
+        }
+
+        /* مجموعة الأسئلة */
+        .question-group {
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+            border-radius: var(--radius);
+            padding: 15px;
+            background: rgba(33, 150, 243, 0.03);
+        }
+
+        .dark-mode .question-group {
+            border-color: rgba(255,255,255,0.1);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        .question-group h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .dark-mode .question-group h3 {
+            color: #90CAF9;
+        }
+
+        /* جدول الأسئلة */
+        .question-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        .question-table th,
+        .question-table td {
+            padding: 12px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dark-mode .question-table th,
+        .dark-mode .question-table td {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .question-table th {
+            background: rgba(33, 150, 243, 0.1);
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .question-table th {
+            background: rgba(33, 150, 243, 0.2);
+            color: var(--light);
+        }
+
+        .question-number {
+            font-weight: 700;
+            color: var(--primary);
+            width: 50px;
+            text-align: center;
+        }
+
+        .question-text {
+            padding-right: 15px;
+            font-size: 0.95rem;
+        }
+
+        .answer-cell {
+            width: 150px;
+            text-align: center;
+        }
+
+        /* خيارات الإجابة */
+        .answer-display {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            min-width: 70px;
+            display: inline-block;
+            border: 2px solid transparent;
+        }
+
+        .answer-richtig {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .answer-falsch {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        /* التصحيح */
+        .correction-display {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .correction-richtig {
+            color: var(--success);
+        }
+
+        .correction-richtig::before {
+            content: "✓ ";
+        }
+
+        .correction-falsch {
+            color: var(--danger);
+        }
+
+        .correction-falsch::before {
+            content: "✗ ";
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section-nav {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .section-btn {
+                max-width: 300px;
+                width: 100%;
+            }
+            
+            .question-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .question-table th,
+            .question-table td {
+                padding: 8px;
+                font-size: 0.85rem;
+            }
+            
+            .answer-cell {
+                width: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-controls {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .control-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+            
+            .section-nav {
+                margin-top: 70px;
+            }
+            
+            .answer-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .section-content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- أزرار التحكم العلوية -->
+    <div class="header-controls">
+        <button class="control-btn theme-toggle" id="themeToggle">🌙</button>
+    </div>
+
+    <!-- أزرار التبديل بين الأجزاء -->
+    <div class="section-nav">
+        <button class="section-btn active" data-section="teil1">Teil 1</button>
+        <button class="section-btn" data-section="teil2">Teil 2</button>
+        <button class="section-btn" data-section="teil3">Teil 3</button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Hörverstehen - test B2 Training</h1>
+            <p class="page-subtitle">تمرين الاستماع - اختر الجزء من الأعلى</p>
+        </div>
+
+        <!-- أزرار التحكم -->
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                إظهار التصحيح
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                إخفاء التصحيح
+            </button>
+        </div>
+
+        <!-- Hörverstehen Teil 1 -->
+        <div class="section-content active" id="teil1-content">
+            <h2 class="section-title">Hörverstehen Teil 1</h2>
+            <div id="teil1Questions"></div>
+        </div>
+
+        <!-- Hörverstehen Teil 2 -->
+        <div class="section-content" id="teil2-content">
+            <h2 class="section-title">Hörverstehen Teil 2</h2>
+            <div id="teil2Questions"></div>
+        </div>
+
+        <!-- Hörverstehen Teil 3 -->
+        <div class="section-content" id="teil3-content">
+            <h2 class="section-title">Hörverstehen Teil 3</h2>
+            <div id="teil3Questions"></div>
+        </div>
+    </div>
+
+    <script>
+        // الإجابات الصحيحة الكاملة لكل قسم
+        const correctAnswers = {
+            // Teil 1 - كل مجموعة لها 5 جمل، بعضها صحيح وبعضها خطأ
+            "23": [false, true, true, false, false],      // Lufthansa 23
+            "15": [true, false, false, false, true],      // Erdbeben 15
+            "24": [false, true, false, true, false],    // Bierkonsum 24
+            "125": [true, true, false, false, true],    // Deutsch Schiff 125
+            "345": [false, false, true, true, true],    // Weniger Vögel 345
+            "12": [true, true, false, false, false],     // Europäische Union 12
+            "14": [true, false, false, true, false],     // Unwetterschäden 14
+            "14-2": [true, false, false, true, false], // Es ist nicht sicher 14
+            "345-2": [false, false, true, true, true], // Frau Jürgens 345
+            "235": [false, true, true, false, true],     // Stadt Friedrichsberg 235
+            "13": [true, false, true, false, false],     // Wahlbeteiligung 13
+            "23-2": [false, true, true, false, false],  // In den Alpen 23
+            "45": [false, false, false, true, true],      // Insel Bali 45
+            "15-2": [true, false, true, false, true],   // Fluggesellschaft DL 15
+
+            // Teil 2 - كل مقابلة لها 10 أسئلة
+            "34890": [false, false, true, true, false, false, false, true, true, true],
+            "1348": [true, false, true, true, false, false, false, true, false, false],
+            "290": [false, true, false, false, false, false, false, false, true, true],
+            "347": [false, false, true, true, false, false, true, false, false, false],
+            "13489": [true, false, true, true, false, false, false, true, true, false],
+            "13458": [true, false, true, true, true, false, false, true, false, false],
+            "134890": [true, false, true, true, false, false, false, true, true, true],
+            "14678": [true, false, false, true, false, true, true, true, false, false],
+            "25890": [false, true, false, false, true, false, false, true, true, true],
+            "235680": [false, true, true, false, true, true, false, true, false, true],
+            "24580": [false, true, false, true, true, false, false, true, false, true],
+            "234790": [false, true, true, true, false, false, true, false, true, true],
+            "3479": [false, false, true, true, false, false, true, false, true, false],
+            "23589": [false, true, true, false, true, false, false, true, true, false],
+
+            // Teil 3 - كل مجموعة لها 5 جمل
+            "telefon": [true, false, false, false, false],
+            "13": [true, false, true, false, false],
+            "14": [true, false, false, true, false],
+            "15": [true, false, false, false, true],
+            "123": [true, true, true, false, false],
+            "34": [false, false, true, true, false],
+            "125": [true, true, false, false, true],
+            "145": [true, false, false, true, true],
+            "1345": [true, false, true, true, true],
+            "25": [false, true, false, false, true],
+            "234": [false, true, true, true, false],
+            "14-2": [true, false, false, true, false],
+            "15-2": [true, false, false, false, true],
+            "15-3": [true, false, false, false, true],
+            "13-2": [true, false, true, false, false]
+        };
+
+        // جميع البيانات
+        const contentData = {
+            teil1: [
+                {
+                    id: "23",
+                    title: "Lufthansa 23",
+                    questions: [
+                        { id: 41, text: "Deutsche Lufthansa hat ihre Führungsposition verloren." },
+                        { id: 42, text: "Ein Bonner Sportverein zeigt der Öffentlichkeit sein Angebot." },
+                        { id: 43, text: "Die Rahmenbedingungen in deutschen Pflegeheimen bedürfen dringend einer Änderung." },
+                        { id: 44, text: "Durch moderne Wärmedämmung könnten die Heizkosten deutlich reduziert werden." },
+                        { id: 45, text: "Das Nationale Olympische Komitee hat die Dopingsperre für Tom Sanders aufgehoben." }
+                    ]
+                },
+                {
+                    id: "15",
+                    title: "Erdbeben 15",
+                    questions: [
+                        { id: 41, text: "Nach dem Erdbeben meldeten viele Bürger Schäden bei Polizei und Feuerwehr." },
+                        { id: 42, text: "Eltern müssen sich neuerdings über den Impfschutz für ihre Kinder beraten lassen." },
+                        { id: 43, text: "Verkehrsbehinderungen drohen in den nächsten Wochen besonders samstags und sonntags." },
+                        { id: 44, text: "Pipelines tragen maßgeblich zur Umweltverschmutzung in Schleswig-Holstein bei." },
+                        { id: 45, text: "Anfang nächster Woche ist mit einer erhöhten Ozonbelastung zu rechnen." }
+                    ]
+                },
+                {
+                    id: "24",
+                    title: "Bierkonsum 24",
+                    questions: [
+                        { id: 41, text: "Der Bierkonsum steigt um 10%." },
+                        { id: 42, text: "Deutsche Einkommen liegen im europäischen Vergleich nur im Mittelfeld." },
+                        { id: 43, text: "Es ist ein Ende des Bahnstreiks in Sicht." },
+                        { id: 44, text: "Es wird Gewalt von Fußballfans auch in Deutschland befürchtet." },
+                        { id: 45, text: "Die Leopoldina soll internationale Akademie werden." }
+                    ]
+                },
+                {
+                    id: "125",
+                    title: "Deutsch Schiff 125",
+                    questions: [
+                        { id: 41, text: "Ein deutsches Schiff ist am Südpol eingetroffen, aber Menschen kamen nicht zu Schaden." },
+                        { id: 42, text: "Die Firma Brain International ist in wirtschaftliche Schwierigkeiten geraten." },
+                        { id: 43, text: "Die Europäische Union will Gesetze zur Kontrolle sozialer Netzwerke erlassen." },
+                        { id: 44, text: "Mit einem neuen Gesetz wollen die österreichischen Banken Sparkonten wieder attraktiver machen." },
+                        { id: 45, text: "Nach den Bürgermeisterwahlen in Bensheim bleibt die CDU weiterhin an der Regierung." }
+                    ]
+                },
+                {
+                    id: "345",
+                    title: "Weniger Vögel 345",
+                    questions: [
+                        { id: 41, text: "Viele Kunden würden für bessere Serviceleistungen der Paketdienste höhere Preise bezahlen." },
+                        { id: 42, text: "Nach dem Unfall konnten beide Schiffe ihre Fahrt nicht fortsetzen." },
+                        { id: 43, text: "Europawelt gibt es immer weniger Vögel." },
+                        { id: 44, text: "Die Polizei hat auf der Autobahn ein dort verbotenes Fahrzeug entdeckt." },
+                        { id: 45, text: "Bei dem Festival konnte man Konzerte an verschiedenen Orten besuchen." }
+                    ]
+                },
+                {
+                    id: "12",
+                    title: "Europäische Union 12",
+                    questions: [
+                        { id: 41, text: "In der Europäischen Union verzeichnet man weniger jugendliche Arbeitslose." },
+                        { id: 42, text: "Das Bundesarbeitsministerium bemüht sich um ausländische Arbeitnehmer bestimmter Berufsgruppen." },
+                        { id: 43, text: "Die 'Lange Nacht der Musik' findet am Odeonsplatz in München statt." },
+                        { id: 44, text: "Im 'Tal der goldenen Mumien' würden bisher fast 10,000 Tote gefunden." },
+                        { id: 45, text: "Die Gefahr schwerer Unwetter ist nun vorbei." }
+                    ]
+                },
+                {
+                    id: "14",
+                    title: "Unwetterschäden 14",
+                    questions: [
+                        { id: 41, text: "Wegen Unwetterschäden wurden Urlauber in einer Notunterkunft untergebracht." },
+                        { id: 42, text: "Sämtliche Waren der Firma Mirella wurden aus den Läden entfernt." },
+                        { id: 43, text: "Das Arbeitsplatzangebot in der Bundesrepublik hat einen Tiefstand erreicht." },
+                        { id: 44, text: "Am 21. Mai ist der Besuch der Sonderausstellung kostenlos." },
+                        { id: 45, text: "Entlaufene Tiere verursachten einen Unfall auf der Autobahn." }
+                    ]
+                },
+                {
+                    id: "14-2",
+                    title: "Es ist nicht sicher 14",
+                    questions: [
+                        { id: 41, text: "Es ist nicht sicher, ob es erneut zu diesem Problem kommen kann." },
+                        { id: 42, text: "Hamburgs Politiker befürworteten den Bau des Einkaufszentrums nicht." },
+                        { id: 43, text: "Zwischen Frankreich und Deutschland wurde ein neuer Hochgeschwindigkeitszug genommen." },
+                        { id: 44, text: "Die Produkte von TipTop sind in Deutschland nicht mehr so gefragt." },
+                        { id: 45, text: "Ingrid Thieme wird sich an der kommenden WM beteiligen." }
+                    ]
+                },
+                {
+                    id: "345-2",
+                    title: "Frau Jürgens 345",
+                    questions: [
+                        { id: 41, text: "Frau Jürgens tritt wegen Streitigkeiten zurück." },
+                        { id: 42, text: "Die Filme werden in den Kinos der Stadt gezeigt." },
+                        { id: 43, text: "Der öffentliche Nahverkehr funktioniert noch nicht störungsfrei." },
+                        { id: 44, text: "Wildes Camping ist im In- und Ausland nur bedingt zugelassen." },
+                        { id: 45, text: "Die Temperaturen steigen in den nächsten Tagen an." }
+                    ]
+                },
+                {
+                    id: "235",
+                    title: "Stadt Friedrichsberg 235",
+                    questions: [
+                        { id: 41, text: "Die Stadt Friedrichsberg lädt zu einer Preisverleihung ein." },
+                        { id: 42, text: "Die Alte Brücke ist zum Jahresbeginn wieder befahrbar." },
+                        { id: 43, text: "Der Wanderer wurde verarztet und in Sicherheit gebracht." },
+                        { id: 44, text: "In dem Unternehmen kommt it zu Kündigungen." },
+                        { id: 45, text: "Man kann nach einer Registrierung an einem Gruppenlauf teilnehmen." }
+                    ]
+                },
+                {
+                    id: "13",
+                    title: "Wahlbeteiligung 13",
+                    questions: [
+                        { id: 41, text: "Die Wahlbeteiligung in Deutschland nimmt wieder zu." },
+                        { id: 42, text: "150 Bauarbeiter müssen entlassen werden." },
+                        { id: 43, text: "Bei der Sportveranstaltung wurden neue Bestzeiten aufgestellt." },
+                        { id: 44, text: "Die Sicherheitslücke beim Online-Banking wurde noch nicht gefunden." },
+                        { id: 45, text: "Kinder können in der Bücherei ihre eigenen Texte vorlesen." }
+                    ]
+                },
+                {
+                    id: "23-2",
+                    title: "In den Alpen 23",
+                    questions: [
+                        { id: 41, text: "Die Wetterlage in den Alpen wird sich in den nächsten Tagen verbessern." },
+                        { id: 42, text: "Die Fans des FC Neustadt waren von dem Sieg ihrer Mannschaft überrascht." },
+                        { id: 43, text: "Erzieherinnen verlangen eine bessere Bezahlung." },
+                        { id: 44, text: "Im Berliner Zoo gibt es eine große Pandafamilie." },
+                        { id: 45, text: "Die Zahl der Deutschland-Urlauber ist rückläufig." }
+                    ]
+                },
+                {
+                    id: "45",
+                    title: "Insel Bali 45",
+                    questions: [
+                        { id: 41, text: "Auf der Insel Bali wurden neue Maßnahmen zur Müllentsorgung beschlossen." },
+                        { id: 42, text: "In Nordfrankreich wird nach einem entlaufenen Panther gesucht." },
+                        { id: 43, text: "Die Mietervereinigung rät Mietern, die Betriebskosten nicht zu bezahlen." },
+                        { id: 44, text: "Der Sekthersteller hat die Pläne für sein Bauvorhaben geändert." },
+                        { id: 45, text: "Die Löscharbeiten sind noch nicht abgeschlossen." }
+                    ]
+                },
+                {
+                    id: "15-2",
+                    title: "Fluggesellschaft DL 15",
+                    questions: [
+                        { id: 41, text: "Die Fluggesellschaft DL fliegt z.B. Rostock nicht mehr an." },
+                        { id: 42, text: "Süßwaren werden dieses Jahr angeboten, um Käufer zurückzugewinnen." },
+                        { id: 43, text: "Die Sonnenstürme hatten keine negativen Auswirkungen." },
+                        { id: 44, text: "Einer der Kandidaten konnte die Mehrheit der Zuschauer für sich gewinnen." },
+                        { id: 45, text: "Das Tiefdruckgebiet 'Helena' kann morgen im Südwesten Deutschlands Verkehrsprobleme verursachen." }
+                    ]
+                }
+            ],
+            teil2: [
+                {
+                    id: "34890",
+                    title: "Gasser und Frau Janke 34890",
+                    questions: [
+                        { id: 46, text: "Herr Gasser und Frau Janke haben zusammen Urlaub im Geiberg gemacht." },
+                        { id: 47, text: "Josef Gasser ist ein gebürtiger Tiroler." },
+                        { id: 48, text: "Die Bergbauern können kaum vom Verkauf ihrer Produkte leben." },
+                        { id: 49, text: "Auch heute werden die steilen Hänge noch manuell bearbeitet." },
+                        { id: 50, text: "Josef Gasser findet, dass man die Berglandschaft sich selbst überlassen sollte." },
+                        { id: 51, text: "Eva Janke begeistert sich immer noch für Flugreisen." },
+                        { id: 52, text: "Ihren ersten Einsatz auf der Alm hat..." },
+                        { id: 53, text: "Für Frau Janke ist der Erholungswert trotz der Anstrengung sehr hoch." },
+                        { id: 54, text: "Almhelferinnen und Helfer können viele verschiedene Aufgaben übernehmen." },
+                        { id: 55, text: "Über die Dauer des Aufenthalts kann man frei entscheiden." }
+                    ]
+                },
+                {
+                    id: "1348",
+                    title: "Suza Hotop 1348",
+                    questions: [
+                        { id: 46, text: "Für die Autorin Suza Hotop ist Schreiben Freude und Anstrengung zugleich." },
+                        { id: 47, text: "Suza begann im Alter von zwölf Jahren mit ihrem Buch 'Jenseits von Zaram'." },
+                        { id: 48, text: "Am Anfang dachte Suza nicht daran, ihre Geschichte zu veröffentlichen." },
+                        { id: 49, text: "Zuerst stellte Suza Auszüge ihrer Geschichte ins Internet." },
+                        { id: 50, text: "Begeisterte Nutzer stellten den Kontakt zu einem Verlag her." },
+                        { id: 51, text: "Suza beschreibt bewusst Personen aus ihrem eigenen Umfeld." },
+                        { id: 52, text: "Die Autorin plant im Vorfeld genau, was in der Geschichte passieren wird." },
+                        { id: 53, text: "Suza folgt beim Schreiben keinen besonderen Vorbildern." },
+                        { id: 54, text: "Die junge Frau gab während des Radiointerviews eine Leseprobe." },
+                        { id: 55, text: "Suza braucht immer Ruhe, um schreiben zu können." }
+                    ]
+                },
+                {
+                    id: "290",
+                    title: "Professor Steiner 290",
+                    questions: [
+                        { id: 46, text: "Professor Steiner ist heute gar nicht mehr nervös, wenn er moderieren muss." },
+                        { id: 47, text: "Steiner möchte, dass die Studierenden das Gelernte auch in der Praxis anwenden können." },
+                        { id: 48, text: "Steiners Hobby ist es, experimentelle Filme zu machen." },
+                        { id: 49, text: "Journalisten sollten heute auf einzelne Medien spezialisiert sein." },
+                        { id: 50, text: "Nach Steiners Ansicht ist der Berufswunsch Sportjournalist heutzutage unrealistisch." },
+                        { id: 51, text: "Journalisten sollten Lust haben, etwas zu entdecken." },
+                        { id: 52, text: "Steiner musste wegen einer Verletzung mit dem Fußballspielen aufhören." },
+                        { id: 53, text: "Steiner hat während seines Journalistik-Studiums für das ZDF Fußballspiele kommentiert." },
+                        { id: 54, text: "Steiner ist wichtig, als Moderator den Sportlern gegenüber neutral zu bleiben." },
+                        { id: 55, text: "Steiner rät Abiturienten dazu, verschiedene berufliche Möglichkeiten zu testen." }
+                    ]
+                },
+                {
+                    id: "347",
+                    title: "Mallorca 347",
+                    questions: [
+                        { id: 46, text: "Die Zahl der deutschen Mallorca-Urlauber hat nur leicht abgenommen." },
+                        { id: 47, text: "Nach Professor Kirsch achten die Deutschen bei der Wahl ihrer Urlaubsreisen nicht besonders auf die Kosten." },
+                        { id: 48, text: "Einige Einheimische in Mallorca haben begonnen, sich gegen das Vordringen der deutschen Sprache zu wehren." },
+                        { id: 49, text: "Für den Einbruch des Tourismus auf Mallorca sind verschiedene Faktoren verantwortlich." },
+                        { id: 50, text: "Viele Deutsche haben jetzt Rumänien und Ungarn als Reiseziel entdeckt." },
+                        { id: 51, text: "Professor Kirsch weist auf günstige Angebote für Golfspieler am Plattensee hin." },
+                        { id: 52, text: "Bulgarien hat sich als Urlaubsland sehr positiv entwickelt." },
+                        { id: 53, text: "Viele Westdeutsche meiden Bulgarien, لأن die Einreisemodalitäten abschreckend sind." },
+                        { id: 54, text: "Seit Ende der neunziger Jahre geben die Deutschen mehr Geld für den Urlaub aus." },
+                        { id: 55, text: "Durch die Vielzahl aktiver Senioren entsteht eine höhere Nachfrage nach Abenteuerreisen in ferne Länder." }
+                    ]
+                },
+                {
+                    id: "13489",
+                    title: "Im Restaurant 13489",
+                    questions: [
+                        { id: 46, text: "In dem Restaurant gab es einen Wasserschaden." },
+                        { id: 47, text: "Anton Laurito ist bei seinen Großeltern aufgewachsen." },
+                        { id: 48, text: "Im Haus der Großeltern lebten auch andere Kinder." },
+                        { id: 49, text: "Der Stress störte den Studiosat während der Ausbildung nicht." },
+                        { id: 50, text: "Bei neuen Mitarbeitern legt Anton Laurito am meisten Wert auf viel Erfahrung." },
+                        { id: 51, text: "Aussehen und Geschmack der Speisen haben für den Koch den gleichen Stellenwert." },
+                        { id: 52, text: "In der Essschule können Kinder kochen lernen." },
+                        { id: 53, text: "Anton Laurito lehnt Fastfood nicht grundsätzlich ab." },
+                        { id: 54, text: "Der Koch hat eine gesunde Einstellung zum Thema Wettbewerb." },
+                        { id: 55, text: "Zuhause probiert er gerne komplizierte Gerichte aus." }
+                    ]
+                },
+                {
+                    id: "13458",
+                    title: "Julia 13458",
+                    questions: [
+                        { id: 46, text: "Julia hatte an einem Schüleraustausch kein Interesse." },
+                        { id: 47, text: "Die Lehrer in Julias Schule weigerten sich, mit dem Austauschschüler Englisch zu sprechen." },
+                        { id: 48, text: "Frankreich ist als Aufenthaltsland bei Au-pairs nicht sehr gefragt." },
+                        { id: 49, text: "Julia hatte auch darüber nachgedacht, in die Schweiz zu fahren." },
+                        { id: 50, text: "Julia empfiehlt, mit der Gastfamilie einen Vertrag zu schließen." },
+                        { id: 51, text: "Zu Beginn der Au-pair-Bewegung schickten Familien ihre Kinder zum Sprachunterricht in die Schweiz." },
+                        { id: 52, text: "Julia ist der Meinung, dass die Vermittlungskosten zu hoch sind." },
+                        { id: 53, text: "Julia verbrachte mit den Kindern auch Zeit in Paris." },
+                        { id: 54, text: "Es gab am Anfang Momente, في denen sich Julia der Gastfamilie nicht zugehörig fühlte." },
+                        { id: 55, text: "Julia lernt im Sprachkurs mehr Französisch als durch den Kontakt mit der Gastfamilie." }
+                    ]
+                },
+                {
+                    id: "134890",
+                    title: "Carina 134890",
+                    questions: [
+                        { id: 46, text: "Der Berufseinstieg ist in anderen Ländern nicht leicht." },
+                        { id: 47, text: "Carina ist ihr Beruf wichtiger als ihr Privatleben." },
+                        { id: 48, text: "Carina hat sich der Agentur mit einem Videofilm vorgestellt." },
+                        { id: 49, text: "Carina hat für einen Film eine Diät gemacht." },
+                        { id: 50, text: "Carina macht lieber gefühlvolle Filme als Action-Filme." },
+                        { id: 51, text: "Wegen der vielen Fehlstunden hatte Carina Probleme mit dem Direktor der Schule." },
+                        { id: 52, text: "Carinas Eltern haben ihre Tochter von Anfang an unterstützt." },
+                        { id: 53, text: "Carina findet den Wechsel بين Schule und Drehterminen schwierig." },
+                        { id: 54, text: "Bei Dialogen darf man auch selbst etwas erfinden." },
+                        { id: 55, text: "Carina empfiehlt, sich andere Schauspieler im Theater und in Filmen anzusehen." }
+                    ]
+                },
+                {
+                    id: "14678",
+                    title: "Frau Schenk 14678",
+                    questions: [
+                        { id: 46, text: "Frau Schenk hat kurze blondierte Haare." },
+                        { id: 47, text: "Angie ist der Künstlername von Frau Schenk." },
+                        { id: 48, text: "Frau Schenk lebt seit etwas mehr als zwei Jahren in Bayern." },
+                        { id: 49, text: "Der Interviewer hat keine guten Erinnerungen an seine Aufenthalte in Jugendherberge." },
+                        { id: 50, text: "Auch in der modernen Jugendherberge von Frau Schenk gibt es Schlafräume mit mehr als zehn Betten." },
+                        { id: 51, text: "Mädchen und Jungen müssen in verschiedenen Schlafräumen schlafen." },
+                        { id: 52, text: "In der Jugendherberge wird das Essen den Wünschen der Gästegruppen angepasst." },
+                        { id: 53, text: "Schüler aus ländlichen Regionen verhalten sich in der Regel anständig." },
+                        { id: 54, text: "Reiten ist Teil des Sportangebots der Jugendherberge." },
+                        { id: 55, text: "Frau Schenk muss für ihre Dienstwohnung 800€ bezahlen." }
+                    ]
+                },
+                {
+                    id: "25890",
+                    title: "Karimov 25890",
+                    questions: [
+                        { id: 46, text: "Herr Karimov hat vor sechs Jahren die Internetplattform ZEITPLAN gegründet." },
+                        { id: 47, text: "Die Mitglieder bekommen für ihre Hilfe ein Stunden-Guthaben." },
+                        { id: 48, text: "Herr Karimov hatte ein eigenes Handwerksunternehmen." },
+                        { id: 49, text: "Nach dem Umzug aufs Land war er auf die Hilfe der Nachbarn angewiesen." },
+                        { id: 50, text: "Manchmal erwarten Mitglieder keine Gegenleistung für ihre Arbeit." },
+                        { id: 51, text: "Meistens brauchen alleinstehende Frauen Herrn Karimovs Hilfe." },
+                        { id: 52, text: "Viele Menschen sehen in ZEITPLAN eine Konkurrenz zu Handwerksbetrieben." },
+                        { id: 53, text: "Herr Karimov erledigt nicht so gerne Büroarbeit." },
+                        { id: 54, text: "Wer sich bei der Nachbarschaftshilfe einbringen möchte, muss sich persönlich vorstellen." },
+                        { id: 55, text: "Herr Karimov brauchte vorübergehend einen Chauffeur." }
+                    ]
+                },
+                {
+                    id: "235680",
+                    title: "Nadine 235680",
+                    questions: [
+                        { id: 46, text: "Nadine Wagner ist gerade erst von ihrer Weltreise zurückgekehrt." },
+                        { id: 47, text: "Sie hatte vor der Weltreise einige Zweifel und Bedenken." },
+                        { id: 48, text: "Die Journalistin ist während ihrer Reise auch geflogen." },
+                        { id: 49, text: "Sie hat für dieses Abenteuer ihre Stelle gekündigt." },
+                        { id: 50, text: "Ihre Freunde waren unterschiedlicher Meinung über ihr Vorhaben." },
+                        { id: 51, text: "In Tadschikistan hat sie eine Zeit lang andere Motorradfahrer begleitet." },
+                        { id: 52, text: "Sie hat auf der Reise ihr ganzes Erspartes aufgebracht." },
+                        { id: 53, text: "Nadine Wagner hat auf der Reise gelegentlich gearbeitet." },
+                        { id: 54, text: "Sie hat am meisten ihre eigene Wohnung vermisst." },
+                        { id: 55, text: "Nach ihrer Rückkehr musste sie nicht lange nach einer neuen Arbeit suchen." }
+                    ]
+                },
+                {
+                    id: "24580",
+                    title: "Markus 24580",
+                    questions: [
+                        { id: 46, text: "Markus ist schon während des Studiums an eine amerikanische Universität gegangen." },
+                        { id: 47, text: "Markus wollte in einem besonders erfolgreichen Team mitarbeiten." },
+                        { id: 48, text: "Um eine Stelle in einer amerikanischen Forschergruppe zu bekommen, muss man viel Glück haben." },
+                        { id: 49, text: "Markus befindet sich بين Ausbildung und Beruf." },
+                        { id: 50, text: "Markus profitiert in Amerika von Erfahrungen, die er während des Studiums sammelte." },
+                        { id: 51, text: "Markus hatte nach der Ankunft in den USA sehr viele Schwierigkeiten." },
+                        { id: 52, text: "Markus ist immer noch sehr nervös in der fremden Umgebung." },
+                        { id: 53, text: "Markus ist mit den Arbeitsbedingungen zufrieden." },
+                        { id: 54, text: "Markus befürwortet es nicht, dass sich Studenten in den USA früh auf ihren zukünftigen Beruf festlegen müssen." },
+                        { id: 55, text: "Für Markus ist es von Vorteil, dass er in Deutschland viele Referate und Vorträge halten musste." }
+                    ]
+                },
+                {
+                    id: "234790",
+                    title: "Roland 234790",
+                    questions: [
+                        { id: 46, text: "Roland Wünschmann arbeitet Vollzeit als Fußballtrainer bei Viktoria Köln." },
+                        { id: 47, text: "Viktoria Köln möchte nicht nur gegen Mannschaften aus der Verbandsliga spielen." },
+                        { id: 48, text: "Zu Beginn dieser Saison hat ein Spieler Viktoria Köln verlassen." },
+                        { id: 49, text: "Neue Spieler kommen bei Viktoria Köln immer aus der eigenen Jugendmannschaft." },
+                        { id: 50, text: "Die Mannschaft von Viktoria Köln hat Schwächen in der Abwehr." },
+                        { id: 51, text: "Roland Wünschmann wagt die Prognose, dass diese Saison der 1. FC Mönchengladbach Meister wird." },
+                        { id: 52, text: "Roland Wünschmann kann seinen Beruf und sein Ehrenamt als Fußballtrainer problemlos miteinander vereinbaren." },
+                        { id: 53, text: "Auch die Frau von Roland Wünschmann engagiert sich im Fußball." },
+                        { id: 54, text: "Der Vereinsvorstand schätzt Herrn Wünschmanns Arbeit." },
+                        { id: 55, text: "Roland Wünschmann ist mit der bisherigen Nachwuchsförderung des Vereins zufrieden." }
+                    ]
+                },
+                {
+                    id: "3479",
+                    title: "Roland 3479",
+                    questions: [
+                        { id: 46, text: "Roland Wünschmann spielt selbst bei Viktoria Köln Fußball." },
+                        { id: 47, text: "Viktoria Köln möchte am Ende der Spielsaison aufsteigen." },
+                        { id: 48, text: "Zu Beginn dieser Saison hat ein Spieler Viktoria Köln verlassen." },
+                        { id: 49, text: "Neue Spieler kommen bei Viktoria Köln immer aus der eigenen Jugendmannschaft." },
+                        { id: 50, text: "Die Mannschaft von Viktoria Köln hat Schwächen in der Abwehr." },
+                        { id: 51, text: "Roland Wünschmann wagt die Prognose, dass diese Saison der 1. FC Mönchengladbach Meister wird." },
+                        { id: 52, text: "Roland Wünschmann kann seinen Beruf und sein Ehrenamt als Fußballtrainer miteinander vereinbaren." },
+                        { id: 53, text: "Auch die Frau von Roland Wünschmann engagiert sich im Fußball." },
+                        { id: 54, text: "Der Vereinsvorstand schätzt Herrn Wünschmanns Arbeit." },
+                        { id: 55, text: "Roland Wünschmann ist mit der bisherigen Nachwuchsförderung des Vereins noch nicht voll zufrieden." }
+                    ]
+                },
+                {
+                    id: "23589",
+                    title: "Roland 23589",
+                    questions: [
+                        { id: 46, text: "Roland Wünschmann spielt selbst bei Viktoria Köln Fußball." },
+                        { id: 47, text: "Viktoria Köln spielt seit Beginn der Saison in einer höheren Liga." },
+                        { id: 48, text: "Die meisten Spieler der Mannschaft haben schon in der letzten Saison bei Viktoria Köln gespielt." },
+                        { id: 49, text: "Neuzugänge kommen bei Viktoria Köln meist aus ganz unterschiedlichen Mannschaften." },
+                        { id: 50, text: "Die Mannschaft von Viktoria Köln möchte in dieser Saison neue Spieltaktiken ausprobieren." },
+                        { id: 51, text: "Roland Wünschmann wagt die Prognose, dass diese Saison der 1. FC Mönchengladbach Meister wird." },
+                        { id: 52, text: "Roland Wünschmann empfindet sein Ehrenamt oft als Belastung." },
+                        { id: 53, text: "Roland Wünschmanns Frau engagiert sich für denselben Verein." },
+                        { id: 54, text: "Herr Wünschmann und der Vereinsvorstand sind meistens einer Meinung." },
+                        { id: 55, text: "Roland Wünschmann hofft auf Verbesserungen in der Nachwuchsförderung." }
+                    ]
+                }
+            ],
+            teil3: [
+                {
+                    id: "telefon",
+                    title: "Deutsch Telefon",
+                    questions: [
+                        { id: 56, text: "Bei der Deutschen Telefon KG bekommen Sie nur Auskunft zu Telefonapparaten dieses Unternehmens." },
+                        { id: 57, text: "Im Rahmen des 'BR3 Aquarena Weekends' in Starnberg können Sie jeden Abend ein Feuerwerk betrachten." },
+                        { id: 58, text: "Die Trierer Domorganisten spielen am 6. Juli in Michelstadt." },
+                        { id: 59, text: "Während des Musikfestivals 'Sound of Frankfurt' ist die Benutzung der U- und S-Bahnen gebührenfrei." },
+                        { id: 60, text: "Sie haben eine ungültige Servicenummer gewählt und werden daher automatisch weiterverbunden." }
+                    ]
+                },
+                {
+                    id: "13",
+                    title: "Musikfestivals 13",
+                    questions: [
+                        { id: 56, text: "Während des Musikfestivals 'Sound of Frankfurt' gibt es verbilligte Fahrkarten für alle öffentlichen Verkehrsmittel." },
+                        { id: 57, text: "Sie gehen am 3. Juli ins Konzert, weil Sie die beiden Leipziger Klaviervirtuosen hören möchten." },
+                        { id: 58, text: "Am Wochenende können Sie sich in Nürnberg über die Bekämpfung von Krankheiten bei Apfelbäumen informieren." },
+                        { id: 59, text: "Im Handwerksmuseum werden Kleidungsstücke ausgestellt." },
+                        { id: 60, text: "Die Autobahn A5 ist بين Baden-Baden und Rastatt in beiden Richtungen gesperrt." }
+                    ]
+                },
+                {
+                    id: "14",
+                    title: "Fahrschule 14",
+                    questions: [
+                        { id: 56, text: "Bei der Fahrschule kann man sich über das Internet anmelden." },
+                        { id: 57, text: "Die Anruferin ist im Hinblick auf die Abfahrtszeit flexibel." },
+                        { id: 58, text: "Für den Halb-Marathon kann man sich noch am Sonntag registrieren lassen." },
+                        { id: 59, text: "Bei dem Flug nach Mallorca ändert sich die Abflugzeit." },
+                        { id: 60, text: "In Halle D wird aus E-Books vorgelesen." }
+                    ]
+                },
+                {
+                    id: "14-2",
+                    title: "Süddeutschland/Regen 14",
+                    questions: [
+                        { id: 56, text: "Im Süden Deutschlands wird es nachmittags regnen." },
+                        { id: 57, text: "Die Busse verkehren zu anderen Zeiten als die Regionalzüge." },
+                        { id: 58, text: "Auf der A3 von Würzburg nach Frankfurt gibt es aufgrund eines Unfalls eine Vollsperrung." },
+                        { id: 59, text: "Wenn Sie über Ihre Autoversicherung sprechen wollen, müssen Sie die 1 wählen." },
+                        { id: 60, text: "Ihr Bekannter ist jederzeit telefonisch erreichbar." }
+                    ]
+                },
+                {
+                    id: "15",
+                    title: "Süddeutschland/Schnee 15",
+                    questions: [
+                        { id: 56, text: "Morgen muss man im Süden Deutschlands mit Schnee rechnen." },
+                        { id: 57, text: "Die zwei Jungen sind von zu Hause weggelaufen." },
+                        { id: 58, text: "Am Samstag können Sie einen Mitarbeiter der Firma anrufen." },
+                        { id: 59, text: "Wegen einer Demonstration ist es verboten, في die Nürnberger Altstadt zu fahren." },
+                        { id: 60, text: "Die historische elektrische Eisenbahn wird im Dezember wie gewohnt fahren." }
+                    ]
+                },
+                {
+                    id: "15-2",
+                    title: "Internet prüfen 15",
+                    questions: [
+                        { id: 56, text: "Sie können im Internet prüfen, ob Ihre aktuelle Bestellung schon unterwegs ist." },
+                        { id: 57, text: "Man kann für die Nachtveranstaltung noch Karten im Internet kaufen." },
+                        { id: 58, text: "Die Teilnahme an der Party im Burghof kostet nichts." },
+                        { id: 59, text: "In Bamberg kann man in der nächsten Woche besonders günstig Mitglied in einem Sportverein werden." },
+                        { id: 60, text: "Wer ein wichtiges Anliegen hat, soll eine andere Nummer wählen." }
+                    ]
+                },
+                {
+                    id: "15-3",
+                    title: "Ehrenamts 15",
+                    questions: [
+                        { id: 56, text: "Man kann am 'Tag des Ehrenamts' probeweise mithelfen." },
+                        { id: 57, text: "Die Skateboard-Vorführung fällt dieses Mal aus." },
+                        { id: 58, text: "Vor Passwort-Programmen wird gewarnt." },
+                        { id: 59, text: "Es wird empfohlen, mit dem Fahrrad zum Volkspark zu fahren." },
+                        { id: 60, text: "Wenn man das Training ausprobieren möchte, muss man vorher Bescheid sagen." }
+                    ]
+                },
+                {
+                    id: "25",
+                    title: "Demonstration 25",
+                    questions: [
+                        { id: 56, text: "Die Demonstration findet in Frankfurt vor der Alten Oper statt." },
+                        { id: 57, text: "In der kommenden Saison wird eine Symphonie von Mahler aufgeführt." },
+                        { id: 58, text: "Die Weltmeisterschaften im Eiskunstlauf finden in der Dortmunder Helmut-König-Halle statt." },
+                        { id: 59, text: "Man darf die A980 nur mit Schneeketten befahren." },
+                        { id: 60, text: "Für die Vermittlung einer Mitfahrgelegenheit per E-Mail erhebt 'Fahre mit' keine Gebühren." }
+                    ]
+                },
+                {
+                    id: "123",
+                    title: "Am Wochenanfang 123",
+                    questions: [
+                        { id: 56, text: "Am Wochenanfang soll man einen Aufenthalt im Freien vermeiden." },
+                        { id: 57, text: "Abends ist das Risiko, einen Wildunfall zu haben, am größten." },
+                        { id: 58, text: "Man kann bei dem Fest an verschiedenen Orten Musik hören." },
+                        { id: 59, text: "In dringenden Fällen können Sie die Firma ab Montag erreichen." },
+                        { id: 60, text: "Am Abend werden Verkehrsbehinderungen erwartet." }
+                    ]
+                },
+                {
+                    id: "34",
+                    title: "Im August 34",
+                    questions: [
+                        { id: 56, text: "Im August gibt es jeden Tag eine Aufführung." },
+                        { id: 57, text: "Zur Station Grünberg kommen Sie mit der U-Bahn-Linie 68." },
+                        { id: 58, text: "In weniger dringlichen Fällen soll man eine Nachricht hinterlassen." },
+                        { id: 59, text: "Am Mittwoch und Donnerstag können Sie Sachspenden vorbeibringen." },
+                        { id: 60, text: "Nur an den Nachmittagen wird eine hohe Verkehrsdichte erwartet." }
+                    ]
+                },
+                {
+                    id: "125",
+                    title: "Fundbüro 125",
+                    questions: [
+                        { id: 56, text: "Sie müssen nicht persönlich beim Fundbüro nachfragen." },
+                        { id: 57, text: "Die Wettervorhersage können Sie nach den Mittagsnachrichten hören." },
+                        { id: 58, text: "Sie dürfen ihr Rad spontan im Zug mitnehmen." },
+                        { id: 59, text: "Am Donnerstag sehen Sie das deutsche Team im Halbfinale." },
+                        { id: 60, text: "Während der Sperrung kann man die üblichen Bushaltestellen benutzen." }
+                    ]
+                },
+                {
+                    id: "145",
+                    title: "Ausgang 26 145",
+                    questions: [
+                        { id: 56, text: "Sie sollen zum Ausgang 26 kommen." },
+                        { id: 57, text: "Um die zuständige Abteilung zu erreichen, müssen Sie die 3 wählen." },
+                        { id: 58, text: "Bei der Service-Nummer bekommen Sie Karten für eine Führung." },
+                        { id: 59, text: "Sie können sich am Sonntag um ein Uhr bewerben." },
+                        { id: 60, text: "In der Bäckerstraße dürfen Sie nicht fahren." }
+                    ]
+                },
+                {
+                    id: "1345",
+                    title: "Blutspenden 1345",
+                    questions: [
+                        { id: 56, text: "Ihre Tochter kann am Freitag verschiedene Sportarten testen." },
+                        { id: 57, text: "Sie können sich im Internet zum Blutspenden anmelden." },
+                        { id: 58, text: "Heute müssen Sie auf den Bus ausweichen." },
+                        { id: 59, text: "Sie müssen das Bad früher verlassen." },
+                        { id: 60, text: "Für einen Termin müssen Sie anrufen." }
+                    ]
+                },
+                {
+                    id: "13-2",
+                    title: "Reitturnier 13",
+                    questions: [
+                        { id: 56, text: "Besucher des Reitturniers sollten möglichst Parkplätze außerhalb des Turniergeländes nutzen." },
+                        { id: 57, text: "Das Open-Air-Gospelkonzert wird live im Radio übertragen." },
+                        { id: 58, text: "Bei der Berliner Museumsnacht können Sie mit einer Sonderbuslinie bequem erreichen." },
+                        { id: 59, text: "Wegen Glätte ist die A5 zwischen Mannheim und Frankfurt in beide Richtungen voll gesperrt." },
+                        { id: 60, text: "Hotelreservierungen in Dresden sind ausschließlich telefonisch möglich." }
+                    ]
+                },
+                {
+                    id: "234",
+                    title: "Delikatessen 234",
+                    questions: [
+                        { id: 56, text: "Bis 14 Uhr können Sie Delikatessen aus verschiedenen Ländern kaufen." },
+                        { id: 57, text: "Bis zum Start können Sie mit Ihrem Handy telefonieren." },
+                        { id: 58, text: "Vorführungen mit Tieren werden nicht geboten." },
+                        { id: 59, text: "Am Wochenende können Sie Musik im Schloss Mirabell hören." },
+                        { id: 60, text: "Sie können Frau Dr. Schneider am Samstagabend anrufen." }
+                    ]
+                }
+            ]
+        };
+
+        // متغيرات التطبيق
+        let isDarkMode = false;
+        let answersVisible = false;
+        let currentSection = 'teil1';
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            loadSection(currentSection);
+            setupEventListeners();
+        });
+
+        // تهيئة التطبيق
+        function initializeApp() {
+            const savedDarkMode = localStorage.getItem('darkMode');
+            if (savedDarkMode === 'true') {
+                isDarkMode = true;
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeToggle').textContent = '☀️';
+            }
+        }
+
+        // تحميل قسم معين
+        function loadSection(section) {
+            currentSection = section;
+            
+            // تحديد الأزرار النشطة
+            document.querySelectorAll('.section-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.section-btn[data-section="${section}"]`).classList.add('active');
+            
+            // إظهار المحتوى المناسب
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${section}-content`).classList.add('active');
+            
+            // تحميل الأسئلة
+            if (section === 'teil1') {
+                loadTeil1Questions();
+            } else if (section === 'teil2') {
+                loadTeil2Questions();
+            } else if (section === 'teil3') {
+                loadTeil3Questions();
+            }
+        }
+
+        // تحميل أسئلة Teil 1
+        function loadTeil1Questions() {
+            const container = document.getElementById('teil1Questions');
+            container.innerHTML = '';
+
+            contentData.teil1.forEach(section => {
+                const sectionElement = document.createElement('div');
+                sectionElement.className = 'question-group';
+                sectionElement.innerHTML = `
+                    <h3>${section.title}</h3>
+                    <table class="question-table">
+                        <thead>
+                            <tr>
+                                <th>Nr.</th>
+                                <th>Aussage</th>
+                                <th>Antwort</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${section.questions.map((q, index) => {
+                                const correctAnswer = correctAnswers[section.id][index];
+                                const answerClass = correctAnswer ? 'answer-richtig' : 'answer-falsch';
+                                const answerText = correctAnswer ? 'Richtig' : 'Falsch';
+                                
+                                return `
+                                    <tr>
+                                        <td class="question-number">${q.id}</td>
+                                        <td class="question-text">${q.text}</td>
+                                        <td class="answer-cell">
+                                            <div class="answer-display ${answersVisible ? answerClass : ''}">
+                                                ${answersVisible ? answerText : ''}
+                                            </div>
+                                            ${answersVisible ? `
+                                                <div class="correction-display ${answerClass.replace('answer-', 'correction-')}">
+                                                    ${answerText}
+                                                </div>
+                                            ` : ''}
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+                container.appendChild(sectionElement);
+            });
+        }
+
+        // تحميل أسئلة Teil 2
+        function loadTeil2Questions() {
+            const container = document.getElementById('teil2Questions');
+            container.innerHTML = '';
+
+            contentData.teil2.forEach(section => {
+                const sectionElement = document.createElement('div');
+                sectionElement.className = 'question-group';
+                sectionElement.innerHTML = `
+                    <h3>${section.title}</h3>
+                    <table class="question-table">
+                        <thead>
+                            <tr>
+                                <th>Nr.</th>
+                                <th>Aussage</th>
+                                <th>Antwort</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${section.questions.map((q, index) => {
+                                const questionNumber = 46 + index;
+                                const correctAnswer = correctAnswers[section.id][index];
+                                const answerClass = correctAnswer ? 'answer-richtig' : 'answer-falsch';
+                                const answerText = correctAnswer ? 'Richtig' : 'Falsch';
+                                
+                                return `
+                                    <tr>
+                                        <td class="question-number">${questionNumber}</td>
+                                        <td class="question-text">${q.text}</td>
+                                        <td class="answer-cell">
+                                            <div class="answer-display ${answersVisible ? answerClass : ''}">
+                                                ${answersVisible ? answerText : ''}
+                                            </div>
+                                            ${answersVisible ? `
+                                                <div class="correction-display ${answerClass.replace('answer-', 'correction-')}">
+                                                    ${answerText}
+                                                </div>
+                                            ` : ''}
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+                container.appendChild(sectionElement);
+            });
+        }
+
+        // تحميل أسئلة Teil 3
+        function loadTeil3Questions() {
+            const container = document.getElementById('teil3Questions');
+            container.innerHTML = '';
+
+            contentData.teil3.forEach(section => {
+                const sectionElement = document.createElement('div');
+                sectionElement.className = 'question-group';
+                sectionElement.innerHTML = `
+                    <h3>${section.title}</h3>
+                    <table class="question-table">
+                        <thead>
+                            <tr>
+                                <th>Nr.</th>
+                                <th>Aussage</th>
+                                <th>Antwort</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${section.questions.map((q, index) => {
+                                const questionNumber = 56 + index;
+                                const correctAnswer = correctAnswers[section.id][index];
+                                const answerClass = correctAnswer ? 'answer-richtig' : 'answer-falsch';
+                                const answerText = correctAnswer ? 'Richtig' : 'Falsch';
+                                
+                                return `
+                                    <tr>
+                                        <td class="question-number">${questionNumber}</td>
+                                        <td class="question-text">${q.text}</td>
+                                        <td class="answer-cell">
+                                            <div class="answer-display ${answersVisible ? answerClass : ''}">
+                                                ${answersVisible ? answerText : ''}
+                                            </div>
+                                            ${answersVisible ? `
+                                                <div class="correction-display ${answerClass.replace('answer-', 'correction-')}">
+                                                    ${answerText}
+                                                </div>
+                                            ` : ''}
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+                container.appendChild(sectionElement);
+            });
+        }
+
+        // إعداد مستمعي الأحداث
+        function setupEventListeners() {
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+            document.getElementById('showAnswers').addEventListener('click', showAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAnswers);
+            
+            // أزرار التبديل بين الأقسام
+            document.querySelectorAll('.section-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    loadSection(btn.dataset.section);
+                });
+            });
+        }
+
+        // تبديل الوضع الليلي
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('themeToggle').textContent = isDarkMode ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+
+        // إظهار التصحيح
+        function showAnswers() {
+            answersVisible = true;
+            loadSection(currentSection);
+        }
+
+        // إخفاء التصحيح
+        function hideAnswers() {
+            answersVisible = false;
+            loadSection(currentSection);
+        }
+    </script>
+</body>
+</html>

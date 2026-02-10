@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>L9AHWA - TEST B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .theme-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .answer-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
+        .question {
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.08);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.6rem 0;
+            padding: 0.8rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .dark-mode .option {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border: 1px solid #4CAF50;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border: 1px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .text-content {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        /* Lesen Teil 1 - تصميم محسن */
+        .headings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .heading-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .heading-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .ad-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .ad-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        .dark-mode .ad-letter {
+            color: #90CAF9;
+        }
+
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+        }
+
+        .dark-mode .ad-title {
+            color: var(--light);
+        }
+
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
+        .fill-blanks {
+            margin: 1.2rem 0;
+        }
+
+        .blank-text {
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .blank-text {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 6px;
+            transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .dark-mode .blank {
+            background: rgba(26, 35, 126, 0.8);
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border-color: #4CAF50;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* تحسينات للهواتف */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
+            }
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
+            }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
+        </div>
+        
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">L9AHWA - TEST B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
+            <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
+            <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الأسئلة والإجابات (تم أخذها من L9AHWA.html)
+        const examData = {
+            headings: [
+                {id: "a", text: "Altes Handwerk und alte Technik anschaulich präsentiert"},
+                {id: "b", text: "Attraktive Kleinstadt - touristischer Geheimtipp"},
+                {id: "c", text: "Ein Altes Kloster als Feuerwache"},
+                {id: "d", text: "Eine Universität mit langer Geschichte"},
+                {id: "e", text: "Eliteschule für Schriftsteller"},
+                {id: "f", text: "Entdeckung und Verbreitung des Kaffees"},
+                {id: "g", text: "Kaffee macht die Leute süß"},
+                {id: "h", text: "Klösterliche Strenge für berühmte Schüler"},
+                {id: "i", text: "Mehr Ziegenmilch dank Energy-Drink"},
+                {id: "j", text: "Ohne Kaffee geht hier nichts"}
+            ],
+            
+            texts: [
+                {
+                    id: "text1",
+                    content: `Eppingen liegt etwa auf halbem Weg zwischen Karlsruhe und Heilbronn im Kraichgau, einer geschichtsträchtigen Region mit wunderschöner Landschaft und bodenständiger Kultur, die von Erholung suchenden Menschenmassen noch nicht überrollt ist. Die Altstadt des Städtchens ist ein einziges Museum: Über 100 Fachwerkhäuser mit ihrem romantisch anmutenden Muster aus braunen Holzbalken und weiß getünchtem Lehm können hier bewundert werden. Die bekanntesten davon sind das 'Baumannsche Haus' (erbaut 1582), heute ein Hotel, und die 'Alte Universität', heute ein Museum. Hier befand sich 1564/1565 die Heidelberger Universität, die, als in Heidelberg die Pest wütete, hierhin ausgelagert wurde. Im heutigen Museum kann man die Fachwerkbaukunst studieren. Seit 1993 findet im Juli und August der 'Carillonsommer' statt. Dann geben international bekannte Orgelinterpreten Glockenspielkonzerte, die vom achteckigen Turm der Stadtpfarrkirche erklingen. Eine lange Tradition in Eppingen hat die Bierbrauerei. Das hier gebraute 'Palmbräu'.Bier kann an Ort und Stelle in der Brauereigaststätte probiert werden. Eppingen ist auch Ausgangspunkt zahlreicher Wanderwege, auf denen der Kraichgau zu Fuß erkundet werden kann.`,
+                    correctAnswer: "b",
+                    correctAnswerText: "b) Attraktive Kleinstadt - touristischer Geheimtipp"
+                },
+                {
+                    id: "text2",
+                    content: `Auf einer Anhöhe oberhalb des Bodensees liegt, ca. 10 km vom See entfernt in idyllischer ländlicher Umgebung, das ehemalige Zisterzienserkloster Salem. Innerhalb der weitläufigen Klosteranlage aus dem 12. Jahrhundert befinden sich heute mehrere Museen und das gotische Münster. Im Feuerwehrmuseum findet der interessierte Besucher alte Feuerwehrwagen, die noch von Pferden gezogen wurden, alte Geräte, Spritzen und Pumpen sowie mehrere Modellanlagen. Im Weinbaumuseum bekommt man einen Überblick über die Weinproduktion der Bodenseeregion. Hier können regionale Weine probiert und auch gekauft werden. In den angrenzenden Gebäuden kann man zuschauen, wie - noch in Handarbeit - Musikinstrumente gebaut werden, Glas geblasen oder Goldschmuck hergestellt wird. Ein kleiner aber feiner Park lädt zum Ausruhen und Verweilen ein. International bekannt ist jedoch das von Kurt Hahn und dem Prinzen Max von Baden 1920 gegründete Internat Salem, das von den Söhnen und Töchtern bekannter Familien aus ganz Europa besucht wurde und wird: Der erste deutsche Bundespräsident Theodor Heuss ging hier ebenso zur Schule wie der Ehemann der britischen Königin Elisabeth II., Prinz Philipp.`,
+                    correctAnswer: "a",
+                    correctAnswerText: "a) Altes Handwerk und alte Technik anschaulich präsentiert"
+                },
+                {
+                    id: "text3",
+                    content: `Eine Legende sagt, ein Maulesel, den die Mönche auf ihren Wanderungen mitgeführt hatten, solle hier einen Brunnen gefunden haben und man habe daraufhin beschlossen, an dieser Stelle das Kloster zu bauen. Im 16. Jahrhundert wurde it im Verlauf der Reformation säkularisiert und zum Internat umfunktioniert. Heute von der UNESCO zum Weltkulturerbe der Menschheit erhoben, ist das Kloster ein Touristenmagnet. Selbst vom berüchtigten Doktor Faust wird erzählt, er sei einmal dort gewesen. Das Kloster soll einmal kein Geld mehr gehabt haben, und der sonst gottesfürchtige Abt habe geglaubt, mit Hilfe des Doktor Faust und dessen Zauberkünsten wieder zu Geld zu kommen. Maulbronn war besonders wegen seiner Klosterschule bekannt, die von namhaften Persönlichkeiten besucht wurde: Johannes Kepler lernte hier Latein und Mathematik, der Schriftsteller Hermann Hesse litt bekanntlich sehr unter der eisernen Disziplin und Härte, die hier nach seiner Meinung vorherrschte. Hermann Hesse hat die Klosteranlage später in seinen Romanen 'unterm Rad' und 'Narziß und Goldmund' zum Schauplatz gemacht.`,
+                    correctAnswer: "h",
+                    correctAnswerText: "h) Klösterliche Strenge für berühmte Schüler"
+                },
+                {
+                    id: "text4",
+                    content: `Das erste Kaffeehaus in Leipzig, 'Zum arabischen Coffee-Baum', öffnete 1685 seine Pforten. Seitdem ist der Kaffee in Sachsen zum beliebten Getränk geworden, das weder zu Hause auf Party und Feiern noch beim Ausgehen fehlen darf. 'Kaffeesachsen' wurden früher die Bewohner des Landes zwischen Leipzig und polnischer Grenze auch deswegen scherzhaft von den anderen Deutschen genannt. Bevorzugt wird der Kaffee heiß und süß getrunken. Süße Ergänzungen wie Dresdner Stollen oder Leipziger Lerchen, beides traditionell gebackene Kuchenspezialitäten, gehören zum Kaffee wie das Tüpfelchen zum 'i'. Dabei wird das Gebäck auf echt sächsische Art 'gedibbscht', das heißt: Es wird in den Kaffee getunkt, bevor es gegessen wird. Die Sachsen schwören darauf, dass sowohl das Gebäck als auch der Kaffee so und nur so ihr volles Aroma entfalten. Wer es selbst ausprobieren möchte: Zahlreiche Kaffeehäuser laden in allen größeren und kleineren Städten Sachsens dazu ein, dies auszuprobieren.`,
+                    correctAnswer: "j",
+                    correctAnswerText: "j) Ohne Kaffee geht hier nichts"
+                },
+                {
+                    id: "text5",
+                    content: `Vermutlich vor fast 900 Jahren, irgendwann im dreizehnten Jahrhundert, sollen die Menschen herausgefunden haben, was es mit dem Kaffee auf sich hat. Eine Legende erzählt von einem jemenitischen Ziegenhirten, dessen Ziegen sich nach dem Genuss der rote Beeren eines bestimmten Strauches merkwürdig lebendig und aufgedreht benommen haben sollen. Im Dorf habe der Dorfgelehrte dann herausgefunden, dass die Früchte, die bisher nur den Ziegen zu viel 'Energie' verholfen hatten, auch beim Menschen ihre Wirkung zeigten. Nach mehreren Experimente habe man dann herausgefunden, dass die Beeren, wenn man sie trocknet und dann mit heißem Wasser aufkocht, am besten schmecken. Der Kaffee war erfunden. Wegen seiner berauschenden Wirkung, so eine Theorie, soll das Getränk dann arabisch qahwa genannt worden sein, was auch einen Wein bezeichnen konnte. Nach einer anderen Theorie stammt der Kaffee aus der Region 'Kaffa' im südwestlichen Äthiopien. Von hier aus nahm jedenfalls sein Sieeszug über die ganze Welt seinen Ausgang. 1582 erreichte der Kaffee schließlich Europa, wo er bis heute zu einem der beliebtesten Getränke wurde.`,
+                    correctAnswer: "f",
+                    correctAnswerText: "f) Entdeckung und Verbreitung des Kaffees"
+                }
+            ],
+
+            longText: {
+                content: `Für viele Eltern sind Fremdsprachenkenntnisse die Basis einer ordentlichen Karriere für Ihre Kinder. Aus entwicklungspsychologischer Sicht bringt die Mehrsprachigkeit im Kindesalter tatsächlich einige Vorteile mit sich: "Mehsprachig erzogene Kinder lernen später auch andere Fremdsprachen leichter, weil sie schon früh ein Gefühl für die Systematik hinter einer Sprache entwickeln", sagt Susanne Hilt, Psychologin für Sprachförderung in Neustadt. Außerdem falle es ihnen leichter, Dinge mit anderen Augen zu sehen und kreativ auf ihren Alltag zu reagieren. Auch die kommunikative Kompetenz ist laut Hilt bei mehrsprachig erzogenen Kindern meist ausgeprägter.
+
+Doch nicht jeder Sprachimpuls in der Kindheit ist positiv. Die gebürtige Schweizerin Hilt hat ihre eigenen Kinder dreisprachig erzogen. Sie ist sich sicher: "Die mehrsprachige Erziehung funktioniert nur dann, wenn das Kind eine emotionale Bindung zur jeweiligen Sprache aufbauen kann". Sie rät daher Eltern, sich ehrlich zu fragen, welche Sprache ihnen selbst am ehesten liegt. Denn wer sich in der Fremdsprache nicht wohlfühle, könne sie auch nicht authentisch vermitteln.
+
+Die Expertin Hilt ist daher skeptisch, wenn Eltern ihre Kinder aus rein intellektuellen Gründen mehrsprachig erziehen möchten. "Schulische Erfolge sollte nicht der Hauptbeweggrund für die Multilingualität sein. It ist viel wichtiger, dass die Sprache für das Child emotional und sozial relevant ist". So könnten zum Beispiel die Herkunft der Eltern, eine Tante in Frankreich oder eine fremdsprachige Erzieherin eine Basis bilden, durch die Kinder auch kulturell den Bezug zu einer weiteren Sprache finden.
+
+Der Kontakt mit einer zweiten oder dritten Sprache muss nach Auffassung von Hilt nicht unbedingt schon im Babyalter erfolgen. Man kann mit der mehrsprachigen Erziehung auch erst im Kindergartenalter beginnen. "Das Zeitfenster, in dem ein Child eine Sprache noch durch zweisprachige Erziehung erlernen kann, ist nicht genau festlegbar. Aber ungefähr bis zum zehnten Lebensjahr sind die Chancen sehr gut", sagt die Psychologin.
+
+Auch Sabine Filligrabe–Amling, Leiterin einer deutsch–englischen Kindertagesstätte in Hamburg, sieht den Einstieg in die Multilingualität entspannt. In Hamburg gibt es in jeder Gruppe einen deutschen und einen englischen Muttersprachler unter den Erziehern, jeder wendet seine Sprache ganz selbstverständlich im Umgang mit den Kindern an. "Die meisten unserer Kinder nehmen die neue Sprache sehr gut an, weil sie eine starke emotionale Bindung zu den Erziehern haben", sagt Filligrabe–Amling. Sie rät Eltern, die mehrsprachige Erziehung ihrer Kinder ebenfalls wie selbstverständlich in den Alltag zu integrieren. "Es bringt nichts, wenn man zu Kindern sagt 'Wiederhol das mal' oder 'Schau, Stuhl heißt auf Englisch chaii'. Auch der Erwerb der Muttersprache funktioniert ja nicht auf diese Art", sagt Filligrabe–Amling. Die neue Sprache sollte ganz locker immer wieder auftauchen, so dass das Child sie langsam annehmen kann. "Am besten ist es, wenn eine bestimmte Bezugsperson sich immer nur in der anderen Sprache mit dem Kind unterhält", sagt Filligrabe–Amling.
+
+Susanne Hilt hält auch andere Methoden für sinnvoll. "Jeder muss da sein eigenes System entwickeln", sagt die Psychologin. It sei auch denkbar, dass beispielsweise die kroatische Mutter mit ihrem Child zu Hause immer nur Kroatisch spreche, unterwegs aber Deutsch. "Wichtig ist, dass eine Regelmäßigkeit für das Kind und für die Eltern erkennbar ist", sagt Hilt.
+
+Eine Sprachverwirrung durch die Multilingualität oder gar eine Verzögerung in der Entwicklung des Kindes müssen Eltern nicht befürchten, meint Hilt. "Auch wenn der Kontakt mit der anderen Sprache nur alle paar Tage stattfindet, wird das Kind keinen Schaden nehmen. Auch diese kleinen Impulse können zumindest das Interesse für weitere Sprachen fördern".`,
+                questions: [
+                    {
+                        id: "q1",
+                        question: "Mehrsprachig erzogene Kinder sind meist",
+                        options: [
+                            "kommunikativer",
+                            "ideenreicher",
+                            "sensibler"
+                        ],
+                        correctAnswer: "kommunikativer"
+                    },
+                    {
+                        id: "q2",
+                        question: "Mehrsprachige Erziehung gelingt, wenn",
+                        options: [
+                            "das Kind einen emotionalen Bezug zur Sprache hat",
+                            "die Eltern aus dem Zielsprachenland kommen",
+                            "die Eltern die Bildungsziele konsequent verfolgen"
+                        ],
+                        correctAnswer: "das Kind einen emotionalen Bezug zur Sprache hat"
+                    },
+                    {
+                        id: "q3",
+                        question: "Damit ein Kind eine weitere Sprache zweisprachig erlernt,",
+                        options: [
+                            "muss die Sprachvermittlung so früh wie möglich anfangen",
+                            "reicht it, im Grundschulalter mit der Zweitsprache zu beginnen",
+                            "sollte im Kindergarten mit der Sprachvermittlung begonnen werden"
+                        ],
+                        correctAnswer: "reicht it, im Grundschulalter mit der Zweitsprache zu beginnen"
+                    },
+                    {
+                        id: "q4",
+                        question: "Wechselt die Bezugsperson zwischen zwei Sprachen, lernt das Kind die Zweitsprache",
+                        options: [
+                            "bei systematischer Vermittlung der Sprache",
+                            "sofern es versteht, wann die Sprachen gewechselt werden",
+                            "wahrscheinlich nicht"
+                        ],
+                        correctAnswer: "sofern es versteht, wann die Sprachen gewechselt werden"
+                    },
+                    {
+                        id: "q5",
+                        question: "Sollten Kinder nur alle paar Tage Kontakt zur Zweitsprache haben,",
+                        options: [
+                            "ist eine Entwicklungsverzögerung möglich",
+                            "kann das Interesse an anderen Sprachen verloren gehen",
+                            "schadet dies der Entwicklung der Zweitsprache nicht"
+                        ],
+                        correctAnswer: "schadet dies der Entwicklung der Zweitsprache nicht"
+                    }
+                ]
+            },
+
+            // Lesen Teil 3 - البيانات المحدثة من L9AHWA.html
+            situations: [
+                {
+                    id: "11",
+                    text: "Eine Bekannte ist schwanger und sucht Informationen, welche Sportarten erlaubt sind.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "12",
+                    text: "Ein Bekannter fliegt im Urlaub ans Meer. Sie möchten ihn über mögliche Risiken der Sonnenstrahlung informieren.",
+                    correctAnswer: "D"
+                },
+                {
+                    id: "13",
+                    text: "Ein Bekannter möchte sich modische Schuhe kaufen. Er weiß aber nicht, ob er sich das leisten kann.",
+                    correctAnswer: "L"
+                },
+                {
+                    id: "14",
+                    text: "Sie möchten durch pflanzliche Ernährung Ihren Körper vor schweren Krankheiten schützen.",
+                    correctAnswer: "C"
+                },
+                {
+                    id: "15",
+                    text: "Eine Bekannte, die ein Kind erwartet, sucht Ernährungstipps.",
+                    correctAnswer: "E"
+                },
+                {
+                    id: "16",
+                    text: "Ein älteres Ehepaar sucht Informationen über einen ruhigen Urlaub am Meer.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "17",
+                    text: "Ihre Freundin denkt darüber nach, alle hochhackigen Schuhe wegzuwerfen, weil sie negative Auswirkungen auf ihre Gelenke befürchtet.",
+                    correctAnswer: "G"
+                },
+                {
+                    id: "18",
+                    text: "Eine Freundin hat viel Stress und möchte einen Ausgleich finden, der auch mit sportlichen Aktivitäten verbunden ist.",
+                    correctAnswer: "K"
+                },
+                {
+                    id: "19",
+                    text: "Eine Freundin bekommt ein Baby. Sie hat oft Schmerzen. Welche Möglichkeit gibt es, ihr zu helfen?",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "20",
+                    text: "Ein Bekannter hat oft Kopfschmerzen. Er möchte jedoch keine Tabletten nehmen.",
+                    correctAnswer: "I"
+                }
+            ],
+
+            ads: [
+                {
+                    id: "A",
+                    title: "Akupunktur für Schwangere",
+                    content: "Wenn eine schwangere Frau erkrankt oder unter starken Schmerzen leidet, kann sie in den meisten Fällen keine Medikamente einnehmen. Zu groß wäre die Gefahr für das noch ungeborene Kind, denn Schmerzmittel oder Antibiotika können das Baby schädigen. Als Ausweg empfehlen deutsche Ärzte und Krankenkassen daher alternative Heilmethoden wie die Akupunktur. Bei dieser uralten aus China stammenden Heilmethode werden kleine Nadeln in bestimmte Nervenbahnen gestochen. Dabei werden die Nerven gereizt und die Übermittlung von Schmerzsignalen wird gehemmt. Für das Kind besteht keine Gefahr."
+                },
+                {
+                    id: "B",
+                    title: "Klangmassage zur Entspannung",
+                    content: "Eine alte und höchst effektive Methode zur Entspannung ist die Klangmassage. Sie stammt aus Tibet, kann leicht erlernt und jederzeit angewendet werden. Dabei werden tibetanische Klangschalen auf den Körper gesetzt und mit einem weichen Klöppel aus Filz angeschlagen. Die auf diese Weise entstehende Vibration in der Klangschale überträgt sich auf den Körper und vermittelt das Gefühl einer wohltuenden Massage."
+                },
+                {
+                    id: "C",
+                    title: "Tomaten gegen Krebs",
+                    content: "Die regelmäßige Ernährung mit Tomaten senkt das Risiko von Krebserkrankungen um fast 50%. Zu diesem Ergebnis kommen Studien der Harvard University. Für die Schutzwirkung verantwortlich ist die rote Farbe der Tomaten, die durch den Stoff Lycopin erzeugt wird. Dabei muss man jedoch beachten, dass die gesundheitsfördernde Wirkung nur eintritt, wenn die Tomaten gekocht und mit ein wenig Fett, z. B. Olivenöl, serviert werden. Aus rohen Tomaten kann der Körper das Lycopin nicht verwerten. Spaghetti Bolognese ist demnach gesünder als Tomatensalat. Tomaten sind in der Mittelmeerküche ein beliebter und unverzichtbarer Bestandteil."
+                },
+                {
+                    id: "D",
+                    title: "Risiken des Sonnenbadens",
+                    content: "Dass zu langes In-der-Sonne-Lieben nicht gut ist, wissen im Prinzip alle. Trotzdem lassen sich Jahr für Jahr unzählige Touristen an den Stränden des Mittelmeeres in der Sonne rösten, bis sie einen Sonnenbrand oder schlimmstenfalls sogar schwere Verbrennungen bekommen haben. Doch auch der als harmlos geltende leichte Sonnenbrand ist nicht so ungefährlich, wie viele meinen. Deshalb rät die Dermatologische Gesellschaft in Jena allen Sonnenanbetern, sich regelmäßig auf erste Anzeichen von Hautkrebs untersuchen zu lassen. Nur wenn der Krebs im Anfangsstadium entdeckt wird, bestünden gute Heilungsaussichten, so ein Sprecher der Gesellschaft."
+                },
+                {
+                    id: "E",
+                    title: "Ernährung in der Schwangerschaft",
+                    content: "In der Schwangerschaft haben Frauen einen stark erhöhten Bedarf an Vitaminen und Mineralstoffen. Schwangere Frauen sollten daher ihre Nahrung sorgfältig aussuchen und naturbelassene Produkte bevorzugen. Obst, Gemüse und Getreide sollten zu den Grundbausteinen der Ernährung gehören. Milchprodukte, besonders Butter und Sahne, liefern das für den Knochenaufbau des Babys wichtige Calcium. Auch Fleisch sollte auf dem Speiseplan nicht fehlen, da it das für den Blutaufbau wichtige Eisen enthält. It sollte aber nicht zu fett sein. Auf keinen Fall sollte eine Frau während der Schwangerschaft eine Abmagerungsdiät machen, der Verlust an Vitaminen und Nährstoffen könnte sich auf die Entwicklung negativ auswirken."
+                },
+                {
+                    id: "F",
+                    title: "Butter oder Margarine?",
+                    content: "Ist Butter gesünder oder Margarine? Ernährungsberater betonen, dass es hinsichtlich Zusammensetzung und Geschmack keine Hinweise darauf gibt, welches der beiden Nahrungsmittel das bessere oder gesündere ist. Da sowohl Butter als auch Margarine viel Fett enthält, sollten sie sparsam benutzt werden. Insbesondere Personen, die an Fettstoffwechselerkrankungen leiden, sollten von beiden Nahrungsmitteln so wenig wie möglich verwenden."
+                },
+                {
+                    id: "G",
+                    title: "Hohe Absätze und Gesundheit",
+                    content: "Damenschuhe mit hohen Absätzen schaden der Gesundheit, insbesondere der Rücken, die Knie und die Wirbelsäule würden geschädigt. So lautete viele Jahre lang das Urteil vieler Orthopäden. Dass es sich hierbei nur um ein Vorurteil handelt, berichtet jetzt die britische Fachzeitschrift 'Ärztliche Praxis'. In einer Langzeitstudie bewiesen die britischen Forscher, dass die Häufigkeit von Knie- oder Rückenerkrankungen bei Probandinnen, die über mehrere Jahre keine bzw. ausschließlich Schuhe mit hohen Absätzen getragen hatten, nicht verschieden war. Die Höhe der Schuhabsätze hat daher keinen Einfluss auf die Gesundheit."
+                },
+                {
+                    id: "H",
+                    title: "Urlaubsziele und Aktivitäten",
+                    content: "In der Sonne liegen und eine braune Haut bekommen, das ist nach wie vor ein wichtiges Ziel vieler Urlauber, die ihre Ferien an den Mittelmeerstränden verbringen. An zweiter Stelle stehen sportliche Aktivitäten und Fitnesstraining. Dafür werden sogar Unannehmlichkeiten wie überfüllte Strände, überteuerte Sportangebote und mittelmäßiges Essen in Kauf genommen. Die kulturelle Bildung, der Besuch von Museen und kulturellen Denkmälern in den Urlaubsländern, steht lediglich bei älteren Reisenden hoch im Kurs."
+                },
+                {
+                    id: "I",
+                    title: "Fußreflexzonenmassage",
+                    content: "Die Fußreflexzonenmassage entwickelte im Jahr 1913 der amerikanische Arzt William Fitzgerald. Sie beruht auf der Vorstellung, dass bestimmten Regionen an der Fußsohle, an der Fußinnenseite und an den Zehen bestimmte Organe des Körpers zugeordnet sind. Durch die Massage der entsprechenden Reflexzonen am Fuß werden Nervenreize ausgelöst, die Spannungen und Blockaden auflösen, und die Selbstheilungskraft des Körpers wird aktiviert. Besonders bei Problemen mit der Verdauung, bei Kopf- und Rückenschmerzen hat sich die Fußreflexzonenmassage bewährt."
+                },
+                {
+                    id: "J",
+                    title: "Urlaub für Senioren",
+                    content: "Ältere Reisende bevorzugen am Urlaubsziel Ruhe und mäßige Aktivität. Viele reisen deswegen in die Mittelgebirge und verbringen ihren Urlaub mit Wandern und ausgedehnten Spaziergängen in der Natur. Sie legen jedoch auch großen Wert auf eine angenehme und komfortable Unterkunft und auf gutes Essen. Beliebte Reiseziele sind in Deutschland der Schwarzwald, der Bayerische Wald, die Rhön sowie Hunsrück und Eifel. Ins Ausland zieht es die Senioren oft nach Österreich, in die Schweiz oder nach Norditalien."
+                },
+                {
+                    id: "K",
+                    title: "Tai Chi Chuan",
+                    content: "Tai Chi Chuan ist ein alter chinesischer Begriff. Er bedeutet 'über allem stehen'. Beim chinesischen Schattenboxen stehen langsame, weiche und fließende Bewegungen im Einklang mit den natürlichen Bewegungsabläufen des Körpers. Sie führen, wenn sie regelmäßig geübt werden, zu innerer Ruhe und Harmonie, zur Steigerung der Konzentration und der Ausdauer. Ein chinesischer Spruch lautet: 'Wer Tai Chi nutzt, wird beweglich wie ein Kind, stark wie ein Krieger und ruhig wie ein Weiser'."
+                },
+                {
+                    id: "L",
+                    title: "Gute Schuhe müssen nicht teuer sein",
+                    content: "Gute Schuhe müssen nicht unbedingt teuer sein. Zu diesem Ergebnis kommt ein Test, der von einem deutschen Fernsehender durchgeführt wurde. Mehrere Schul- und Modespezialisten sollten unter ähnlich aussehenden Modellen das jeweils am besten verarbeitete, das schönste und das teuerste Modell herausfinden. Dabei waren jeweils ein Designerschuhpaar, zwei Mittelklassemodelle und zwei Paar aus billigen Schuhketten. Im Ergebnis waren die Spezialisten oft nicht in der Lage, die Qualität zu unterscheiden. In einem Fall wurde sogar das billigste Modell für einen Designerschuh gehalten."
+                }
+            ],
+
+            // Sprachbausteine Teil 1 (من L9AHWA.html)
+            blankText1: {
+                content: `Liebe Agnieszka,
+
+jetzt ist es schon bald ein halbes Jahr ________, dass ich dir das letzte Mal geschrieben habe. Bitte denke jetzt nicht, dass ich dich vergessen habe. Aber, wie du ja schon weißt, stehe ich vor der Abschlussprüfung in Deutsch und das bedeutet jede Menge Arbeit und Stress.
+
+Stell dir vor, ausgerechnet jetzt, nur zwei Wochen vor der Prüfung, ist unsere Lehrerin, Frau Reuter, ________. Sie liegt sogar im Krankenhaus und kommt erst wieder zurück, ________ unsere Prüfung schon längst vorbei ist. Ihre Vertretung, Frau Eichhorn, ist ________ sehr nett, ________ sie hat gerade erst mit dem Unterrichten angefangen und noch keine Erfahrung. Das macht uns alle ein bisschen unsicher. Aber in zwei Wochen ist hoffentlich alles geschafft. Und dann ________ ich alle Bücher und Hefte in die Ecke legen und erst einmal ein paar Tage gar nichts tun. ________ freue ich mich schon riesig. Wenn du Zeit und Lust hast, kannst du mich doch besuchen kommen und wir können zusammen etwas unternehmen. Wir wollten doch schon lange Bad Homburg besuchen und im Taunus wandern. Was hältst du ________?
+
+Was macht deine Au-pair-Familie? Musst du immer noch so viel Hausarbeit machen? Hören "deine" Kinder auf dich oder tanzen sie ________ noch immer auf der Nase herum, wie du in deinem letzten Brief geschrieben hast? It ist bestimmt nicht so leicht, einen zweijährigen Jungen und ein vierjähriges Mädchen den ganzen Tag ________. Aber ich kenne dich: Du hast gute Ideen und bestimmt hast du schon einen Weg gefunden, ________ du mit den Kindern zurechtkommst.
+
+So, jetzt muss ich mich wieder an meine Prüfungsvorbereitung machen, sonst wird mir die Zeit zu knapp. Ich grüße dich ganz herzlich und wünsche dir alles Gute.
+
+Bis bald
+Deine Louise`,
+                options: [
+                    ["her", "hin", "vorbei"],      // 21
+                    ["erkrankt", "gekränkt", "kränklich"], // 22
+                    ["als", "da", "wenn"],         // 23
+                    ["nicht nur... sondern", "teils... teils", "zwar... aber"], // 24
+                    ["werde", "wollte", "würde"],  // 25
+                    ["Dafür", "Danach", "Darauf"], // 26
+                    ["darüber", "davon", "dazu"],  // 27
+                    ["dich", "dir", "sich"],       // 28
+                    ["beschäftigen lassen", "beschäftigt zu sein", "zu beschäftigen"], // 29
+                    ["weshalb", "wie", "wo"]       // 30
+                ],
+                answers: ["her", "erkrankt", "wenn", "zwar... aber", "werde", "Darauf", "davon", "dir", "zu beschäftigen", "wie"]
+            },
+
+            // Sprachbausteine Teil 2 (من L9AHWA.html)
+            blankText2: {
+                content: `Das Fahrrad: ernsthafte Konkurrenz fürs Auto?
+
+Welches Fortbewegungsmittel, denken Sie, wird in Deutschland am häufigsten benutzt? Natürlich das Automobil. Volkswagen, Porsche, Mercedes Benz, BMW, Audi: In ________ einem anderen Land gibt es so viele Automobilfabriken wie in Deutschland, spielt die Automobilindustrie eine so große Rolle. Nahezu jeder Haushalt verfügt über mindestens ein Auto, das Auto spielt im Leben der Deutschen eine große Rolle, sowohl als Fortbewegungsmittel zum Arbeitsplatz oder in den Urlaub als auch als Statussymbol: Zeig mir dein Auto und ich weiß, wer du bist.
+
+Doch hat das Autofahren auch Schattenseiten. Mangelnde Bewegungsmöglichkeiten, gesundheitliche Probleme und Stress bringen zumindest in den Großstädten immer more Autofahrer dazu, sich vom Automobil freizumachen und ________ ein anderes Verkehrsmittel umzusteigen, das in dem Ruf steht, gesünder zu sein als das Auto: das Fahrrad. Nicht nur in der Freizeit, sondern auch auf dem Weg zum Arbeitsplatz wird das Rad benutzt. "Ich habe keine Lust, Morgen für Morgen im Stau zu stehen und Zeit zu verlieren", sagt Bettina Meier (25): "Da ist it viel entspannender, auf den zumeist gut ausgebauten Fahrradwegen an den im Stau wartenden Fahrzeugen ________ und ausgeruht am Arbeitsplatz anzukommen."
+
+Dass Fahrradfahren um einiges gesünder ist, als hinter dem Lenkrad zu sitzen, bestätigen auch die Mediziner. Wer Fahrrad fährt ________ zu sitzen, bringt seinen Blutkreislauf in Schwung, stärkt die Abwehrkräfte des Körpers und trainiert seinen Körper. Auch die Bewegung an der frischen Luft tut Menschen gut, die sich sonst die meiste Zeit ________ geschlossener Räume in Büros, Schulen oder Fabriken aufhalten ________.
+
+Auch die Geschäftswelt hat die Fahrradfahrer als Kunden entdeckt. Ein breites Angebot ________ Zubehör für Fahrräder von schicken Radfelgen über sportliche Mehrganggetriebe, mit denen Berge kein Problem mehr darstellen, bis zur Designer-Trinkflasche machen aus dem einfachen Fahrrad ein exlusives Fahrzeug. Und natürlich darf bei keinem Fahrradfahrer eine aufwändige Sicherheitsausstattung more fehlen: Schutzhelme, Ellenbogen- und Knieschützer, die das Fahrrad im Falle eines Unfalls fast so sicher wie einen Panzer machen ________.
+
+Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ________ sind die Autoschlangen wieder länger. ________ einen praktischen Wetterschutz für Radfahrer haben die Geschäfte noch nicht im Angebot.`,
+                options: ["AN", "AUF", "BEINAHE", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI", "DAS"],
+                answers: ["KAUM", "AUF", "VORBEI", "STATT", "INNERHALB", "MÜSSEN", "AN", "SOLLEN", "DANN", "DENN"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${heading.id})</strong> ${heading.text}
+                `;
+                headingItem.dataset.letter = heading.id;
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Question ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
+            const blankText1 = document.getElementById('blankText1');
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText1.innerHTML = textWithBlanks1;
+
+            // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
+            const blankText2 = document.getElementById('blankText2');
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText2.innerHTML = textWithBlanks2;
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === letter) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+    </script>
+</body>
+</html>

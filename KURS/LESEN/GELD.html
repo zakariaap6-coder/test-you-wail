@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GELD - TEST B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .theme-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .answer-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
+        .question {
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.08);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.6rem 0;
+            padding: 0.8rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .dark-mode .option {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border: 1px solid #4CAF50;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border: 1px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .text-content {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        /* Lesen Teil 1 - تصميم محسن */
+        .headings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .heading-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .heading-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .ad-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .ad-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        .dark-mode .ad-letter {
+            color: #90CAF9;
+        }
+
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+        }
+
+        .dark-mode .ad-title {
+            color: var(--light);
+        }
+
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
+        .fill-blanks {
+            margin: 1.2rem 0;
+        }
+
+        .blank-text {
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .blank-text {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 6px;
+            transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .dark-mode .blank {
+            background: rgba(26, 35, 126, 0.8);
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border-color: #4CAF50;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* تحسينات للهواتف */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
+            }
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
+            }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
+        </div>
+        
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">GELD - TEST B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
+            <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
+            <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الأسئلة والإجابات من GELD.html
+        const examData = {
+            headings: [
+                {id: "a", text: "Ausstellung über Finanzmetropole"},
+                {id: "b", text: "Fachinformationen für Finanzprofis"},
+                {id: "c", text: "Finanz-ABC für Anfänger"},
+                {id: "d", text: "Interessante Tätigkeit wichtiger als hohes Gehalt"},
+                {id: "e", text: "Lehrreicher Rundgang zu Finanzwissen"},
+                {id: "f", text: "Sammelgefäße als Ausstellungsobjekte"},
+                {id: "g", text: "Sparbücksensor - Nun wieder in Mode"},
+                {id: "h", text: "Vertrauen zeigt sich auf dem Konto"},
+                {id: "i", text: "Wie Kinder den Umgang mit Geld lernen"},
+                {id: "j", text: "Wie man Kinder zum Sparen motiviert"}
+            ],
+            
+            texts: [
+                {
+                    id: "text1",
+                    content: `Spardosen sind Sammelbehälter, Dekoration oder Kinderspiezeuge - und zwar seit Jahrhunderten. Und obwohl bargeldloses Bezahlen immer mehr in Mode kommt, sind sie bis heute nicht aus den Kinderzimmern verschwunden. Das Spardosen-Museum im Haus Kenmade zeigt 1200 Exemplare aus dem Mittelalter bis zum 20. Jahrhundert. Daneben widmet sich das Museum der Geschichte des Geldes. In zwei Räumen sind Münzen, Scheine und weitere Tauschmittel aus der ganzen Welt ausgestellt. Die Sammlung von Spardosen reicht von schweren Gefäßen aus Eisen über kunstvoll verzierte Truhen und Kutschen bis zu Mickey-Mäusen aus Blech. 'Um 1900 erlebter Spardosen einen Boom', erzählt Museumsleiter Jürgen Stollmann. In vielen Häusern hatten sie zwar nur als hübsche Dekoration hergehalten, doch immer seien sie auch ein Spiegel der Gesellschaft. Zehn Jahre später schon gibt es das Museum, das interessante Einblicke in die Geldgeschichte bietet. Jährlich lockt es über 13.000 Besucher an.`,
+                    correctAnswer: "f",
+                    correctAnswerText: "f) Sammelgefäße als Ausstellungsobjekte"
+                },
+                {
+                    id: "text2",
+                    content: `Wer beim leisen Klirren von Geldstücken ein prickelndes Gefühl verspürt, ist in der neuen Sonderausstellung 'Die Sprache des Geldes' im Berliner Museum für Kommunikation richtig. Auf ungewöhnliche Weise nähert sich diese kleine Schau dem Geld als Dreh- und Angelpunkt einer globalisierten Welt. Im Museum machen die Besucher auf 450 Quadratmetern eine Tour durch eine fiktive Stadt: Auf dem 'Marktplatz' erfahren sie. Warum sich zuerst Münzen und viel später Scheine als Zahlungsmittel durchsetzen. Bei den Stationen 'Bank' und 'Börse' lernen sie das Prinzip kennen, das in guten Zeiten dahintersteht! Vertrauen in den Wert des Geldes. In der Station 'Einkaufszentrum' geht es dagegen um die heutige Konsumgesellschaft. Entlohnt werden die Besucher für ihren Ausstellungsbesuch natürlich auch. Wer sein neues Wissen in einem Computerquiz nachweisen kann, erhält einen Spielgeld-Schein mit dem eigenen Konterfel. Macht Geld denn nun glücklich? 'Nur für einen kurzen Moment', versichert Kurator Gregor Isenbrot. 'Wenn der Rausch vorbei ist, want der Mensch noch more. Und zwar mehr Geld'.`,
+                    correctAnswer: "e",
+                    correctAnswerText: "e) Lehrreicher Rundgang zu Finanzwissen"
+                },
+                {
+                    id: "text3",
+                    content: `'Versteh' ich ja doch nicht; ist mir zu kompliziert'. So oder ähnlich lauten die üblichen Vorbehalte, wenn es darum geht, zu begreifen, wie Wirtschaft funktioniert und der Finanzsektor arbeitet. Der englische Journalist John Lanchester nimmt alle jene neugierigen Laien, denen die Fachsprache rund ums Geld bislang verwirrend erschien, bei der Hand. So schildert er in seinem Buch 'Die Sprache des Geldes und warum wir sie nicht verstehen', wie er sich als Außenseiter dem Thema genähert hat. Geld habe eine eigene Sprache, erklärt Lanchester. Wer diese nicht lerne, könne nicht mitreden. Und so erläuterte ersten Teil seines Buches die Besonderheiten dieser Sprache. Den zweiten Teil bildet ein alpha Glossat, in dem Fachworter und Namen in kurzen Artikeln erläutert went Anschaulich erklärt Lanchester etwa, was Derivate sind und wie man antizyklisch handelt. Das Buch ist anekdotenreich und gut lesbar, seine Lektüre zu empfehlen. Denn Lanchester ermöglicht es dem interessierten Wirtschaftslaien, mitreden zu können.`,
+                    correctAnswer: "c",
+                    correctAnswerText: "c) Finanz-ABC für Anfänger"
+                },
+                {
+                    id: "text4",
+                    content: `Eine neue Untersuchung des instituts der deutschen Wirtschaft bestätigt eine Tatsache, über die sich Sozialwissenschaftler und Psychologen schon lange einig sind: Die Höhe des Einkommens allein macht nicht glücklich. Wie zufrieden ein Arbeitnehmer ist, hängt demnach nicht in erster Linie vom Lohn oder der Tätigkeit ab, sonder davon, wie emotional stabil, belastbar und selbstsicher er ist. Für die Studie hat die Ökonomin Mara Ewers die Zusammenhänge zwischen der Lebens- und Arbeitszufriedenheit, dem Bruttostundenlohn, der Anzahl der Bildungsjahre und dem Gesundheitszustand untersucht. Sie fand heraus, dass 53 Prozent der Bundesburger, die sich emotionalais besonders stabil bezeichnen, auch im job sehr zubreden sind. Die Fähigkeit, anderen Menschen zu vertrauen, steigere die Lebens- und Arbeitszufriedenheit Die Untersuchung lege die These nahe, dass Einkommensunterschiede auch eine Folge der Persönlichkeitsentwicklung sein können, so Ewers. Wer misstrauisch sei, verwende mehr Zeit und Kraft für Kontrollen und sei daher weniger produktiv, sagt sie. Und wer weniger produktiv sei, verdiene auf Dauer auch weniger`,
+                    correctAnswer: "h",
+                    correctAnswerText: "h) Vertrauen zeigt sich auf dem Konto"
+                },
+                {
+                    id: "text5",
+                    content: `Über Geld sprechen viele Deutsche nicht gerne - selbst Verwandte oder Lebenspartner haben oft keine Ahnung, was sich auf den Konten ihrer Nächsten tut. Dabei spielt Geld bei den meisten Entscheidungen eine wichtige Rolle, und zwar auch in der Familie. Es ist heutzutage zum Gluck üblich, dass Kinder spielerisch ein Gefühl für Geld entwickelnr: Zwel Drittel der Vier- bis Fünfjährigen bekommen mittlerweile Taschengeld. Doch die Offenheit von Eltern sollte noch weiter gehen: Denn die Erziehung prägt entscheidend das spätere Verhältnis der Kinder zu Geld, wie Studien belegen, Vorteilhaftes Finanzverhalten nennen Forscher das und setzen es mit der Fähigkeit gleich, Gled sinnvoll einzuteilen oder zu sparen. Natürlich ist das Thema Geld für Eltern ein Balanceakt. Doch letztlich lohnt sich der Mut zu Vertrauen und wohldosierter Offenheit, denn wo Offenheit herrscht, kann Verständnis wachsen. Vielleicht sieht dann auch ein Elfjähriger ein, dass die Spielekonsole für viele hundert Euro zwar toll, aber trotzdem nicht nötig ist)`,
+                    correctAnswer: "i",
+                    correctAnswerText: "i) Wie Kinder den Umgang mit Geld lernen"
+                }
+            ],
+
+            longText: {
+                content: `Es geschah am 1. Januar 1954. In Duisburg, einer Großstadt am Rhein zwischen Köln und der niederländischen Grenze am Rande des Ruhrgebiets, gab es für die Autofahrer, die in der Straße "Am Buchenbaum" ihre Autos parken wollten, eine Überraschung. 20 etwa 1,5 Meter hohe Metallstangen mit unrenförmigen Aufsätzen standen am Straßenrand mit der unmissverständlichen Aufschrift: "Einwurf 10 Pfennig für eine Stunde". Die ersten Parkuhren in Deutschland waren aufgestellt.
+
+Nur Basel in der Schweiz und Stockholm in Schweden hatten vor Duisburg Parkuhren installiert, um Dauerparker aus den Stadtzentren zu vertreiben. Das eingenommene Geld wurde in Duisburg anfangs für gemeinnützige Zwecke ausgegeben: für Alte, Kranke Kriegsversehrte, für elternlose Kinder. Und die Stadtverwaltung war sich sicher, dass die Autofahrer Verständnis für die Parkuhren auff bringen würden, dienten sie doch einem guten Zweck.
+
+Doch bei den Autofahren war man nicht so erfreut über diese neuen Apparate. "Groschengrab" wurden sie dann auch bald überall genannt: ein Apparat, in den man Groschen – wie die 10-Pfennig-Stücke damals genannt wurden – hineinwarf. Dieser schluckte zwar gnadenlos Zehner, gab aber zum Verdruss vieler trotzdem oft keine Parkzeit frei. Tat er dies, dann aber in der Regel nur für höchstens 60 Minuten. Viele Autofahrer waren außerdem verärgert, weil sie immer passendes Kleingeld dabei haben mussten. Die ersten Parkuhren konnten nämlich nicht wechseln.
+
+Wer parkte, ohne zu zahlen, riskierte damals wie heute einen Strafbescheid, liebevoll "Knölchen" genannt. In allen anderen deutschen Städten erschienen nach und nach auch Parkuhren. Bald gehörten sie zu den Innenstädten wie das Rad zum Auto. Und das blieb so bis zum Ende der 1980er Jahre.
+
+Dann geschah so etwas wie eine Parkuhren-Revolution. Die guten, alten Parkuhren, die ein im Vergleich zu heute immer noch billiges Parken erlaubten, weil sie nicht beliebig oft auf neue Beträge umgestellt werden konnten, wurden mehr und mehr ersetzt durch die gerade neu entwickelten Parkscheinautomaten. Mit Solarenergie angetrieben, computergesteuert und beliebig programmierbar machten sie es nun möglich, ohne technische Beschränkungen die Preise und Zeiten für das Parken flexibel zu gestalten. Von Vorteil ist auch ihre Kundenfreundlichkeit: Die Zeiten, in denen nur Münzen als Zahlungsmittel akzeptiert wurden, sind passé; jetzt schlucken sie auch problemlos Papier- und Plastikgeld – und Wechselgeld wird ausgespuckt.
+
+Das Parken wurde immer teurer. Und längst dienten die eingenommenen Beträge nicht mehr gemeinnützigen Zwecken. Sie wurden vielmehr als Einnahmeguelle entdeckt für die leeren Stadtkassen, die nach immer mehr Geld verlangten. Gut 2 Millionen Euro verdient zum Beispiel Duisburg in einem Jahr an den Parkgebühren. In Köln kommen etwa 10 Millionen Euro im Jahr zusammen. Noch einmal so viel Geld verdienen die Städte an den "Knölchen" für falsches Parken.
+
+Aus 10 Pfennig für eine Stunde im Jahr 1954 – das wären heute etwa 5 Cents – sind inzwischen weit höhere Beträge geworden. Spitzenreiter in Deutschland sind Düsseldorf und Berlin mit mehreren Euro pro Stunde. Tendenz steigend. Doch aus dem Kölner Rathaus heißt es an alle sich beschwerenden Autofahrer gerichtet, das Geld werde selbstverständlich zweckgebunden verwendet: für den Bau neuer Straßen. An denen neue Parkscheinautomaten stehen?`,
+                questions: [
+                    {
+                        id: "q1",
+                        question: "Die ersten Parkuhren Europas standen",
+                        options: [
+                            "in der Schweiz und in Deutschland.",
+                            "in der Schweiz und in Schweden.",
+                            "in Deutschland und in Schweden."
+                        ],
+                        correctAnswer: "in der Schweiz und in Schweden."
+                    },
+                    {
+                        id: "q2",
+                        question: "Früher wurden in Duisburg die Parkgebühren verwendet, um",
+                        options: [
+                            "Bedürftige zu unterstützen.",
+                            "Dauerparker aus den Stadtzentren zu vertreiben.",
+                            "Löcher im städtischen Haushalt zu stopfen."
+                        ],
+                        correctAnswer: "Bedürftige zu unterstützen."
+                    },
+                    {
+                        id: "q3",
+                        question: "Die ersten Parkuhren",
+                        options: [
+                            "funktionierten problemlos.",
+                            "gaben nur Groschen zurück.",
+                            "konnten nur Münzen annehmen."
+                        ],
+                        correctAnswer: "konnten nur Münzen annehmen."
+                    },
+                    {
+                        id: "q4",
+                        question: "Die neuen Parkscheinautomaten",
+                        options: [
+                            "funktionieren nur bargeldlos.",
+                            "geben kein Wechselgeld zurück.",
+                            "sind flexibel im Hinblick auf die Art der Bezahlung."
+                        ],
+                        correctAnswer: "sind flexibel im Hinblick auf die Art der Bezahlung."
+                    },
+                    {
+                        id: "q5",
+                        question: "In Berlin und in Düsseldorf",
+                        options: [
+                            "fließen die Parkgebühren nur in den Straßenbau.",
+                            "nimmt die Zahl der Parkscheinautomaten zu.",
+                            "werden die höchsten Parkgebühren verlangt."
+                        ],
+                        correctAnswer: "werden die höchsten Parkgebühren verlangt."
+                    }
+                ]
+            },
+
+            // Lesen Teil 3 - البيانات المحدثة من GELD.html
+            situations: [
+                {
+                    id: "11",
+                    text: "Ein Bekannter hat Gartenbau studiert und sucht eine Stelle als Gartenbau-Ingenieur in einem Botanischen Garten.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "12",
+                    text: "Ein Kollege sammelt Bücher über Gartengestaltung in unterschiedlichen Ländern und Epochen.",
+                    correctAnswer: "H"
+                },
+                {
+                    id: "13",
+                    text: "Eine Kollegin interessiert sich für Kultur- und Stadtgeschichte.",
+                    correctAnswer: "E"
+                },
+                {
+                    id: "14",
+                    text: "Ihr Nachbar beschäftigt sich gerne mit Architektur. Er möchte an einem freien Nachmittag spazierengehen und dabei interessante Bauwerke ansehen.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "15",
+                    text: "Ihr Onkel möchte auf einer Weltreise berühmte Park- und Gartenanlagen besichtigen.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "16",
+                    text: "Ihre Mutter möchte den Garten neu gestalten und sucht Tipps aus der Praxis.",
+                    correctAnswer: "I"
+                },
+                {
+                    id: "17",
+                    text: "Ihre Nichte studiert Kunst und möchte sich Bilder mit Naturmotiven ansehen.",
+                    correctAnswer: "F"
+                },
+                {
+                    id: "18",
+                    text: "Ihre Schwester sucht einen Garten, in dem sie sich von ihrem anstrengenden Beruf erholen kann.",
+                    correctAnswer: "C"
+                },
+                {
+                    id: "19",
+                    text: "Ihre Tante möchte exotische Vögel beobachten.",
+                    correctAnswer: "D"
+                },
+                {
+                    id: "20",
+                    text: "Sie möchten mit Ihrem zehnjährigen Sohn in der freien Natur einen abenteuerlichen und unterhaltsamen Nachmittag verbringen.",
+                    correctAnswer: "B"
+                }
+            ],
+
+            ads: [
+                {
+                    id: "A",
+                    title: "Die 'Gärten der Welt'",
+                    content: "Die 'Gärten der Welt' sind zehn Themengärten, die im Erholungspark Marzahn angelegt sind. Auf 43 Hektar laden sie zu einer Reise durch verschiedene Teile der Welt und Epochen ein. Zu besichtigen sind chinesische, japanische, europäische und auch orientalische Gartenkunst. Brücken: Brunnen, Pavillons und Gebäude wie ein chinesisches Technus, zeigen die Bautradition der verschiedenen Gartenkulturen. Über das Parkgelände verteilen sich Wiesen, Blumenbeete, Spiel- und Liegewiesen."
+                },
+                {
+                    id: "B",
+                    title: "Irrgarten in Vinjan",
+                    content: "Nach rechts, nach links oder geradeaus? Der in einer idyllischen Landschaft gelegene Irrgarten in Vinjan Jädt Groß und Klein, Jung und Alt ein, sich auf die Suche nach dem richtigen Weg zu begeben. Kinder und Erwachsene irren durch zahlreiche Ganze und Sackgassen zwischen hohen Hecken. Und nicht alle Wege führen zum Aussichtsturm in der Mitte. Doch bisher hat noch jeder hinausgefunden. Mit einer Weglänge von 4 km bietet das Labyrinth Spannung und Nervenkitzel auch für Erwachsene. Ein Freizeitspaß für die ganze Familie."
+                },
+                {
+                    id: "C",
+                    title: "Kleingartenverein Engers",
+                    content: "Obst und Gemüse im Garten anbauen - das ist auch möglich, wenn Sie in der Stadt leben. Wenn Ihnen ein paar Blumenkästen auf dem Balkon nicht genug sind, Sie gerne draußen Ihre Freizeit verbringen und sich auf Ihrer Wiese sonnen möchten! dann werden Sie Mitglied im Kleingartenverein Engers. Wie verfügen über eine Anlage mit insgesamt 103 Kleingärten. Zum Jahresende werden einige Gärten frei, die neu vergeben werden können. Wenn Sie gerne einen Kleingarten bewirtschaften möchten, nehmen Sie mit uns Kontakt auf."
+                },
+                {
+                    id: "D",
+                    title: "Palmengarten Frankfurt",
+                    content: "Palmen in der Großstadt. Mitten in Frankfurt können Besucher Pflanzen und Gewächse aus allen Teilen der Welt entdecken. Zwischen Spazierwegen, Liegewiesen, Grünflächen und Blumenbeete finden sich in dem 1868 gegründeten Palmengarten verschiedene thematische Gärten und Gewächshäuser. Wenn der Besucher das 18 m hohe Palmenhaus betritt, findet er sich in einer subtropischen Landschaft mit riesigen Palmen wieder. In großzügigen Käligen flattern Papageien, Kakadus und Nymphenstitche tropische Fische lassen sich in Aquarien bestaunen. Ein ständig wechselndes Ausstellungsprogramm bietet Blumenschauen, Führungen, Vorträge und Konzerte."
+                },
+                {
+                    id: "E",
+                    title: "Badekultur in Frankfurt",
+                    content: "Baden und Schwimmen ist nicht nur gesund, sondern bereitet Kindern und Erwachsenen viel Freude! Und das nicht erst seit gestern: Schon im Mittelalter kannte man Badestuben oder erfrischte sich bei einem Flussbad im Main. Badehäuser und Schwimmbäder gehören zum Stadtbild und legen Zeugnis ab von der Kultur und Architektur ihrer Epoche. Die kulturhistorische Ausstellung 'Badekultur in Frankfurt' zeigt anhand vieler Fotos: Abbildungen und Karten die lange Tradition des Badewiesens in der Stadt! Sie ist noch bis September im ehemaligen Karmeliterkloster zu besichtigen."
+                },
+                {
+                    id: "F",
+                    title: "Gartenglück - Gartenbilder Ausstellung",
+                    content: "Erholung vom Alltagsstress und Ruhe findet man im Garten, bei der Arbeit an der frischen Luft. Doch seit Jahrhunderten beflügeln Gärten auch die Phantasie der Maler und lassen diese zwar nicht zum Spaten, aber doch zum Pinsel greifen. Die Ausstellung 'Gartenglück' widmet sich Gartenbildern: Die Kuratoren haben über 100 herausragende Gemälde und Zeichnungen aus. Museen und Privatsammlungen zusammengetragen. Zu sehen sind Exponate vom Mittelalter bis zur Gegenwart. Diese zeigen, welche Bedeutung dieser idyllische Ort für Künstler hatte: In ihren Werken halten sie die Schönheit der vom Menschen gestalteten Natur fest."
+                },
+                {
+                    id: "G",
+                    title: "Blumenaquarelle Kurs",
+                    content: "Blumenaquarelle. Blumen gehören in der Malerei zu den beliebtesten Motiven. Sie faszinieren durch ihre Farben, zieren Fensterbänke und Balkons, finden sich auch in der Großstadt in Parkanlagen. Wir haben sie zwar immer vor Augen, doch es ist nicht leicht, sie bildlich festzuhalten. In diesem Kurs lernen Sie, wie Ihnen dies gelingt: Sie erfahren, wie man Blumen und Blüten detailgetreu und lebendig farbig darstellen kann. Grundkenntnisse zu Aquarellmaltechniken und Erfahrung in der Aquarellmalerei sind für die Teilnahme notwendig."
+                },
+                {
+                    id: "H",
+                    title: "Meisterwerke der Gartenarchitektur",
+                    content: "Meisterwerke der Gartenarchitektur. Gärten sind Paradiese von Menschenhand: Natur und Architektur werden eins. Von den Gärten der Antike ausgehend, präsentiert dieser Bildband große historische Gartentypen darunter den italienischen Französischen und englischen Garten ebenso wie die Wunderwelt des chinesischen Gartens sowie die japanische Gartenkunst. Spektakuläre Fotografien erlauben auch Einblicke في kleine private Gärten und verborgene königliche Hofgärten. Der Abschluss bilden Gärten der Moderne."
+                },
+                {
+                    id: "I",
+                    title: "Gartenbau heute",
+                    content: "Einen Garten ganz nach den eigenen Vorstellungen anlegen. Gemüse anbauen, die Schönheit von Blumen und Ziersträuchern geniezen: Das wünschen sich viele Hobbygärtner. Das Buch 'Gartenbau heute' gibt Anfängern wie auch erfahrenen Gärtnern wertvolle Anleitungen zur praktischen Umsetzung. Es enthält zahlreiche Beispiele, umfangreiches Bildmaterial sowie graphische Darstellungen. Der Autor ist Gartenbau-Ingenieur und erklärt alles über Gartenstile, die Planung und den Entwurf eines Gartens bis hin zur Begflanzung. Außerdem werden Hinweise zur modernen Gartenarchitektur gegeben."
+                },
+                {
+                    id: "J",
+                    title: "Kletterwald Höhr-Grenzhausen",
+                    content: "Im Kletterwald Höhr-Grenzhausen erwartet Kletterfreunde ein Abenteuer der besonderen Art. Fünf Routen mit unterschiedlichen Schwierigkeitsgraden führen in bis zu 18 m Höhe. Erwachsene und Jugendliche ab 14 Jahren finden hier eine spannende Herausforderung in einer Welt aus Seilen, Brücken, Rutschen und Plattformen, und das alles inmitten einer traumhaften Waldkulisse. In unserem Seilpark erwarten Sie Unterhaltung, Bewegung in der freien Natur und vieles mehr. Klettererfahrung ist nicht notwendig. Die Kletterausrüstung wird gestellt und Sie werden von einem professionellen Trainier begleitet."
+                },
+                {
+                    id: "K",
+                    title: "Gefiederte Gäste im Garten",
+                    content: "Wer flattert denn da in meinem Garten herum? Vögel zu beobachten macht vielen Hobby-Gärtnern große Freude. In dem Ratgeber 'Gefiederte Gäste im Garten' finden Sie ausführliche Porträts der verschiedenen Arten und zahlreiche nützliche Ratschläge. Außerdem erfahren Sie, wie Sie Gartenvögel durch Nistkästen, Futter, das Schaffen von Trink- und Badeplätzen unterstützen und sie vor Gefahren schützen können. Das Buch informiert auch über typische Verhaltensweisen der Vögel und liefert faszinierende Einblicke in die heimische Vogelwelt."
+                },
+                {
+                    id: "L",
+                    title: "Botanischer Garten Koblenz - Ausbildung",
+                    content: "Der Botanische Garten in Koblenz bildet seit vielen Jahren erfolgreich Gärtner aus. Zu den zahlreichen Vorteilen, die dieser Ausbildungsplatz zu bieten hat, gehört die Vielfalt seltener Pflanzenarten, die die Auszubildenden dort entdecken und studieren können. Außerdem arbeiten sie in einem Team aus erfahrenen Gärtnern, die ihnen beratend zur Seite stehen. Voraussetzung für die Ausbildung ist ein Realschulabschluss. Die Ausbildung dauert in der Regel drei Jahre. Da die meisten Arbeiten im Freien erfolgen, sind körperliche Fitness und Freude an körperlicher Betätigung ebenfalls Voraussetzung für diese Tätigkeit."
+                }
+            ],
+
+            // Sprachbausteine Teil 1 من GELD.html
+            blankText1: {
+                content: `Liebe Ida,
+nun ist es schon drei Monate her, dass ich nach Frankfurt gezogen bin. Es hat ziemlich lange gedauert, bis ich mich hier eingelebt habe. Am Anfang hatte ich mich auch gar nicht ________ die neue Stelle und das Leben in der Stadt gefreut.
+Dass ich mich für meine neue Arbeitsstelle umgezogen war, hatte mich eine Zeitlang sogar ein bisschen geärgert. Ich ________ ja auch täglich mit dem Zug fahren können, statt mir eine Wohnung in der Nähe der Firma zu suchen. Zuerst habe ich ________ in meiner neuen Wohnung auch gar nicht richtig wohlgefühlt. Aber nachdem ich meine Umzugskartons ________ konnte ich endlich die Stadt richtig erkunden.
+Seit einiger Zeit gefällt es mir in Frankfurt nun richtig gut. Das liegt vor allem ________, dass ich eine neue Freundin gefunden habe. Annabelle wohnt in derselben Straße wie ich und wir haben uns auf einem Flohmarkt in unserem Stadtviertel kennengelernt. Sie hat dort ihre alten Bücher verkauft. Als wir ________ ins Gespräch kamen, haben wir festgestellt, dass wir ähnliche Interessen und Hobbys teilen: Sie mag ebenfalls ausgefallene Mode und moderne Kunst und wir gehen nun regelmäßig zusammen ins Schwimmbad.
+Mein Leben sieht nun also ganz anders aus ________ noch vor drei Monaten. Mit meiner neuen Stelle bin ich auch zufrieden, ________ ich oft Überstunden machen muss. Dafür herrscht jedoch ein angenehmes Betriebsklima ________ uns in der Abteilung.
+Jetzt habe ich viel von mir erzählt, aber Dich noch gar nicht gefragt, wie es Dir ________ geht. Gibt es etwas Neues bei Dir? Ich freue mich auf Deine nächste Mail!
+Herzliche Grüße
+Deine Emilia`,
+                options: [
+                    ["an", "auf", "über"],      // 21
+                    ["habe", "hätte", "würde"],           // 22
+                    ["dich", "uns", "mich"],      // 23
+                    ["ausgepackt habe", "ausgepackt hatte", "auspackte"],         // 24
+                    ["daran", "darauf", "darin"], // 25
+                    ["einander", "gegeneinander", "miteinander"],          // 26
+                    ["als", "dann", "wenn"],          // 27
+                    ["obwohl", "trotzdem", "während"], // 28
+                    ["bei", "mit", "zu"],                 // 29
+                    ["eigentlich", "sicher", "sicherlich"]                // 30
+                ],
+                answers: ["auf", "hätte", "mich", "ausgepackt hatte", "daran", "miteinander", "als", "obwohl", "bei", "eigentlich"]
+            },
+
+            // Sprachbausteine Teil 2 من GELD.html
+            blankText2: {
+                content: `Ausbildung mit über 30
+Die gelernte Krankenschwester Jaqueline Delgado drückt mit 38 Jahren noch einmal die Schulbank. ________ sie hat sich für einen beruflichen Neustart entschieden. Da ihr früherer Beruf ihr keinen Spaß mehr machte, begann sie eine Berufsausbildung bei der Polizei. Ihr Ziel: Sie ________ in den Streifendienst gehen.
+Mit über 30 noch einmal einen ganz neuen Job zu erlernen – lange Zeit war das kaum möglich. Arbeitgeber suchten nur junge Berufseinsteiger. ________ es heute in vielen Branchen aber an Nachwuchs fehlt, geben sie öfter auch Älteren eine ________.
+Thomas Neuendorfer, der stellvertretende Sprecher der Polizei Berlin, erklärt, ________ sein Arbeitgeber gerne Ältere ausbildet: "Sie haben in ihrem Berufsleben Erfahrungen gesammelt, die der Polizei und auch den Bürgern der Stadt zu Gute kommen". Sie seien häufig emotional reifer, außerdem bereit, Verantwortung zu ________ und motiviert, die Ausbildung erfolgreich abzuschließen. Zudem ________ sie die Jüngeren unterstützen und ihnen als Vorbild dienen. Davon profitierten dann auch die Arbeitgeber. Gegen die Einstellung von Älteren spreche nur, dass sie dem Unternehmen kürzer vor ________ stehen. ________ haben ältere Azubis in vielen Bereichen Möglichkeiten: in kaufmännischen oder in gewerblich-technischen Berufen, im Gesundheitswesen oder vor allem in der Gastronomie.
+Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeitsagentur. Der Betrag wird dabei nicht nach dem Alter festgelegt. ________ es wird der individuelle, konkrete Bedarf ermittelt. Im August schließt Delgado ihre Ausbildung ab. In dem künftigen Polizei–Job wird sie ihr medizinisches Wissen, ihre Menschenkenntnis sowie ihre spanischen und englischen Sprachkenntnisse wohlt gut gebrauchen können.`,
+                options: ["AUSWAHL", "CHANCE", "DA", "DAGEGEN", "DENN", "DÜRFTEN", "KÖNNTEN", "MÖCHTE", "SOLLTE", "SONDERN", "TROTZDEM", "ÜBERNEHMEN", "VERFÜGUNG", "WARUM", "ZIEHEN"],
+                answers: ["DENN", "MÖCHTE", "DA", "CHANCE", "WARUM", "ÜBERNEHMEN", "KÖNNTEN", "VERFÜGUNG", "TROTZDEM", "SONDERN"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${heading.id})</strong> ${heading.text}
+                `;
+                headingItem.dataset.letter = heading.id;
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Question ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
+            const blankText1 = document.getElementById('blankText1');
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText1.innerHTML = textWithBlanks1;
+
+            // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
+            const blankText2 = document.getElementById('blankText2');
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText2.innerHTML = textWithBlanks2;
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === letter) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+    </script>
+</body>
+</html>

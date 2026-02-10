@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LICHT - TEST B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .theme-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .answer-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
+        .question {
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.08);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.6rem 0;
+            padding: 0.8rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .dark-mode .option {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border: 1px solid #4CAF50;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border: 1px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .text-content {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        /* Lesen Teil 1 - تصميم محسن */
+        .headings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .heading-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .heading-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .ad-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .ad-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        .dark-mode .ad-letter {
+            color: #90CAF9;
+        }
+
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+        }
+
+        .dark-mode .ad-title {
+            color: var(--light);
+        }
+
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
+        .fill-blanks {
+            margin: 1.2rem 0;
+        }
+
+        .blank-text {
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .blank-text {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 6px;
+            transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .dark-mode .blank {
+            background: rgba(26, 35, 126, 0.8);
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border-color: #4CAF50;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* تحسينات للهواتف */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
+            }
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
+            }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
+        </div>
+        
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">LICHT - TEST B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
+            <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
+            <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الأسئلة والإجابات (مأخوذة من LICHT.html)
+        const examData = {
+            headings: [
+                {id: "a", text: "Wohnungsnot in Metropolen"},
+                {id: "b", text: "Was tun, wenn es Nacht wird? Lichtquellen vergangener Zeiten"},
+                {id: "c", text: "Warum Licht für unser Wohlbefinden wichtig ist"},
+                {id: "d", text: "Trend: Großstädter machen Urlaub im Wald"},
+                {id: "e", text: "Stadtbewohner leben umweltfreundlicher"},
+                {id: "f", text: "Stadtbewohner entdecken das Landleben"},
+                {id: "g", text: "Plötzlich geht das Licht aus was tun bei Stromausfall?"},
+                {id: "h", text: "Landbewohner fordern besseren öffentlichen Nahverkehr"},
+                {id: "i", text: "Die Auswirkungen künstlichen Lichts"},
+                {id: "j", text: "Der Wald als neues Zuhause"}
+            ],
+            
+            texts: [
+                {
+                    id: "text1",
+                    content: `Heute machen die elektrische Beleuchtung in Wohnhäusern, Straßenlaternen, Ampeln, Neonreklamen und Scheinwerferlicht draußen die Nacht fast zum Tag. Vor der Erfindung der Elektrizität war das anders: Der Arbeitstag der Menschen wurde von den Jahreszeiten und vom Tageslicht bestimmt. Gearbeitet wurde von Sonnenaufgang bis Sonnenuntergang. Danach war Beleuchtung nur mit anderen Hilfsmitteln wie z. B. Feuer, Kerzen und Petroleum möglich. Das Museum für Dorfkultur in Wenheim zeigt in einer Sonderausstellung, wie sich das Landleben früher nach Einbruch der Dunkelheit gestaltete. Man erfährt am Beispiel der Hausarbeit, wie mühsam es war, das Feuer nicht ausgehen zu lassen, oder wie schwierig es war, in dunklen Räumen zu arbeiten. Es geht um die Bedeutung der wechselnden Lichtszenen und darum, wie sich Beleuchtung und elektrische Lichterfindung entwickelt haben.`,
+                    correctAnswer: "b",
+                    correctAnswerText: "b) Was tun, wenn es Nacht wird? Lichtquellen vergangener Zeiten"
+                },
+                {
+                    id: "text2",
+                    content: `Jahrelang zog es vor allem junge Berufstätige stark in die großen Städte. Dort gab es more Arbeitsplätze und ein besseres Freizeitangebot. Auf dem Land hingegen wurde der öffentliche Nahverkehr schlechter, Schulen schlossen, Läden machten zu. Doch seit einiger Zeit beobachten Forscher eine gegenteilige Bewegung: Immer mehr Menschen verlassen die Metropolen und ziehen wieder zurück in ländliche Regionen. Sie genießen die Ruhe, die Nähe zur Natur, die Freundlichkeit der Nachbarn und die niedrigeren Mieten. So erlebt das Landleben eine Renaissance, während die Städte durch die wachsende Bevölkerung unter Wohnungsknappheit leiden.`,
+                    correctAnswer: "f",
+                    correctAnswerText: "f) Stadtbewohner entdecken das Landleben"
+                },
+                {
+                    id: "text3",
+                    content: `Satellitenbilder der Erde bei Nacht zeigen ein strahlendes Lichtermeer, das sich fast durchgehend über alle Erdteile erstreckt. Seit der Erfindung der Glühbirne steht Licht für Wohlstand und Fortschritt. Die Städte sind nachts hell erleuchtet – nicht immer zum Vorteil von Mensch und Umwelt. Denn zu viel Licht hat Folgen für Menschen und Tiere. An Straßenlaternen verenden jedes Jahr Milliarden von Insekten, Zugvögel verlieren die Orientierung, und selbst der Mensch wird durch das Kunstlicht um einen gesunden Schlaf gebracht. Wissenschaftler sprechen bereits von einem massiven 'Lichtverschmutzung'. Weltweit gehen Forscher jetzt der Frage nach, wie sich die Lichtflut auf den gesamten Organismus auswirkt. Dabei arbeiten Physiker, Biologen, Mediziner und Ingenieure eng zusammen. Ziel: ein neues, intelligentes Licht, das weder die Nachtruhe stört noch die Umwelt belastet.`,
+                    correctAnswer: "i",
+                    correctAnswerText: "i) Die Auswirkungen künstlichen Lichts"
+                },
+                {
+                    id: "text4",
+                    content: `Vor zehn Jahren lebten Dirk und Antje Seebens noch in Mannheim, mitten in der Stadt. Dann kauften sie sich ein Wochenendhaus im Wald. Als Antje it zufällig entdeckte, war sie sofort begeistert. 'Plötzlich hatten wir einen eigenen Ort gefunden, an dem wir am Wochenende dem Stadtleben entfliehen konnten', erinnert sich Dirk. Besonders gefiel ihnen, dass es dort weder Strom noch fließendes Wasser gab. Das war für sie ein Abenteuer. Heute verbringen sie dort so viel Zeit wie möglich. Im Laufe der Jahre bauten sie das Haus um. Das Dach liefert Strom, eingesammelt durch eine Solaranlage. Die Brunnen auf dem Grundstück versorgen sie mit Wasser.`,
+                    correctAnswer: "j",
+                    correctAnswerText: "j) Der Wald als neues Zuhause"
+                },
+                {
+                    id: "text5",
+                    content: `Wer verbringt nicht gerne sein Wochenende fernab der Stadt? Im Grünen, wo noch Wiesen und Schmetterlinge zu finden sind, wo Wälder rauschen und Bäche fließen. Genau das tat auch Dirk: Dort braucht man nicht einmal ein Auto, um die Natur zu erleben. Für viele Stadtbewohner ist it die beste Möglichkeit, für kurze Zeit dem hektischen Alltag zu entkommen. Besonders Familien mit Kindern schätzen es, wenn sie ihre Freizeit in der natur verbringen können. Untersuchungen zeigen, dass ein Aufenthalt im Grünen den Stress abbaut, die Konzentration fördert und die Gesundheit stärkt. Immer mehr Großstädter suchen daher Erholung in der natur.`,
+                    correctAnswer: "d",
+                    correctAnswerText: "d) Trend: Großstädter machen Urlaub im Wald"
+                }
+            ],
+
+            longText: {
+                content: `Und das nicht nur in Seen, Teichen oder Freibädern, Ein Blick aber die Gar tenzlune des tandes macht deutlich: Die Oster reicher schwimmen zunehmend gerne zu Hause, Die Poolbranche schätzt die Anzahl der Poolbe sitzer ni Osterreich auf etwa 90.000 bis 150,000. Im Vergleich zu Deutschland ist Österreich we sentlich dichter mit Pools besiedelt. Warum Swimmingpools so beliebt sind, darüber herrscht Uneinigkeit. Manche Vertreter der Branche sehen darin eine Reaktion auf wirtschaftlich unsichere Zeiten, Da investierten die Leute gerne in die eigenen vier Wände und in den Garten inklusive Pools, meinen sie. Other sehen darin einen Ausdruck des allgemeinen Wellness und Gesundheitstrends. Auch die Sehnsucht nach dem Meer wird bisweilen als Argument für den ausgeprägten Wunsch nach einem Pool vorgebracht. Das allein kann es aber wohl nicht sein, denn als stärkster Poolmarkt ni Europa gilt nach wie vor Frankreich. Branchenkenner führen den Boom aber auch auf finanzielle Gründe zurück. Dass der Umsatz in den vergangenen Jahren stetig angestiegen ist, sehen viele im Angebot an preisgünstigen Pools begründet. Vor 20 Jahren sei ein eigenes Schwimmbad noch ein absolutes Luxusgut gewesen, Jetzt gebe es immer more Alternativen, die einen Pool erschwinglich machen.
+
+Welche Gründe auch ausschlaggebend sein mögen: Die Branche besitzt durchaus noch Potenzial, da sind sich alle einig. Laut einer kürzlich durchgeführten Studie träumt nämlich beinahe jeder zweite Österreicher von einem Pool. An erster Stelle der Wohnungswünsche steht er zwar nicht: So hat für 97 Prozent der befragten Osterreicher die Traumimmobilie einen Balkon, eine Loggia oder eine Terrasse, und 92 Prozent wünschen sich eineGarage. 82 Prozent sehnen sich nach einem Garten, und 46 Prozent nach einem Swimmingpool und zehn Prozent besitzen auch einen solchen, Dabei gibt es regionale Unterschiede, In absoluten Zahlen gibt es die meisten Pools ni Wien und Niederösterreich. Pro Kopf gerechnet gibt es aber ni Vorarlberg die meisten privaten Schwimmbäder. Einen nagelneuen Pool hat auch die 37-jährige Rija in ihrem neuen Zuhause. Die Wienerin ist mit ihrem Lebensgefährten vor kurzem nach Niederösterreich gezogen. Es war immer mein Traum, einen Pool zu haben", sagt sie. Nun kann sie den Sommer mi eigenen Pool genießen. Neben derEntspannung und Abkühlung hat der Pool für sie noch einen weiteren Wert: „Der Pool hat Leben in den Garten gebracht. Es haben sich schon alle möglichen Bekannten zum Schwimmen angemeldet, sagt sie, „Denen drück ich aber vorher einen Spaten in die Hand ein Teil Garten ist ja noch Baustele." Tatsächlichschweißt so ein Pool nicht nur die Nachbarschaft zusammen, Es ist auch die beste Werbung für weitere Becken, „Kaum hat einer i einer Siedlung einen Pool, hat der Nachbar spätestens nach zwei Jahren auch einen, meint ein Branchenvertreter.
+
+Besonders deutlich wird das in Kleingartensiedlungen, bei denen ein kleines Schwimmbecken schon beinahe zur Grundausstattung gehört. Doch manche Menschen bevorzugen naturnahe Schwimmteiche. Nach Schätzungen macht d Anteil der Schwimmteiche am Schwimmanlagenmarkt rund 15 Prozent aus, In den vergangenen Jahren ist die Nachfrage nach Schwimmteichen stark gestiegen, Das hat auch zur von Naturpools geführt. Optisch ein klassischer Swimmingpool, kommt der Naturpool gänzlich ohne Chemikalien aus, Hier wird das Wasser durch Pumpen und Filtersysteme sauber gehalten, Bei der natürlichen Variante geht es übrigens bei 35.000 Euro los. Dafür spart man sich das Entwicklung jährliche Befüllen und Putzen. Das jährliche Befüllen von Pools aus den Wasserleitungen kann in manchen Regionen gelegentlich zu Wasserknappheit führen. Das betrifft aber meist nur jene Gemeinden, die von sehr kleinen Wassergenossenschaften versorgt werden. In Wien fällt die Befüllung der Pools kaum auf. Was den Leiter des Wiener Rohmetzes eher stört, ist der Wasserdiebstahl über Hydranten, also über die Zapfstellen in den Straßen für Feuerwehr und Straßenreinigung. Denn wer es besonders eilig hat, kann seinen Pool auch über die Hydranten befüllen,Das geht schneller, muss aber angemeldet werden und kostet Geld. Generell gebe es aber keine Wasserknappheit. Es sei genug Wasser für alle da, so die Wasserversorger. Fürs Auffüllen von Pools, aber auch fürs Blumengießen, zum Duschen und auch zum Trinken: Wir verwenden in Österreich nur ein Prozent der vorhandenen Wasserressourcen. "`,
+                questions: [
+                    {
+                        id: "q1",
+                        question: "Einige Vertreter der Poolbranche denken, dass:",
+                        options: [
+                            "es in Österreich bald mehr Pools gibt als in Frankreich.",
+                            "in unsicheren Zeiten weniger investiert wird.",
+                            "mehr Leute einen Pool bauen, weil Pools billiger geworden sind."
+                        ],
+                        correctAnswer: "mehr Leute einen Pool bauen, weil Pools billiger geworden sind."
+                    },
+                    {
+                        id: "q2",
+                        question: "Laut einer Studie:",
+                        options: [
+                            "möchten die meisten Befragten ein Heim mit Garage.",
+                            "steht ein Pool nicht an erster Stelle auf der Wunschliste.",
+                            "wünschen sich 10 Prozent der Österreicher einen Pool."
+                        ],
+                        correctAnswer: "steht ein Pool nicht an erster Stelle auf der Wunschliste."
+                    },
+                    {
+                        id: "q3",
+                        question: "Rija ist der Meinung, dass:",
+                        options: [
+                            "ein Pool die Nachbarn neidisch macht.",
+                            "ihr Pool ein Anziehungspunkt für Freunde geworden ist.",
+                            "ihre Freunde beim Poolbau helfen sollen."
+                        ],
+                        correctAnswer: "ihr Pool ein Anziehungspunkt für Freunde geworden ist."
+                    },
+                    {
+                        id: "q4",
+                        question: "Naturpools:",
+                        options: [
+                            "brauchen keine chemischen Reinigungsmittel.",
+                            "müssen häufig geputzt werden.",
+                            "sehen genauso aus wie Schwimmteiche."
+                        ],
+                        correctAnswer: "brauchen keine chemischen Reinigungsmittel."
+                    },
+                    {
+                        id: "q5", 
+                        question: "In Wien:",
+                        options: [
+                            "darf man einen Pool nur mit Wasser aus der Leitung füllen.",
+                            "führt das Befüllen von Pools regelmäßig zu Wasserknappheit.",
+                            "wird manchmal Wasser zum Befüllen von Pools gestohlen."
+                        ],
+                        correctAnswer: "wird manchmal Wasser zum Befüllen von Pools gestohlen."
+                    }
+                ]
+            },
+
+            // Lesen Teil 3 - البيانات المحدثة من LICHT.html
+            situations: [
+                {
+                    id: "11",
+                    text: "Ein Bekannter interessiert sich für Tierdokumentationen und würde gerne wissen, wie solche Filme entstehen.",
+                    correctAnswer: "C"
+                },
+                {
+                    id: "12",
+                    text: "Eine Bekannte würde gerne gemeinsam mit einer Gruppe im Wald wandern gehen.",
+                    correctAnswer: "G"
+                },
+                {
+                    id: "13",
+                    text: "Ihr Onkel möchte sich eine Ausstellung mit Gemälden ansehen.",
+                    correctAnswer: "L"
+                },
+                {
+                    id: "14",
+                    text: "Ihr siebenjähriger Neffe liebt Phantasievolle Geschichten. Sie wollen nachmittags etwas mit ihm unternehmen.",
+                    correctAnswer: "E"
+                },
+                {
+                    id: "15",
+                    text: "Ihr Sohn wird nächste Woche zehn Jahre alt. Sie möchten ihn mit einer besonderen Feier überraschen.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "16",
+                    text: "Ihre 16 jährige Nichte interessiert sich für heimische Tierwelt und würde sich gerne einen Film ansehen.",
+                    correctAnswer: "I"
+                },
+                {
+                    id: "17",
+                    text: "Ihre zehnjährige Tochter zeichnet viel und möchte ihre Fähigkeiten weiter verbessern.",
+                    correctAnswer: "F"
+                },
+                {
+                    id: "18",
+                    text: "Sie möchten einen Vortrag über bedrohte Tiere und Naturschutz besuchen.",
+                    correctAnswer: "D"
+                },
+                {
+                    id: "19",
+                    text: "Sie suchen ein Geschenk für einen Freund, der sich für Kunst interessiert.",
+                    correctAnswer: "B"
+                },
+                {
+                    id: "20",
+                    text: "Sie würden gerne abends etwas mit Freunden draußen unternehmen und dabei sportlich aktiv sein",
+                    correctAnswer: "H"
+                }
+            ],
+
+            ads: [
+                {
+                    id: "A",
+                    title: "Auf den Spuren der Wildkatze",
+                    content: "Im Wildkatzendorf Hütscheroda, am National Park Hainich gelegen, erfahren Sie alles über die scheuen Tiere. Hautnah beobachten können Sie sie in der Schauanlage 'Wildkatzenlichtung'. Hier wird auf Informationstafeln auch das 'Rettungsnetz für die Wildkatze' vorgestellt, eines der größten Naturschutzprojekte Europas. Täglich finden Schaufütterungen statt, für die man sich telefonisch anmelden kann. Für die Kleinen haben wir ein spannendes Angebot: Das Wildkatzendorf richtet Kindergeburtstage mit einem bunten Programm aus und bietet spezielle Kinderführungen an. Öffnungszeiten: täglich von 10 bis 18 Uhr."
+                },
+                {
+                    id: "B",
+                    title: "Ausstellung im Park",
+                    content: "Schon zum dritten Mal stellen am Pfingst-Wochenende Künstler aus der Region im Kurpark Bad Homburg ihre Exponate aus. Gezeigt werden Zeichnungen, Keramiken, Schmuck, Textilarbeiten sowie zahlreiche Holzskulpturen. Sie können mit den Künstlern ins Gespräch kommen und ihnen beim Arbeiten vor Ort über die Schulter blicken! Einen schön gestalteten Bildband mit Werken der ausstellenden Künstler erhalten Sie in der Buchhandlung am Park und der Touristeninformation für 30 €. Öffnungszeiten: 31. Mai und 1. Juni von 11 bis 19 Uhr. Der Eintritt ist frei!"
+                },
+                {
+                    id: "C",
+                    title: "Am 1. August zeigen wir den 90-minütigen Film „Der Natur auf der Spur\"",
+                    content: "Dieser begleitet fünf der besten und erfolgreichsten Tierfilmer der Welt auf ihren Reisen rund um den Globus. Sie alle versuchen, vor beeindruckenden Naturkulissen außergewöhnliche Tieraufnahmen einzufangen. Die Leidenschaft für ihre Filme lässt die Filmemacher große Anstrengungen und Gefahren in Kauf nehmen. In dem Film erfahren Sie nicht nur, wie Tierfilmer arbeiten, sondern auch, welche technische Ausstattung sie einsetzen und wie die Dreharbeiten vorbereitet werden. Filmabend der VHS Buchholz, 1.8., Beginn: 19 Uhr Eintritt: 5 €."
+                },
+                {
+                    id: "D",
+                    title: "Entspannte Sommernächte",
+                    content: "Genießen Sie sechs Tage Filmvergnügen unter dem Sternenhimmel, in bequemen Liegestühlen vor einer nächtlichen Naturkulisse. Besuchen Sie unser Open-Air-Filmfestival mitten im Wald: von Montag, 17.08., bis Samstag, 22.08. im Waldpark Schlosshofen. Wir präsentieren Ihnen Komödien, Science-Fiction und Abenteuerfilme für Erwachsene und Kinder ab 12 Jahren. Das Filmprogramm erhalten Sie an allen Informationsstellen der Stadt Schlosshofen und im City-Kino. Eintritt: 12 €, ermäßigt 7 €."
+                },
+                {
+                    id: "E",
+                    title: "Schon lange lebt Kaninchen Hoppi mit seiner Familie und vielen Freunden auf der Sonnenwiese",
+                    content: "Doch eines Tages kauft der reiche Herr Großkopf die Wiese und will aus ihr einen Golfplatz machen... Müssen die Kaninchen sich nun eine neue Heimat suchen? So schnell lassen sie sich jedenfalls nicht verjagen. Hoppi schmiedet einen Plan, damit die Kaninchen ihr Zuhause behalten können. „Hoppi gibt nicht auf\" ist ein Animationsfilm mit liebenswerten tierischen Helden, vielen originellen Ideen und märchenhaften Abenteuern für Kinder ab 6 Jahren. Stadtkino, täglich um 15 Uhr."
+                },
+                {
+                    id: "F",
+                    title: "Du bist gern kreativ und möchtest professionelle Mal- und Zeichentechniken erlernen?",
+                    content: "Dann haben wir genau das richtige Angebot für dich: „Junge Künstler\" - unser regelmäßiger Kurs für Nachwuchskünstler ab 10 Jahren. In einer kleinen Gruppe könnt ihr gemeinsam zeichnen und malen. Dozentin Rebecca Kling ist freischaffende Künstlerin und leitet Kreativkurse für Kinder und Jugendliche. Kurszeiten: jeden Dienstag von 14 bis 16 Uhr Kunstatelier Rebecca Kling Pestalozzistr. 53, 50767 Köln Anmeldung und Infos: rebecca@kunstatelier-kling.net"
+                },
+                {
+                    id: "G",
+                    title: "Mit einem scharfen Blick fürs Detail gestaltete der deutsch-baltische Maler Jürgen Freiherr v. Wolffshausen seine Landschafts- und Tierbilder",
+                    content: "Seine Liebe zur Natur, seine außergewöhnliche Beobachtungsgabe und seine präzise Maltechnik verleihen seinen Werken einen ganz besonderen Reiz. Sein Entdeckerdrang führte ihn u. a. nach. Äthiopien. Die Ausstellung, Natur im Porträt\" präsentiert die Werke des Maler und seine Biographie und gibt außerdem naturkundliche Informationen. Museum Lüneburg, 19. Februar bis 10. Juni Eintritt 3 €"
+                },
+                {
+                    id: "H",
+                    title: "Spiel, Spaß, Nervenkitzel",
+                    content: "Für alle Kinder und Jugendliche, die am Ende der Ferien noch etwas erleben wollen. Sommerfest im Wildpark. Live-Musik Bogenschießen Axtwerfen Baumklettern bis auf 20 Meter Höhe Seilrutsche für Kinder Riesenschaukel Wettsägen Kräuterbrot backen Basteln für Kinder und noch vieles more! Wildpark Rittersbach 12. und 13. September, von 10 bis 17 Uhr"
+                },
+                {
+                    id: "I",
+                    title: "Noch nicht lange ist es her, dass Wildkatzen in Europa weitverbreitet waren",
+                    content: "Heute sind sie fast überall verschwunden. Doch es gibt sie noch, auch wenn man sie nur selten zu Gesicht bekommt. Die Tierdokument Die Wildkatze in unseren Wäldern geht der Frage nach, ob das Tier bei uns überhaupt wieder heimisch werden kann. Hat es überhaupt eine Chance in unserer dicht besiedelten Landschaft? Und leben in unseren Wäldern noch echte Wildkatzen oder vielleicht nur verwilderte Hauskatzen? Denn äußerlich unterscheidet sich die Europäische Wildkatze kaum von einer getigerten Hauskatze. Der Film berichtet außerdem über ein Projekt zur Rettung der Wildkatze. Am 10.5. zeigen wir die Dokumentation in unserer Reihe „Filmabende im Rathaus\" um 19 Uhr."
+                },
+                {
+                    id: "J",
+                    title: "In der Dauerausstellung, Wege in die Natur erfahren Sie alles über den Nationalpark Bayerischer Wald",
+                    content: "eine der größten zusammenhängenden Waldflächen Europas. Warum ist der Wald wichtig für us? Und wer oder was lebt dort eigentlich? Über all das und noch viel more bekommen die Besucher beim Rundgang Informationen. In unserem Kino präsentieren wir außerdem ein abwechslungsreiches Filmprogramm. Ort: Besucherzentrum Nationalpark Bayeirscher Wald Öffnungszeiten: täglich von 9 bis 17 Uhr Der Eintritt ist frei"
+                },
+                {
+                    id: "K",
+                    title: "Heiße Rhythmen und kühle Drinks Am Samstag, dem 3. August, erwartet Sie im Waldschwimmbad Hainichen bei Rock am Pool ein Feuerwerk aus Musik und Unterhaltung",
+                    content: "Einlass zum Konzert ist ab 18:30 Uhr. Die Bands, Lion Poem\" und, Cosmos 1 heizen den Besuchern ordentlich ein. Das Konzertendet um 0:30 Uhr Dis 23 Uhr können die Besucher baden oder Beach-Volieyball spielen. Das Jugendzentrum Hainichen hat ein Programm für Jugendliche mit Lagerfeuer und Spielen vorbereitet. Für Essen und Getränke zu moderaten Preisen ist gesorgt Die Eintrittspreise: Erwachsene 8€ Kinder und Jugendliche von 7 bis 14 Jahren 6 €."
+                },
+                {
+                    id: "L",
+                    title: "Zeichenschule für Kinder Vom Kreis zum Schaf, vom Strich zum Krokodil",
+                    content: "Mit Björn Henkels Buch „Kinder zeichnen Tiere\" lernen die Kleinen, Schritt für Schritt ihre Lieblingstiere zu zeichnen. Aus einfachen Grundelementen entstehen lustige Tiereschaf, Katze und Wellensittich, Igel, Biber, Eichhörnchen und Waschbär. Erfolg und Spaß sind garantiert. Björn Henkel malt und zeichnet, seit er einen Stift halten kann. Nach seinem Studium der Kunstgeschichte lebt er heute als selbständiger Autor und lustrator in Bochum. Das Buch ist geeignet für Kinder zwischen 4 und 6 Jahren. Broschiert, 8 €"
+                }
+            ],
+
+            // Sprachbausteine Teil 1 (مأخوذ من LICHT.html)
+            blankText1: {
+                content: `Liebe Clara,
+             
+aus Lyon sende ich dir herzliche Grüße! Ich sitze gerade in einem gemütlichen, aber ziemlich vollen Bistro in der Altstadt und genieße meinen Urlaub. Nun ist es ja schon einige Monate her, dass wir zuletzt ________ gehört haben. Ich hoffe, es geht dir gut!
+Zurzeit mache ich eine Rundreise ________ Europa, die ich übrigens schon lange geplant hatte. ________ du weißt, habe ich in den letzten zwei Jahren sehr viel gearbeitet und konnte mir nur selten freinehmen. Nach dem ganzen Stress musste ich unbedingt mal eine längere Pause einlegen. Dank meiner gesammelten Überstunden kann ich nun acht Wochen Urlaub am Stück machen. Mein Chef ________ zuerst nicht gerade von dieser Idee begeistert, aber am Ende konnte ich ihn doch überzeugen. In den Sommermonaten ist ________ in der Firma ohnehin etwas ruhiger.
+Nun klappere ich nach und nach alle Städte ab, die auf der Liste meiner Traumziele stehen. Ich bin nur mit dem Zug oder Bus unterwegs, denn ich fliege ja nicht sehr gerne. Meine ________ Station war Amsterdam, dann ging es über Brüssel nach Lyon und bald werde ich weiter Richtung Süden reisen. Der Büroalltag fehlt mir wirklich überhaupt nicht. Ich möchte gar nicht ________ denken, dass ich irgendwann wieder an den Schreibtisch zurück ________. In den letzten Tages kam ________ manchmal der Gedanke, dass ich nach meiner Rückkehr auch etwas ganz Neues anfangen ________.
+Ich wünsche dir einen schönen Sommer!
+Herzliche Grüße und bis bald Mark`,
+                options: [
+                    ["miteinander", "voneinander", "zueinander"],      // 21
+                    ["durch", "über", "in"],                           // 22
+                    ["Als", "Weil", "Wenn"],                           // 23
+                    ["war", "würde", "wurde"],                         // 24
+                    ["es", "er", "man"],                               // 25
+                    ["erste", "ersten", "erst"],                       // 26
+                    ["daran", "darüber", "davon"],                     // 27
+                    ["kann", "mag", "muss"],                           // 28
+                    ["bei", "in", "mir"],                              // 29
+                    ["bräuchte", "dürfte", "könnte"]                   // 30
+                ],
+                answers: ["voneinander", "durch", "Wenn", "war", "es", "erste", "daran", "muss", "mir", "könnte"]
+            },
+
+            // Sprachbausteine Teil 2 (مأخوذ من LICHT.html)
+            blankText2: {
+                content: `Schönschrift ist wieder „in“
+Mit dem sogenannten SMS-Daumen erbringen Kinder heutzutage Höchstleistungen. Das Handgelenk hingegen schmerzt schnell, ________ Schreiben mit der Hand ungewohnt ist. Kinder haben damit in der Schule ________ mehr Probleme.
+Dennoch gibt es einen neuen Trend, der mit Handschrift zu ________ hat: Unter dem Hashtag Lettering finden sich auf Instagram über zwölf Millionen Beiträge.
+Beim Lettering werden Buchstaben auf kunstvolle Weise gezeichnet und dekoriert. Von der klassischen Schönschrift unterscheidet it sich dadurch, dass die einzelnen Buchstaben eher wie ________ als wie Wörter empfunden. Der visuelle Eindruck von Schrift und Bild ist entscheidend. Erfahrungen ________ hat auch die Wiener Designerin Nina Holler gemacht, die Schrift-Workshops für Kinder und Erwachsene anbietet. Auf ________ Weise vermittelt die Künstlerin das Thema Schrift
+             
+aus unterschiedlichen Zeitepochen bis hin zum handgezeichneten modernen Alphabet. So will sie dem persönlichen sprachlichen Ausdruck wieder ________ Tiefe verleihen. Der Künstlerin ist es ein Anliegen, ________ Kinder die Freude am Schreiben wiederentdecken. Die Schülerinnen und Schüler lernen durch Lettering nebenbei auch, coole Einladungen und Logos zu ________.
+Der Rhythmus mache den individuellen Ausdruck beim Schreiben mit der Hand aus. Es nütze wenig, an einzelnen Buchstaben zu üben, meint Nina Holler. Zu Beginn lässt sie daher ihre Schüler nur einzelne Elemente von Buchstaben schreiben, bis ihnen das flüssig von der Hand ________. So wird die Feinmotorik wieder gestärkt, die vielen Kindern abhandengekommen ist.
+Gerade Jugendlichen im Alter zwischen 13 und 15 Jahren biete die Auseinandersetzung mit Schrift eine Möglichkeit, die eigene Handschrift zu beurteilen und zu entwickeln. So sollen sie neue Wege finden, um sich auszudrücken.`,
+                options: ["DAMIT", "DAS", "DASS", "figuren", "FÜR", "GEHT", "GESTALTEN", "IMMER", "SPIELERISCHE", "SUCHEN", "UM", "VON", "WEIL", "WURDE"],
+                answers: ["WEIL", "IMMER", "UM", "figuren", "DAS", "DAMIT", "SPIELERISCHE", "DASS", "GESTALTEN", "GEHT"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${heading.id})</strong> ${heading.text}
+                `;
+                headingItem.dataset.letter = heading.id;
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Question ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
+            const blankText1 = document.getElementById('blankText1');
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText1.innerHTML = textWithBlanks1;
+
+            // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
+            const blankText2 = document.getElementById('blankText2');
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText2.innerHTML = textWithBlanks2;
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === letter) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+    </script>
+</body>
+</html>

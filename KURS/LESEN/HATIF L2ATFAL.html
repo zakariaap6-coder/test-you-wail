@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KINDER HENDY - TEST B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .theme-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .answer-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
+        .question {
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.08);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.6rem 0;
+            padding: 0.8rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .dark-mode .option {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border: 1px solid #4CAF50;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border: 1px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .text-content {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        /* Lesen Teil 1 - تصميم محسن */
+        .headings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .heading-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .heading-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .ad-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .ad-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        .dark-mode .ad-letter {
+            color: #90CAF9;
+        }
+
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+        }
+
+        .dark-mode .ad-title {
+            color: var(--light);
+        }
+
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
+        .fill-blanks {
+            margin: 1.2rem 0;
+        }
+
+        .blank-text {
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .blank-text {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 6px;
+            transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .dark-mode .blank {
+            background: rgba(26, 35, 126, 0.8);
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border-color: #4CAF50;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* تحسينات للهواتف */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
+            }
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
+            }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
+        </div>
+        
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">KINDER HENDY - TEST B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
+            <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
+            <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الأسئلة والإجابات (مأخوذة من KINDER HENDY.html)
+        const examData = {
+            headings: [
+                {id: "a", text: "Neue Kinderhandys auf den Markt gebracht."},
+                {id: "b", text: "Profi-Tipps für bessere Urlaubsbilder."},
+                {id: "c", text: "Moderne schnurlose Geräte vermindern die Strahlenbelastung."},
+                {id: "d", text: "Mehr Mut zum Fotografieren!"},
+                {id: "e", text: "Handy im Ausland: aufpassen und tricksen!"},
+                {id: "f", text: "Kinder-Überwachung für Eltern per Handy wird geplant."},
+                {id: "g", text: "Tipps zum Telefonieren mit weniger Strahlung."},
+                {id: "h", text: "Der neue Euro-Tarif."},
+                {id: "i", text: "Handy-TV zur Fußball-WM 2006."},
+                {id: "j", text: "Mobiler Fernsehgenuss wird zum Alltag!"}
+            ],
+            
+            texts: [
+                {
+                    id: "text1",
+                    content: `Vielen Menschen verursachen sie ein mulmiges Gefühl: Die meisten Schnurlos-Telefone strahlen auch dann, wenn man gar nicht telefoniert. Vor allem DECT-Geräte (Digital Enhanced Cordless Telecommunications – digital verbesserte schnurlose Kommunikation) sind deshalb in die Kritik geraten. Allmählich nehmen Hersteller die Bedenken ernst und bieten Geräte an, die das Bundesamt für Strahlenschutz (BfS) als „bedingt strahlungsarm“ einstuft. Stehen diese Telefone auf der Ladestation wird die Sendeleistung von Handgerät und Basis abgeschaltet oder radikal vermindert. Voraussetzung: Nur ein Mobilteil ist angemeldet. Einige Modelle reduzieren die Strahlung auch, wenn man nahe der Basisstation telefoniert: Nur 25 Prozent Sendeleistung braucht das Siemens Gigaset E360 im Umkreis von fünf Metern, das AEG Fame 400 kommt mit rund 30 Prozent aus.`,
+                    correctAnswer: "c",
+                    correctAnswerText: "c) Moderne schnurlose Geräte vermindern die Strahlenbelastung."
+                },
+                {
+                    id: "text2", 
+                    content: `Wenn Kinder ein Handy haben, dann ist das schön und gut. Doch was, wenn der Filius nicht dran geht? Wenn er möglicherweise etwas Besseres zu tun hat, als zurückzurufen? Und noch schlimmer, wenn sich Heranwachsende im prüden Amerika schmutzige Bilder auf dem Handydisplay anschauen? Das schreit nach Kontrolle. Und genau die will Motorolas CEO Edward Zander den Eltern über ihre Kinder geben: Sie sollen jederzeit wissen, wo sie (oder deren Mobiltelefon) sind und was sie damit tun. Verbunden werden soll die Einführung von einem solchen Handy mit einer Reihe Merkmale, die junge Menschen ansprechen, wie zum Beispiel mit dem für nächsten Monat anvisierten Start des iTunes-Handys. „Handys sind heute das, was in meiner Jugend der Fernseher war“, so Zander. „Aber es gibt einen Weg, es sicher zu machen.“ Eltern müssten sich in die entstehende Jugendkultur rund um Handys stärker einbringen, und sie sollten sich stärker für das interessieren, was sie hören, sehen und lesen, so Zander weiter. Handys mit entsprechender Zensur-Software seien bereits in Vorbereitung.`,
+                    correctAnswer: "f",
+                    correctAnswerText: "f) Kinder-Überwachung für Eltern per Handy wird geplant."
+                },
+                {
+                    id: "text3",
+                    content: `Jahr für Jahr steigt der Umsatz der Spielzeughersteller. Und das ist auch kein Wunder: Denn kaum etwas erfreut Eltern mehr als die leuchtenden Augen der Kinder, wenn sie ein neues Spielzeug bekommen. Und so sind die Schränke und Spielzeugkisten der lieben Kleinen voll mit Puppen, Kuscheltieren und Autos. Doch das hat auch unerwünschte Folgen. 'Wenn ein Child zu viel Spielzeug hat, wird sich seine Phantasie nicht weiterentwickeln', warnt Spielforscher Jens Junge. Deshalb verzichten manche Kindergärten auf überflüssiges Spielzeug. Im Berliner Musikkindergarten zum Beispiel quillt kaum ein Regal über - und trotzdem wird den Kindern hier nie langweilig. Es gibt Musikinstrumente, Bastelmaterialien und auch Spielzeug - aber nie zu viel, sodass die Kinder nicht überfordert sind. 'Es komme für die Kinder gar nicht so sehr darauf an, womit sie spielen, sondern vor allem mit wem', betont Mitarbeiterin Lara Schwarz. Das gemeinsame Spielen mit Freunden sei für Kinder sowieso am wichtigsten.`,
+                    correctAnswer: "h",
+                    correctAnswerText: "h) Der neue Euro-Tarif."
+                },
+                {
+                    id: "text4",
+                    content: `Manche Momente muss man einfach festhalten – mit einem Foto. Doch dessen Qualität hängt von vielen Faktoren ab: der Kamera, den Verhältnissen vor Ort und der Erfahrung des Fotografen! Für ein paar schöne Erinnerungsfotos sich aber eine teure Profi-Ausrüstung zuzulegen, lohnt selten. Vom Pauken schwieriger technischer Details ganz zu schweigen. Das ist heute auch längst nicht mehr nötig. Schon mit normalen Digitalkameras lassen sich wunderbare Bilder schießen – mit ein paar Tricks. Abwechslungsreiche Motivewahl. Die meisten Urlauber fotografieren gerne Sehenswürdigkeiten mit ihren Liebsten. Schaut man sich die Bilder später an, sind sie oft eine Variation des ewig Gleichen: der Sohn auf dem Kamel, vor der Kathedrale, im المسبح. Der Sohn ist niedlich, keine Frage. Es kann jedoch nicht schaden, die Motive zu variieren: verschiedene Personen und Orte, zu unterschiedlichen Tageszeiten – mal den menschenleeren Strand, mal das Marktgetümmel. Nähe und Distanz. Mehr Abwechslung erreichen Sie auch, wenn Sie mit der Nähe zum Objekt spielen: hier صورة بانورامية مع العدسة واسعة الزاوية، هناك صورة قريبة. Perspektive und Technik. Schnelle Schnappschüsse gelingen nicht immer. Nehmen Sie sich Zeit für Porträt- und Landschaftsaufnahmen. Nutzen Sie dabei auch den extra einstellbaren Modus bei Digitalkameras. Er stellt Objektiv und Beleuchtung perfekt auf die gewählte Variante ein. Licht und Schatten. Für stimmungsvolle Bilder eignen sich am besten Vormittags- و Spätnachmittagsstunden, weil das Licht dann besonders weich ist.`,
+                    correctAnswer: "b",
+                    correctAnswerText: "b) Profi-Tipps für bessere Urlaubsbilder."
+                },
+                {
+                    id: "text5",
+                    content: `Es gibt in Deutschland wohl kaum eine bessere Chance für die Einführung von Handy-TV als die Fußball-WM 2006. Doch ein rechtzeitiger Start ist ungewiss. Die Problemfelder sind vielschichtig. Drei Standards kämpfen darum, das erste deutsche Mobilfernsehen zu sein: UMTS, DMB und DVB-H. Und das möglichst pünktlich zum 9. Juni 2006, dem Start der Fußball-WM. Dieser Dreikampf wird von Experten jedoch kritisch betrachtet. In Südostasien floriert dieser Markt doch schon seit vielen Monaten. In Korea beispielsweise gehört der mobile Fernsehgenuss zum Alltag. Bis zu zwei Stunden täglich schauen Besitzer der kleinen TV-Handys dort unterwegs auf die Mini-Mattscheibe. Warum sollte dies mittelfristig nicht auch في ألمانيا realisierbar sein? In einem sind sich Experten jedoch sicher. Handy-TV wird die Fernsehbranche verändern. Kenner sprechen von drei neuen Prime Times (Hauptfernsehzeiten), die durch die mobile Glotze entstehen: Der Weg zur Arbeit, die Mittagspause und der Heimweg. Dafür ist jedoch eine andere Art von Inhalten notwendig, vor allem kurz müssen sie sein, denn kaum jemand wird sich einen kompletter Spielfilm auf dem kleinen Bildschirm ansehen wollen.`,
+                    correctAnswer: "j",
+                    correctAnswerText: "j) Mobiler Fernsehgenuss wird zum Alltag!"
+                }
+            ],
+
+            longText: {
+                content: `Märchenwelt Web 2.0: Catherine und David Cook waren 15 und 16, als ihnen beim Blättern im Highschool-Jahrbuch eine Idee kam. Eine Internetseite, zum Flirten und Lästern, wie ein Schulhof für Ehemalige. Sie erfanden „MyYearbook.com“, die Seite, die sie reich gemacht hat. Es muss irgendwann zwischen Mathe-Hausaufgaben und Abendessen gewesen sein: Catherine Cook, 15, liegt auf dem Bett und blättert das aktuelle Jahrbuch ihrer Highschool in Skillman, New Jersey, durch. Sie schlägt die Seite auf, auf der ihr Schwarm zu sehen ist. Seit einem Jahr ist sie heimlich in ihn verliebt. Um seinen Kopf hat sie ein pink-farbenes Herz gemalt. Schon zig Mal hat sie diese Seite angeschaut, ganz abgegriffen ist das Papier. Jetzt ist er weg, hat seinen Abschluss gemacht, studiert an einem College. Seitdem hört sie nichts mehr von ihm, keine neuen Infos, keine neuen Fotos. Wie praktisch wäre ein digitales Jahrbuch – ein Netzwerk, in dem man den Weg der ehemaligen Mitschüler verfolgen, mit aktuellen Freunden chatten, den süßen Typ aus der Parallelklasse unverbindlich anschreiben und mit Freundinnen lästern kann … Catherine erzählt ihrem 16-jährigen Bruder David von der Idee. Er ist begeistert: Ein Jahrbuch 2.0. Eine digitale Version der Kladde, die zum Schuljahresende an die Schüler verkauft wird. Oder einfach: ein „Facebook“ für Highschool-Schüler. Sicher ist diese Idee dem einen oder anderen Schüler vorher auch schon gekommen. Aber Catherine und David Cook haben einen entscheidenden Vorteil: Geoffrey, den großen Bruder mit viel Geld. Sie erzählen ihm von ihrer Idee, er ist begeistert und investiert eine viertel Million Dollar.
+
+Noch am selben Abend beginnen die Geschwister das Design für die Seite auf Papier zu zeichnen. In den folgenden Nächten faxen sie die Entwürfe nach Indien zu den Programmierern, die der große Bruder Geoffrey für das Projekt angeheuert hat. „Das war eine spannende Zeit, die Küche unseres Elternhauses wurde zur Kommandozentrale. Die ganze Familie stood sofort hinter dem Projekt, alle haben mit überlegt“, sagt David. Wenige Wochen später, im Sommer 2005, geht die Seite online. Heute ist klar: Die Investition hat sich gelohnt. Die beiden Teenager Catherine, heute 17, und David, 19, sind zwar noch nicht volljährig in den USA, aber bereits Millionäre. Und der 29-jährige Geoffrey Cook, der schon als Student an der Universität Harvard mit dem Verkauf zweier Internetseiten seine erste Million verdient hatte, hat seine investierten 250.000 Dollar längst wieder raus. Er ist nun Firmenchef von „MyYearbook.com“. Die Seite ist die am schnellsten wachsende Internetseite in den USA, so das Ergebnis einer Erhebung des Instituts „com.Score“, das Besucherzahlen im Internet misst und regelmäßig veröffentlicht. Jeden Tag melden sich 15.000 neue Mitglieder an. Insgesamt sind es inzwischen vier Millionen Menschen zwischen 13 und 21 Jahren, die sich dort zum Chatten treffen, einfach Zeit verbringen. Und was das Wichtigste für die Macher ist: Werbespots anschauen. Laut einer Schätzung von „com.Score“ sind mit sozialen Netzwerken wie „MyYearbook.com“ im Internet dieses Jahr 900 Millionen Dollar zu verdienen, allein in den USA. Einen Großteil davon streichen die Platzhirsche „Myspace.com“ und „Facebook.com“ ein, aber auch „MyYearbook.com“ verdient ordentlich mit. Während einige US-Schulen die Rechner wieder in den Schrank verbannen, wird es bei den Schülern immer mehr zum Trend, ihre Freizeit mit Freunden virtuell zu verbringen, statt im Park um die Ecke auf morschen Tischtennisplatten zu hocken. Etwa 60 Prozent der 12- bis 17-Jährigen und gar 80 Prozent der 18- bis 21-Jährigen nutzen diese sozialen Netzwerke, so eine US-Studie des Forrester-Instituts. Auch in Deutschland legte das Portal „StudiVZ“ im letzten Jahr einen rasanten Erfolg hin.
+
+„MyYearbook.com“ ist ein Paradebeispiel einer solchen Netzwerkseite. Nirgendwo sonst kann man so viel loswerden wie hier, über sich und über andere: Man wählt den peinlichsten Lehrer, den größten Schwarm, das schönste Mädchen der Stufe und vieles mehr. Dass zwei Schüler die Seite entworfen haben, merkt man bei jedem Klick: Hier treten zum Beispiel zwei junge Frauen mit Fotos gegeneinander an, die Internetgemeinde entscheidet, wer cooler ist und „Promqueen“ werden soll, also Abschlussball-Königin. Nebensächlich für Erwachsene – aber lebenswichtig für amerikanische Highschool-Schülerinnen! Diese ganze Highschool-Welt, die sich dem Europäer höchstens beim Schulaustausch in den Staaten oder in Highschool-Filmen wie „American Pie“ offenbart, gibt es hier in Reinform zu bestaunen. Man kann Mitschüler als Jungfrauen brandmarken, sein eigenes Outing im Internet vollziehen, einem Mädchen Blumen schicken, sich als Verehrer auf ihrer Seite eintragen – alles sichtbar für den Sitznachbarn aus dem Bio-Kurs und jeden anderen US-Schüler mit Account. Catherine ist sich sicher, dass dies das Geheimrezept von „MyYearbook.com“ ist. „Wir haben eine Internetgemeinde gegründet, in der es genauso abgeht wie auf dem Schulhof, das kommt an!“ Sie schwärmt inzwischen nicht mehr für süße Highschool-Jungs, sie ist nun selbst Absolventin. Zum kommenden Semester beginnt sie ihr BWL-Studium an der Georgetown University in Washington DC. Bei „MyYearbook.com“ bleibt sie trotzdem angemeldet – schon allein wegen der 3065 Jungs, die sich auf ihrer Profilseite als „Verehrer“ geoutet haben.`,
+                questions: [
+                    {
+                        id: "q1",
+                        question: "Zwei US Highschool-Schüler sind",
+                        options: [
+                            "mit dem Geld ihres Bruders reich geworden",
+                            "durch eine einfache Idee reich geworden",
+                            "durch eine einfache Idee und mit der finanziellen Hilfe ihres bruders reich geworden"
+                        ],
+                        correctAnswer: "durch eine einfache Idee und mit der finanziellen Hilfe ihres bruders reich geworden"
+                    },
+                    {
+                        id: "q2",
+                        question: "Ähnliche Internetseiten sind heutzutage",
+                        options: [
+                            "nur in den USA beliebt",
+                            "sowohl in den USA als auch in Deutschland erfolgreich",
+                            "überall sehr populär"
+                        ],
+                        correctAnswer: "sowohl in den USA als auch in Deutschland erfolgreich"
+                    },
+                    {
+                        id: "q3",
+                        question: "Die Idee von Catherine und David Cook wurde erfolgreich, weil",
+                        options: [
+                            "sie Treffen für Ex-Schüler im Internet organisiert haben",
+                            "sie eine Internetseite gegründet haben, die ihrem Schulhof ähnlich ist",
+                            "alle für die Schüler wichtigen Sachen auf dieser Seite genauso passieren, als wäre es in der eigenen Schule"
+                        ],
+                        correctAnswer: "alle für die Schüler wichtigen Sachen auf dieser Seite genauso passieren, als wäre es in der eigenen Schule"
+                    },
+                    {
+                        id: "q4",
+                        question: "Die Jugendlichen in den USA benutzen solche Netzwerke",
+                        options: [
+                            "um über die Highschool-Welt informiert zu sein",
+                            "um ihre Freizeit virtuell verbringen zu können",
+                            "um mit Freunden chatten zu können"
+                        ],
+                        correctAnswer: "um ihre Freizeit virtuell verbringen zu können"
+                    },
+                    {
+                        id: "q5", 
+                        question: "Catherine ist",
+                        options: [
+                            "als Studentin an der Georgetown University bereits Millionärin",
+                            "noch immer an ihrer Seite angemeldet",
+                            "mit den 3065 Jungs auf ihrer Profilseite beschäftigt"
+                        ],
+                        correctAnswer: "noch immer an ihrer Seite angemeldet"
+                    }
+                ]
+            },
+
+            // Lesen Teil 3 - البيانات المحدثة
+            situations: [
+                {
+                    id: "11",
+                    text: "Sie möchten sich einen Dokumentarfilm über die Einwanderung nach Australien und über den damit verbundenen Prozess ansehen.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "12",
+                    text: "Ein junges Mädchen möchte später als Au-pair oder Austauschschülerin ins Ausland gehen und deshalb interessiert es sich für das Thema.",
+                    correctAnswer: "B"
+                },
+                {
+                    id: "13",
+                    text: "Ein Mann interessiert sich für die Aufdeckung von Verbrechen, die früher nicht gelöst werden konnten.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "14",
+                    text: "Sie schwärmen für Krimis, die auf Grund tatsächlicher Fälle rekonstruiert wurden.",
+                    correctAnswer: "C"
+                },
+                {
+                    id: "15",
+                    text: "Sie haben dafür großes Interesse, wie mithilfe von Computertechnik das Wetter an verschiedenen Orten der Welt hervorgesagt werden kann.",
+                    correctAnswer: "D"
+                },
+                {
+                    id: "16",
+                    text: "Ein Mann interessiert sich dafür, wie Wetterphänomene entstehen.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "17",
+                    text: "Sie suchen ein Gartenmagazin, aus dem Sie alles über den Anbau der Gemüse- und Obstsorten erfahren können.",
+                    correctAnswer: "E"
+                },
+                {
+                    id: "18",
+                    text: "Sie möchten sich eine Quizsendung ansehen, an der Familienmitglieder teilnehmen.",
+                    correctAnswer: "F"
+                },
+                {
+                    id: "19",
+                    text: "Eine Bekannte von Ihnen sucht einen Reisefilm, ähnlich dem „Traumschiff“, في dem es während eines Reiseaufenthaltes alles über den Aufenthaltsort gezeigt wird.",
+                    correctAnswer: "H"
+                },
+                {
+                    id: "20",
+                    text: "Ein Mann interessiert sich für das Bauernleben und sucht deshalb eine passende Sendung.",
+                    correctAnswer: "K"
+                }
+            ],
+
+            ads: [
+                {
+                    id: "A",
+                    title: "McLeods Töchter",
+                    content: "14.01. – 10:00 Uhr (VOX) McLeods Töchter 19/1 Ein Italiener zum Verlieben Jodi schwebt im siebten Himmel: Sie hat den charmanten und gut aussehenden Italiener Alberto kennengelernt und ihm auch gleich einen Job auf Drover's Run verschafft. Meg ist die stürmische Beziehung zwischen den beiden jedoch ein Dorn im Auge, und als sie schließlich herausfindet, dass Alberto sich illegal in Australien aufhält, sieht sie ihren Verdacht bestätigt: Alberto hat sich nur an ihre Tochter herangemacht, um an eine Aufenthaltsgenehmigung zu kommen. Um sicher zu gehen, soll Becky den ahnungslosen Alberto nun testen, doch der erweist sich als äußerst standfest. Es scheint, als würde er Jodi tatsächlich von ganzem Herzen lieben. Zu dumm, dass Jodi ihren Freund nach dem Test aus Beckys Zimmer kommen sieht und ihn wutentbrannt bei der Einwanderungsbehörde anzeigt …"
+                },
+                {
+                    id: "B",
+                    title: "auf und davon – Mein Auslandstagebuch",
+                    content: "14.01. – 16:00 Uhr (VOX) auf und davon – Mein Auslandstagebuch Folge 88 Ein Jahr im Ausland – für junge Menschen ein großer Traum. Viele deutsche Jugendliche gehen deshalb als Au-pair oder Austauschschüler in die Ferne. In der Dokumentation „auf und davon – Mein Auslandstagebuch“ begleitet VOX junge Menschen, die zum ersten Mal in ihrem Leben ihre Familien, ihre Freunde und ihre Heimat verlassen …"
+                },
+                {
+                    id: "C",
+                    title: "SPIEGEL TV - Die Chemie des Todes",
+                    content: "8.01. – 22:45 Uhr SPIEGEL TV Thema Thema: Die Chemie des Todes – Mördersuche im Labor, Teil 3 Mord verjährt nie. Auch wenn der Täter nur wenige, unsichtbare Spuren hinterlässt und die Ermittlungsarbeit oft langwierig ist – meist ist die Mördersuche im Labor erfolgreich. Verbrechen, die noch vor wenigen Jahren zu den Akten gelegt werden mussten, werden heute von Forensikern mithilfe modernster Kriminaltechnik aufgeklärt. Oft genügen mikroskopisch kleine Partikel, um das brutale Geschehen zu rekonstruieren und den Mörder zu überführen. Im Rahmen der dreiteiligen Reihe „Die Chemie des Todes – Mördersuche im Labor“ werden wahre Fälle rekonstruiert. Ermittler, Rechtsmediziner und Profiler schildern, welche wissenschaftlichen und technischen Methoden sie anwenden, um auch die mysteriösesten Mordfälle zu lösen."
+                },
+                {
+                    id: "D",
+                    title: "BBC Exklusiv: Wildes Wetter",
+                    content: "16.01.2008 – 22:50 Uhr BBC Exklusiv Thema: Wildes Wetter, Teil 2: Kälte und Hitze Das Wetter ist eines der wenigen Naturphänomene, das uns nach wie vor Rätsel aufgibt. Selbst mit modernster Wissenschaft lässt es sich nur bedingt voraussagen, selten beeinflussen und nie kontrollieren. Diese zweiteilige Dokumentation führt die Zuschauer zu den entlegensten Orten der Erde und zeigt, wie das Wetter funktioniert – aufregende Computeranimationen und seltenes Archivmaterial bieten einen neuen Blick auf die weltumspannende Wettermaschine und enthüllen oft verblüffende Zusammenhänge …"
+                },
+                {
+                    id: "E",
+                    title: "Jamie At Home",
+                    content: "Jamie At Home (RTL2) Samstags Jamie Oliver ist zurück an Heim und Herd! In den drei zehn neuen Folgen stellt er wie immer großartige Rezepte vor, verwendet aber diesmal Zutaten für seine fantastischen Gerichte, die er in seinem eigenen Garten angebaut hat. Von perfekten Kartoffeln zu saftigen Erdbeeren, von leckeren Tomaten bis zum frisch geernteten Pizzabelag, ist \"Jamie At Home\" ein unkomplizierter Ratgeber, wie man das Beste von Mutter Natur persönlich serviert bekommt – ohne dass man dafür in den Bio-Supermarkt gehen muss. Mithilfe von Gärtner Brian hat er den Garten seines Hauses in Essex umgebaut und seine Leidenschaft, sein eigenes Gemüse anzubauen, entdeckt, und nun will er zeigen, wie einfach es ist, sich mit selber angebauten Produkten gesund zu ernähren. In jeder Sendung wird eine andere Gemüsesorte vorgestellt. Selbst wenn man nur ein Fensterbrett, einen kleinen Balkon oder einen Hinterhof zur Verfügung hat: Jamie zeigt die simplen Tricks, wie man fantastisches Gemüse oder Früchte auch auf kleinstem Raum ziehen kann – und wie man sie in einfache, köstliche Gerichte verwandelt. Vollgepackt mit Dutzenden von neuen Rezepten, die Schritt für Schritt erklärt werden, wird es bei „Jamie At Home“ jeden Hobbykoch im grünen Daumen jucken …"
+                },
+                {
+                    id: "F",
+                    title: "Die Wahrheit und nichts als die Wahrheit",
+                    content: "Die Wahrheit und nichts als die Wahrheit Ab 28. Januar montags um 22:15 Uhr bei RTL II. Endlich eine Show, in der die Kandidaten nicht mit Allgemeinwissen brillieren müssen. Bei uns brauchen sie auch kein besonderes Talent oder Glück. Sie müssen die Wahrheit sagen. Und dazu gehört Mut – denn nichts kann bitterer sein als die Wahrheit und nichts als die Wahrheit! Das unmoralische Angebot: Für 21 wahrheitsgemäß beantwortete Fragen gibt es 25.000 Euro! Den Kandidaten werden außergewöhnliche, intime und pikante Fragen gestellt. Natürlich alles in Anwesenheit ihrer Partner und Familien! Und der Spieler muss immer wieder auf's Neue entscheiden: Wie viel ist der Familienfrieden wert …? Die wahren Antworten lassen die Kandidaten schmunzeln, vor Scham erröten oder sie in Erklärungsnöte stürzen. Jede unwahre Antwort wird von einem Polygraphen (Lügendetektor) schonungslos aufgedeckt und führt zum sofortigen Ende des Spiels."
+                },
+                {
+                    id: "G",
+                    title: "The Bourne Identity",
+                    content: "RTL The Bourne Identity Sonntag, 13. Januar Spielfilm, 130 Min. USA 2002 Irgendwo auf dem Mittelmeer treibt ein Fischerboot im Sturm. Nicht far davon entfernt schwimmt ein Mann, der für tot gehalten wird. Einmal geborgen, entpuppt sich der vermeintlich Ertrunkene jedoch als lebendig, allerdings schwer verletzt. Innerhalb kurzer Zeit kommt er zwar wieder zu Kräften, allein seine Erinnerung an die Nacht, in der er ins Wasser fiel und in der ihm zweimal in den Rücken geschossen wurde, kehrt nicht zurück. Weil der einzige Hinweis auf die wahre Identität ein in den Oberschenkel implantierter Code für ein Schweizer Nummernkonto ist, begibt sich der Unbekannte auf direktem Weg nach Zürich. Dort stellt er fest, dass sein Name Jason Bourne ist, er in Paris wohnt und jede Menge Geld auf seinem Konto hat. Merkwürdig ist allerdings dass Jason auch noch weitere eigene Identitäten vorfindet, jeweils komplettiert mit Reisepass, Führerschein und anderen Dokumenten. Jason beschließt, das Geld von seinem Konto mitzunehmen und schleunigst wieder zu verschwinden. Allmählich dämmert ihm, dass er zwar einerseits als Agent im Staatsdienst, andererseits aber auch als Auftragskiller tätig …"
+                },
+                {
+                    id: "H",
+                    title: "ML Mona Lisa – Traumurlaub ganz anders",
+                    content: "ML Mona Lisa (ZDF) – Traumurlaub ganz anders Ärzteschiff für Menschen in Not Die Zahnärztin Marion Bösch aus München hat sich ihren Traum erfüllt. Sie sparte ihren Urlaub für vier Wochen Aufenthalt auf der „Africa Mercy“. Allerdings ist es kein Kreuzfahrtschiff und ein richtiger Urlaub ist es auch nicht, denn bei dem Schiff handelt es sich um die größte schwimmende Klinik der Welt."
+                },
+                {
+                    id: "I",
+                    title: "Löwenalarm! Jagd auf Menschenfresser",
+                    content: "Löwenalarm! Jagd auf Menschenfresser Etwa 40.000 Löwen leben in Afrika, rund die Hälfte von ihnen in Tansania. Trotz dieser großen Zahl kommt es in der Regel nur vereinzelt zu Angriffen auf Menschen. In den ersten Jahren des 21. Jahrhunderts ist die Zahl der Angriffsopfer jedoch sprunghaft angestiegen. Ein Team um den amerikanischen Löwenforscher Craig Parker sucht nach Ursachen. Für Packer scheint es sich nicht um einzelne Löwen zu handeln, sondern um eine ganze Population. Um die Menschen besser schützen zu können und mehr über die Lebensweise der Löwen zu erfahren, versuchen Craig Packer und sein Team, einige Raubkatzen mit GPS-Geräten auszustatten."
+                },
+                {
+                    id: "J",
+                    title: "Land. Tschüss Deutschland!",
+                    content: "Land. Tschüss Deutschland! Neuer Start im fremden Land Manche gehen aus Sehnsucht, andere aus Frust. Und von Jahr zu Jahr werden es more. Viele, vor allem gut ausgebildete Deutsche, ziehen auf der Suche nach lukrativen Jobs und besseren Lebensbedingungen in die Ferne. Dirk (40) und Birthe J. (38) aus Ockholm in Nordfriesland haben auf den ersten Blick alles, was man sich nur wünschen kann. Ein reetgedecktes altes Bauernhaus, ein großes Grundstück, zwei nette Kinder, viele Tiere, kurz: ein schönes Stück Heimat. Dirk ist Schreiner, er restauriert Antiquitäten, doch in den letzten Jahren liefen die Geschäfte eher schlecht. Dann fand Dirk im Internet seinen Traumjob. Ein deutscher Unternehmer, der alte Häuser in Irland restauriert, suchte händeringend einen Tischler: Nettogehalt 4500 Euro pro Monat! Zunächst ging nur Dirk, doch die Familie wird folgen. Die Reportage begleitet ihn beim Start auf der grünen Insel und ist dabei, wenn die Familie endlich gemeinsam ihr erstes irisches Haus bezieht. Die ZDF-Reportage zeigt mutige Menschen, die ihr Schicksal in die Hand nehmen und daran glauben, dass es ihn …"
+                },
+                {
+                    id: "K",
+                    title: "Bauer sucht Frau",
+                    content: "Bauer sucht Frau Episode: Folge 3 Sonntag, 13. Januar Serie, 60 Min. Auf dem Hof von Biobauer Olaf in Schleswig-Holstein sorgt Katrin (32) für jede Menge Action und gute Laune. Der Wirbelwind krempelt die Ärmel hoch und sorgt sowohl in den Wohnräumen als auch im Schweinestall für Ordnung. Olaf ist von Katrins Energie begeistert. Stellt sich nur die Frage, ob Olafs Eltern Rolf und Helga mit der neuen Frau an Olafs Seite auch zurechtkommen? Tanja trifft auf dem Hof von Schweinebauer Stephan in Niedersachsen ebenfalls auf eine große Familie. Stephan lebt mit seinen Eltern Inge und Hans-Jürgen sowie den Großeltern und 630 Schweinen auf dem großen Bauernhof. Finden Stephans Eltern die quirlige 22-Jährige sympathisch?"
+                },
+                {
+                    id: "L",
+                    title: "House, M.D.",
+                    content: "Episode: Autopsie Mittwoch, 09. Januar Serie, 50 Min. USA 2005 House, M.D. Dr. Wilson kann House davon überzeugen, sich des Falles der neunjährigen Andie anzunehmen, die an einer tödlichen Krebserkrankung leidet und nicht mehr lange zu leben hat. House wehrt sich zunächst mit Händen und Füßen gegen jede emotionalen Einbindung in die tragische Geschichte, kann aber dem scheinbar unerschütterlichen Mut der kleinen Patientin schließlich doch nichts mehr entgegensetzen. Die Situation spitzt sich dramatisch zu, als Andie plötzlich extrem zu halluzinieren beginnt – ein Symptom, dass in keiner Weise mit ihrem Krankheitsbild in Übereinstimmung gebracht werden kann. House vermutet, dass sich im Gehirn des Kindes ein Gerinnsel gebildet hat. Um das Gerinnsel finden zu können und damit Andie am Leben zu erhalten, müssen House und sein Team eine extrem gefährliche Operation wagen."
+                }
+            ],
+
+            // Sprachbausteine Teil 1
+            blankText1: {
+                content: `Liebe Jutta,
+schon so lange habe ich dir nicht geschrieben, ich hatte aber ________ einen triftigen Grund. Ich habe das Schreiben ________ meiner Krankheit vernachlässigt. Ich hatte fürchterliche Rücken- und Kreuzschmerzen, ich habe aber die richtige Untersuchung immer wieder ________. Ich habe immer nur einige Medikamente eingenommen, die für kurze Zeit zwar geholfen haben, aber die Schmerzen kamen immer zurück. Schließlich konnte ich ________ richtig schlafen und mich so natürlich auch bei der Arbeit nicht konzentrieren. Mein Arzt hat mich ins Krankenhaus zu einigen Untersuchungen ________. Die sind anstrengend gewesen und haben ziemlich lange gedauert. Die Lage ist aber nicht so schlimm. Da ich zu viel bei der Arbeit sitze und dazu noch ein paar Kilo ________ habe, ist meine Wirbelsäule belastet. Zum Glück muss ich aber nicht operiert werden. Ich gehe jetzt einige Monate lang ________ Behandlung. Einige Behandlungen sind schon ________ mir und sie scheinen wirksam zu sein. Ich hoffe, dass sich mein Zustand auch weiterhin verbessern wird. Dann werde ich bald wieder gesund. Früher war ich bei einem Naturheilpraktiker, der ________ auch geraten hat, mich mehr zu bewegen. Ich glaube, es ist höchste Zeit, damit anzufangen. So könnte ich wenigstens auch etwas abnehmen, was mir ________ schaden würde. So far für heute, schreib mir bald.
+Herzliche Grüße deine Anna`,
+                options: [
+                    ["dafür", "dazu", "darauf"],      // 21
+                    ["statt", "wegen", "während"],     // 22
+                    ["verschieben", "verschiebten", "verschoben"], // 23
+                    ["nicht mehr", "sogar nicht", "noch nicht"], // 24
+                    ["geschicken", "eingewiesen", "nachgewiesen"], // 25
+                    ["Übergewicht", "Gleichgewicht", "Gleichgültigkeit"], // 26
+                    ["zur", "auf", "für"],             // 27
+                    ["über", "vor", "hinter"],         // 28
+                    ["vor allem", "unter anderem", "auf alle Fälle"], // 29
+                    ["eigentlich", "überhaupt", "gar nicht"] // 30
+                ],
+                answers: ["dafür", "wegen", "verschoben", "nicht mehr", "eingewiesen", "Übergewicht", "zur", "hinter", "unter anderem", "gar nicht"]
+            },
+
+            // Sprachbausteine Teil 2
+            blankText2: {
+                content: `Joggen: Mehr als nur Laufen
+Auto, Rolltreppe, Fahrstuhl – das moderne Leben ist ________ geworden. Ein Großteil der Bevölkerung verbringt den Tag sitzend. Zum Leidwesen unseres Körpers, denn das geht zu Lasten der Gesundheit.
+Herz-Kreislauf-Erkrankungen ________ in den westlichen Industrieländern mittlerweile die Todesursache Nummer Eins. Dennoch: Rund zehn Millionen Menschen in Deutschland joggen, etwa acht Millionen gehen Inline-Skaten oder Rad fahren, jeder Dritte schwimmt. Wer regelmäßig, richtig und vor allem in Maßen trainiert, fördert Gesundheit, Körper- und Selbstbewusstsein.
+Zahlreiche Sportarten bieten einen einfachen und abwechslungsreichen Einstieg auch für Ungeübte. Vom Klassiker Jogging bis hin zu Walking, Radfahren, Schwimmen, Aerobic, Inline-Skating und Langlauf im Winter. Wichtig ist ________ richtig zu trainieren, den Körper nicht zu überfordern – vor allem nach einer längeren Sportpause! Empfehlenswert ist aerobes Herz-Kreislauf-Training. Das bedeutet Ausdauertraining ________ Verbrennung von Sauerstoff. Dreimal in der Woche 30 bis 40 Minuten genügen. Dabei ________ der Puls kontrolliert werden. Der Richtwert ist hier 180 minus Lebensalter. Dann wird auch Fett verbrannt, der Körper nicht überfordert.
+________ mehr Menschen den Schritt in ein aktiveres Leben wagen sollten, machen zahlreiche Studien deutlich: Rund 40 Prozent ________ Deutschen bringen zu viel auf die Waage, jeder zehnte ist sogar stark fettleibig – Tendenz steigend. Auch vor Kindern und Jugendlichen macht diese Entwicklung nicht halt.
+Oft fehlt die Zeit für regelmäßiges Essen, Sport und Entspannung. Der Körper quittiert dies meist mit Herz-Kreislauf-Erkrankungen, nicht selten mit ________ Herzinfarkt – auch, und immer häufiger ________ Frauen.
+Ausdauersport hingegen wirkt auf Herz, Gefäße, Muskeln, Körpergewicht, Hormone und Stimmungen. Stress wird wegtrainiert, Krankheiten geheilt und vorgebeugt. Zusammen mit der richtigen Ernährung minimiert sich das Risiko, einen Herzinfarkt oder Schlaganfall zu erleiden, ________ Milch und Milchprodukte, pflanzliche Lebensmittel wie Vollkornprodukte, Obst, Gemüse, Salat, magere Wurst und Käsesorten unterstützen das richtige Training.`,
+                options: ["bequem", "schnell", "immer", "wird", "dass", "einem", "aller", "sollte", "ist", "sind", "erheblich", "wird", "dabei", "unter", "wie"],
+                answers: ["bequem", "sind", "dabei", "ist", "sollte", "dass", "aller", "einem", "unter", "wie"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${heading.id})</strong> ${heading.text}
+                `;
+                headingItem.dataset.letter = heading.id;
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Question ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
+            const blankText1 = document.getElementById('blankText1');
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText1.innerHTML = textWithBlanks1;
+
+            // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
+            const blankText2 = document.getElementById('blankText2');
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
+            });
+            blankText2.innerHTML = textWithBlanks2;
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === letter) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+    </script>
+</body>
+</html>

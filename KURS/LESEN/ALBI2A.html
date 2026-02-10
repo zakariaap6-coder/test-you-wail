@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ALBI2A - TEST B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .theme-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .answer-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
+        .question {
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.08);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.6rem 0;
+            padding: 0.8rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .dark-mode .option {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border: 1px solid #4CAF50;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border: 1px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .text-content {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        /* Lesen Teil 1 - تصميم محسن */
+        .headings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .heading-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .heading-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .ad-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .ad-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        .dark-mode .ad-letter {
+            color: #90CAF9;
+        }
+
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+        }
+
+        .dark-mode .ad-title {
+            color: var(--light);
+        }
+
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
+        .fill-blanks {
+            margin: 1.2rem 0;
+        }
+
+        .blank-text {
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .dark-mode .blank-text {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 6px;
+            transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .dark-mode .blank {
+            background: rgba(26, 35, 126, 0.8);
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2E7D32;
+            border-color: #4CAF50;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.25);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* تحسينات للهواتف */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
+            }
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
+            }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
+        </div>
+        
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">ALBI2A - TEST B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
+            <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
+            <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الأسئلة والإجابات
+        const examData = {
+            headings: [
+                {id: "a", text: "Gemeinsam kaputte Geräte retten"},
+                {id: "b", text: "Kaufsucht überwinden - diese Möglichkeiten gibt es"},
+                {id: "c", text: "Neue Besitzer für nicht mehr gebrauchte Gegenstände"},
+                {id: "d", text: "Reparatur alter Haushaltsgeräte lohnt oft nicht"},
+                {id: "e", text: "Rücksendungen verderben Online-Händlern das Geschäft"},
+                {id: "f", text: "Rücksendungen verringern: Händler hoffen auf Lösungen"},
+                {id: "g", text: "Studie zeigt, welche Geschenke glücklich machen"},
+                {id: "h", text: "Verein mit Preis für Umweltschutz ausgezeichnet"},
+                {id: "i", text: "Volle Einkaufstütten machen nur kurze Zeit Freude"},
+                {id: "j", text: "wer Engagement zeigt, steigert sein Glücksgefühl"}
+            ],
+            
+            texts: [
+                {
+                    id: "text1",
+                    content: `Sie sind eine gut funktionierende Gemeinschaft mit einer Vision: Schon seit den 80er Jahren leben Mitglieder des „Tauschrings Harmelsdorf e.V; vor, wie man nachhaltig mit Ressourcen umgehen kann und dadurch die Umwelt schont, Tauschen, nicht wegwerfen" ist das Motto dieser Initiative – die damals als eine der ersten dieser Art in Deutschland noch belächelt wurde, heute aber viel Lob und Anerkennung bekommt. Ob Küchengeräte, Bücher oder auch Kleidungsstücke, die man nicht mehr anzieht: Was ungenutzt, findet bei jemandem Verwendung, der noch etwas damit anfangen kann. Getauscht werden nicht nur Güter, sondern auch Dienstleistungen. Eine der Voraussetzungen für das Gelingen: „Die Dienstleistungen dürfen nicht in Konkurrenz zum Handwerk stehen", erklärt Tauschring- Mitglied Kati Jago. Besonders gefragt seien Fahrdienste, etwa zum Arzt. Ihre monatlichen Zusammenhührte an der Rathausstraße sind für die derzeit 30 Vereinsmitglieder viel mehr als bloße Tauschterfs: „Man darf den Faktor Mensch nicht unterschätzen", sagt Kati Jago. Denn beim Tauschen zählte auch das soziale Miteinander.`,
+                    correctAnswer: "c",
+                    correctAnswerText: "c) Neue Besitzer für nicht mehr gebrauchte Gegenstände"
+                },
+                {
+                    id: "text2",
+                    content: `„Man gönnt sich ja sonst nicht." Und schon ist die Einkaufstüte voll und das Konto leer. Macht das glücklich ? Oder wieso sonst kauft man mehr, als man eigentlich geplant hat?. Ein Einkauf kann sich ähnlich anfühlen wie eine Belohnung", sagt der Psychologe Daniel Stüber.Denn dabei würden Glückshormone ausgeschüttet.Manchmal könne das sogar in einem Kaufrausch enden. Denn das Glücksgefühl, das Konsumenten beim Kaufen erleben, könne sie dazu anregen immer mehr Geld auszugeben . Doch die Ernüchterung folge oft schnell, warnter: Denn wer später merke, wie teuer das alles gewesenes, schüttete Stresshormone aus . Dies könne zu Schlafstörungen und schlechter Laune führen Langfristig lässt sich so die eigene Lebenszufriedenheit also gewesen nicht steigern.`,
+                    correctAnswer: "i",
+                    correctAnswerText: "i) Volle Einkaufstütten machen nur kurze Zeit Freude"
+                },
+                {
+                    id: "text3",
+                    content: `Geklickt gekauft,zurückgeschickt :Kunden nutzen im Online-Handel gerne die Möglichkeit, waren innerhalb einer bestimmten Frist Kostenlos zurückzusenden.Vor allem im Modehandel steigt die Zahl der Rücksendungen immer weiter an .Oft bestellen Kunden gleich mehrere Modelle in unterschiedlichen Grüßen.um sie zu Hause in Ruhe anzuprobieren.Die Kosten für die Retouren trägt der Anbieter.Dennoch lohnt sich für die Online Händler das Geschäft.Die zurückgegebene Kleidung kann zum Beispiel oft so aufbereitet werden,dass sie erneut zum Verkauft angeboten werden kann.Rücksendungen werden sich im Online -Handel nie ganz vermeiden lassen.erklärt Birgit Steinköhler vom Bundesverband Online-Handel.Dennoch ist es möglich,dass sich ihre Anzahl in Zukunft senken lässt .Dies wünschen natürlich auch die Online -Verkäufer und suchen nach neuen Möglichkeiten:etwa detailliertere Produktinformationen oder neue Technologien,die die individuellen Maße der Kunden ermitteln .Dennoch :Rücksendungen werden im Online-Handel wohl immer zum Geschäftsmodell gehören.`,
+                    correctAnswer: "f",
+                    correctAnswerText: "f) Rücksendungen verringern: Händler hoffen auf Lösungen"
+                },
+                {
+                    id: "text4",
+                    content: `Keine Lust mehr auf die Konsum-Gesellschaft? Dann könnte es ein erster Schritt sein, den Lieblingspulli zu stopfen statt zu entsorgen oder den alten Wecker von Oma noch mal zum Laufen zu bringen. Ob Fahrrad, Fernseher oder Smartphone - man muss bei Defekten nicht gleich alles wegwerfen. In sogenannten Repair-Cafés können defekte Gegenstände unter fachkundiger Anleitung wieder instandgesetzt werden... Damit schonen wir die Umwelt und den Geldbeutel". erklärt Thomas Rederitz, Inhaber eines solchen Reparaturcafés. Repair-Cafés verstehen sich als Initiative gegen die Wegwerf-mentalität. Da viele Firmen keinen Reparaturservice mehr anbieten, muss vieles aufwendig entsorgt werden, sagt Rederitz. Das sie nicht immer nötig... Manchmal ist ja auch nur eine Schraube locker, oder es fehlt ein kleines Bauteil, das leicht ersetzt werden kann." Im Reparaturcafé wir gemeinsam gewerkelt, geschraubt, genäht, gebastelt - und auch gelacht und geredet. Die Reparatur wird in jedem Fall sachgerecht durchgeführt; Denn zu den freiwilligen Mitarbeiter von Repair-Cafés gehört Handwerksmeister der unterschiedlichsten Fachrichtungen.`,
+                    correctAnswer: "a",
+                    correctAnswerText: "a) Gemeinsam kaputte Geräte retten"
+                },
+                {
+                    id: "text5",
+                    content: `Viele Menschen sind erstaunlich großzügig : Sie machen anderen gern Geschenke, spenden Geld für gute Zwecke oder opfern Zeit für ehrenamtliche Tätigkeiten . Aber what motiviert sie dazu ? Die Wissenschaft liefert ganz unterschiedliche Erklärungsansätze. Eine Erklärung lautet, dass großzügige Menschen auf Gegenseitigkeit hoffen : Wer viel gibt , bekommt auch viel zurück. Eine Studie konnten nun aber zeigen, dass die Antwort vielleicht ganz einfach ist : Großzügigkeit mache eben glücklich. Dies fanden Forscher der Universität Lübeck heraus, Dieses enge Verknüpfung zwischen großzügigem Verhalten und Glücksgefühl zeige sich auch in Gehirn. So aktivieren ein solche Verhalten ein Hirnareal, das eng mit unserem Belohnungszentrum verknüpft ist. Das Ergebnis ihrer Studie könne weitreichende Folge für die Gesellschaft haben. Wer glücklicher werden möchte, könne sich diese neuen Erkenntnisse zunutze machen: Denn wer für andere da ist, tut auch etwas für das eigene Wohlbefinden.`,
+                    correctAnswer: "j",
+                    correctAnswerText: "j) wer Engagement zeigt, steigert sein Glücksgefühl"
+                }
+            ],
+
+            longText: {
+                content: `Die Schaufensterpuppe ist eine Pariserin und hatte erstmals 1849 in der Hauptstadt der Mode ihren Auftritt. Der französische Schneider Alexis Lavigne gilt als ihr Erfinder, auch wenn er damals seine Kleiderkreationen noch auf einer Schneiderpuppe vorführte. Bald schon taten es ihm andere Pariser Kollegen gleich. Sie begannen, ihre Modelle vor den Geschäften aufzustellen, um die Passanten in die Verkaufsräume zu locken. Als Anfang des 20. Jahrhunderts die ersten großen Kaufhäuser eröffneten, erlebte die Schaufensterpuppe ihren Durchbruch. Der Puppenmacher Lester Gaba entwickelte in den 1930er Jahren das erste lebensecht wirkende Modell, Cynthia. Sie durfte sogar mit auf Veranstlungen, was beide berühmt machte. Fortan spiegelte die Schaufensterpuppe Zeitgeist und Schönheitsideale. Der Linzer Puppenmacher André Bauernfeind hat als Sammler begonnen, mittlerweile sind Schaufensterpuppen sein Beruf. Der 37-Jährige, der mehr als 1000 Modelle besitzt, ist österreichweit der Einzige, bei dem man sie reparieren lassen, aber auch mieten kann. Wer ihn an seinem Arbeitsplatz aufsucht, muss in den Keller. Die Eisentür steht offen, lädt ein in sein großes Atelier voller Schaufensterpuppen: Kinder, Frauen und Männer, mit Perücke, geschminkt oder farblos, sitzend, liegend, dürr, oder mollig, in Kisten verpackt oder in Einzelteilen von der Decke hängend. Während sich die Puppen in der Welt draußen perfekt präsentieren, wird hier in der Werkstatt mitunter ordentlich an ihrer Oberfläche gekratzt. Der 37-Jährige ist so etwas wie ein Schönheitschirurg für Schaufensterpuppen. Er macht sie wieder heil, verpasst ihnen aber auch Ganzkörper-Liftings, wenn gewünscht. Die bestehende Farbe wird dann entfernt, anschließend eine Grundierung und Farbe aufgetragen. Er klebt ihnen falsche Wimpern an und trägt mit einem Pinsel Schminke auf. Die Kosmetikprodukte kommen meistens aus der Drogerie, tragen aber manchmal auch Luxusnamen wie Armani oder Dior. Nur herkömmlichen Nagellack kann Bauernfeld nicht verwenden, weil dieser die Ölfarbe auflöst. Nicht selten fehlt den Puppen ein Finger, ein Ohr oder eine Nase. Dann greift der Linzer zur Modelliermasse, deren Zusammensetzung streng geheim ist.Weniger geheim sind die Preise: Für 45 Euro fertigt er eine neue Nase, rekonstruiert ein Ohr oder auch ein Kinn. Wer allerdings einen Kopf modellieren lassen möchte, muss mit 2500 Euro und acht Wochen rechnen, für einen gesamten Körper mit 15.000 Euro und Monaten. Obgleich er als Kind am liebsten mit Autos spielte, faszinierten ihn schon früh diese Mannequins in den Schaufenstern. Heute kommt er an keinem Schaufenster vorbei, ohne einen Blick hineinzuwerfen. „Ich erkenne schon an ihrem Standsockel um welchen Hersteller es sich handelt\", sagt der gelernte Dekorateur. Sein erstes Exemplar kaufte he während seiner Ausbildung. 3500 Schilling wollte der Besitzer haben, man einigte sich auf Ratenzahlungen. Ein Jahr lang has he sie abbezahlt. Die Puppe aus der Serie Ragazza mit der Nummer 9908 bekam bald Gesellschaft, die Sammlung vergrößerte sich sukzessive, zählte schon bald mehr als 100 Exponate. Aus dem Hobby wurde später ein Beruf. Bauernfeind verfeinerte sein Handwerk und übernahm schließlich ein altes Schaufensterpuppen-Unternehmen in Linz. Heute ist he Besitzer 1200 Puppen, vermietet und repariert sie, stellt Sonderanfertigungen her. Bauernfeind verkauft auch für andere Hersteller. Er besitzt exklusive die Handelsvertretung für eine belgische Schaufensterpuppen-Firma. Alle anderen renommierten Hersteller aus Europa haben irgendwann ihre Produktion nach Asien verlagert. Qualität und Nachhaltigkeit sind ihm wichtig.Gemeinsam mit einem Farblieferanten hat er deshalb eine Farbe für Puppen entwickelt, die nicht nur ökologisch einwandfrei, sondern auch für den Menschen unbedenklich ist. „ Schließlich dringen die Farbstoffe in die Textilien ein. Meine Farbe könnte man sogar essen, und es würde nichts passieren.\"Weltweit gibt es etwa 100 Hersteller von Schaufensterpuppen, die zweimal im Jahr eine neue Kollektion herausbringen. Denn wie die Mode sind auch die Puppen Trends unterworfen: „In Frankreich, England und den USA werden natürliche Modelle immer beliebter, während bei uns noch abstrakte Modelle dominieren. Es lässt aber beobachten, dass man von einer Einheit gar wegkommt und dass immer häufiger vielfarbige Figurtypen gewünscht werden\", sagt der Puppenmacher.`,
+                questions: [
+                    {
+                        id: "q1",
+                        question: "Die erste Schaufensterpuppe wurde",
+                        options: [
+                            "Anfang des 20. Jahrhunderts von einem Puppenmacher erschaffen",
+                            "für die ersten großen Kaufhäuser produziert",
+                            "von einem französischen Schneider erfunden"
+                        ],
+                        correctAnswer: "von einem französischen Schneider erfunden"
+                    },
+                    {
+                        id: "q2",
+                        question: "Bei der Restaurierung der Schaufensterpuppen",
+                        options: [
+                            "darf Herr Bauernfeind keinen normalen Nagellack auftragen",
+                            "können keine Luxusmarken eingesetzt werden",
+                            "verwendet he nur billige Produkte"
+                        ],
+                        correctAnswer: "darf Herr Bauernfeind keinen normalen Nagellack auftragen"
+                    },
+                    {
+                        id: "q3",
+                        question: "Der Puppenmacher",
+                        options: [
+                            "hat schon als Kind gerne mit Puppen gespielt",
+                            "konnte seine erste Schaufensterpuppe nicht auf einmal zahlen",
+                            "organizierte eine Ausstellung mit Schaufensterpuppen"
+                        ],
+                        correctAnswer: "konnte seine erste Schaufensterpuppe nicht auf einmal zahlen"
+                    },
+                    {
+                        id: "q4",
+                        question: "Herr Bauernfeind",
+                        options: [
+                            "eröffnete die erste Linzer Firma für Schaufensterpuppen",
+                            "handelt mit Schaufensterpuppen anderer Produzenten",
+                            "stellt heute keine Schaufensterpuppen mehr her"
+                        ],
+                        correctAnswer: "handelt mit Schaufensterpuppen anderer Produzenten"
+                    },
+                    {
+                        id: "q5",
+                        question: "Schaufensterpuppen",
+                        options: [
+                            "können mit umweltfreundlichen Farben bemalt werden",
+                            "sind nicht von Tendenzen der Mode abhängig",
+                            "sollen immer dieselbe Kleidergröße haben"
+                        ],
+                        correctAnswer: "können mit umweltfreundlichen Farben bemalt werden"
+                    }
+                ]
+            },
+
+            // Lesen Teil 3 - البيانات المحدثة
+            situations: [
+                {
+                    id: "11",
+                    text: "Ein Bekannter interessiert sich für Tierdokumentationen und würde gerne wissen, wie solche Filme entstehen.",
+                    correctAnswer: "C"
+                },
+                {
+                    id: "12",
+                    text: "Eine Bekannte würde gerne gemeinsam mit einer Gruppe im Wald wandern gehen.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "13",
+                    text: "Ihr Onkel möchte sich eine Ausstellung mit Gemälden ansehen.",
+                    correctAnswer: "G"
+                },
+                {
+                    id: "14",
+                    text: "Ihr siebenjähriger Neffe liebt Phantasievolle Geschichten. Sie wollen nachmittags etwas mit ihm unternehmen.",
+                    correctAnswer: "E"
+                },
+                {
+                    id: "15",
+                    text: "Ihr Sohn wird nächste Woche zehn Jahre alt. Sie möchten ihn mit einer besonderen Feier überraschen.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "16",
+                    text: "Ihre 16 jährige Nichte interessiert sich für heimische Tierwelt und würde sich gerne einen Film ansehen.",
+                    correctAnswer: "I"
+                },
+                {
+                    id: "17",
+                    text: "Ihre zehnjährige Tochter zeichnet viel und möchte ihre Fähigkeiten weiter verbessern.",
+                    correctAnswer: "F"
+                },
+                {
+                    id: "18",
+                    text: "Sie möchten einen Vortrag über bedrohte Tiere und Naturschutz besuchen.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "19",
+                    text: "Sie suchen ein Geschenk für einen Freund, der sich für Kunst interessiert.",
+                    correctAnswer: "B"
+                },
+                {
+                    id: "20",
+                    text: "Sie würden gerne abends etwas mit Freunden draußen unternehmen und dabei sportlich aktiv sein",
+                    correctAnswer: "K"
+                }
+            ],
+
+            ads: [
+                {
+                    id: "A",
+                    title: "Auf den Spuren der Wildkatze",
+                    content: "Im Wildkatzendorf Hütscheroda, am National Park Hainich gelegen, erfahren Sie alles über die scheuen Tiere. Hautnah beobachten können Sie sie in der Schauanlage 'Wildkatzenlichtung'. Hier wird auf Informationstafeln auch das 'Rettungsnetz für die Wildkatze' vorgestellt, eines der größten Naturschutzprojekte Europas. Täglich finden Schaufütterungen statt, für die man sich telefonisch anmelden kann. Für die Kleinen haben wir ein spannendes Angebot: Das Wildkatzendorf richtet Kindergeburtstage mit einem bunten Programm aus und bietet spezielle Kinderführungen an. Öffnungszeiten: täglich von 10 bis 18 Uhr."
+                },
+                {
+                    id: "B",
+                    title: "Ausstellung im Park",
+                    content: "Schon zum dritten Mal stellen am Pfingst-Wochenende Künstler aus der Region im Kurpark Bad Homburg ihre Exponate aus. Gezeigt werden Zeichnungen, Keramiken, Schmuck, Textilarbeiten sowie zahlreiche Holzskulpturen. Sie können mit den Künstlern ins Gespräch kommen und ihnen beim Arbeiten vor Ort über die Schulter blicken! Einen schön gestalteten Bildband mit Werken der ausstellenden Künstler erhalten Sie in der Buchhandlung am Park und der Touristeninformation für 30 €. Öffnungszeiten: 31. Mai und 1. Juni von 11 bis 19 Uhr. Der Eintritt ist frei!"
+                },
+                {
+                    id: "C",
+                    title: "Am 1. August zeigen wir den 90-minütigen Film 'Der Natur auf der Spur'",
+                    content: "Dieser begleitet fünf der besten und erfolgreichsten Tierfilmer der Welt auf ihren Reisen rund um den Globus. Sie alle versuchen, vor beeindruckenden Naturkulissen außergewöhnliche Tieraufnahmen einzufangen. Die Leidenschaft für ihre Filme lässt die Filmemacher große Anstrengungen und Gefahren in Kauf nehmen. In dem Film erfahren Sie nicht nur, wie Tierfilmer arbeiten, sondern auch, welche technische Ausstattung sie einsetzen und wie die Dreharbeiten vorbereitet werden. Filmabend der VHS Buchholz, 1.8., Beginn: 19 Uhr Eintritt: 5 €."
+                },
+                {
+                    id: "D",
+                    title: "Entspannte Sommernächte",
+                    content: "Genießen Sie sechs Tage Filmvergnügen unter dem Sternenhimmel, in bequemen Liegestühlen vor einer nächtlichen Naturkulisse. Besuchen Sie unser Open-Air-Filmfestival mitten im Wald: von Montag, 17.08., bis Samstag, 22.08. im Waldpark Schlosshofen. Wir präsentieren Ihnen Komödien, Science-Fiction und Abenteuerfilme für Erwachsene und Kinder ab 12 Jahren. Das Filmprogramm erhalten Sie an allen Informationsstellen der Stadt Schlosshofen und im City-Kino. Eintritt: 12 €, ermäßigt 7 €."
+                },
+                {
+                    id: "E",
+                    title: "Schon lange lebt Kaninchen Hoppi mit seiner Familie",
+                    content: "Doch eines Tages kauft der reiche Herr Großkopf die Wiese und will aus ihr einen Golfplatz machen... Müssen die Kaninchen sich nun eine neue Heimat suchen? So schnell lassen sie sich jedenfalls nicht verjagen. Hoppi schmiedet einen Plan, damit die Kaninchen ihr Zuhause behalten können. 'Hoppi gibt nicht auf' ist ein Animationsfilm mit liebenswerten tierischen Helden, vielen originellen Ideen und märchenhaften Abenteuern für Kinder ab 6 Jahren. Stadtkino, täglich um 15 Uhr."
+                },
+                {
+                    id: "F",
+                    title: "Du bist gern kreativ und möchtest professionelle Mal- und Zeichentechniken erlernen?",
+                    content: "Dann haben wir genau das richtige Angebot für dich: 'Junge Künstler' - unser regelmäßiger Kurs für Nachwuchskünstler ab 10 Jahren. In einer kleinen Gruppe könnt ihr gemeinsam zeichnen und malen. Dozentin Rebecca Kling ist freischaffende Künstlerin und leitet Kreativkurse für Kinder und Jugendliche. Kurszeiten: jeden Dienstag von 14 bis 16 Uhr Kunstatelier Rebecca Kling Pestalozzistr. 53, 50767 Köln Anmeldung und Infos: rebecca@kunstatelier-kling.net"
+                },
+                {
+                    id: "G",
+                    title: "Mit einem scharfen Blick fürs Detail gestaltete der deutsch-baltische Maler Jürgen Freiherr v. Wolffshausen seine Landschafts- und Tierbilder",
+                    content: "Seine Liebe zur Natur, seine außergewöhnliche Beobachtungsgabe und seine präzise Maltechnik verleihen seinen Werken einen ganz besonderer Reiz. Sein Entdeckerdrang führte ihn u. a. nach. Äthiopien. Die Ausstellung, Natur im Porträt\" präsentiert die Werke des Maler und seine Biographie und gibt außerdem naturkundliche Informationen. Museum Lüneburg, 19. Februar bis 10. Juni Eintritt 3 €"
+                },
+                {
+                    id: "H",
+                    title: "Spiel, Spaß, Nervenkitzel",
+                    content: "Für alle Kinder und Jugendliche, die am Ende der Ferien noch etwas erleben wollen. Sommerfest im Wildpark. Live-Musik Bogenschießen Axtwerfen Baumklettern bis auf 20 Meter Höhe Seilrutsche für Kinder Riesenschaukel Wettsägen Kräuterbrot backen Basteln für Kinder und noch vieles mehr! Wildpark Rittersbach 12. und 13. September, von 10 bis 17 Uhr"
+                },
+                {
+                    id: "I",
+                    title: "Noch nicht lange ist es her, dass Wildkatzen in Europa weitverbreitet waren",
+                    content: "Heute sind sie fast überall verschwunden. Doch es gibt sie noch, auch wenn man sie nur selten zu Gesicht bekommt. Die Tierdokument Die Wildkatze in unseren Wäldern geht der Frage nach, ob das Tier bei uns überhaupt wieder heimisch werden kann. Hat es überhaupt eine Chance in unserer dicht besiedelten Landschaft? Und leben in unseren Wäldern noch echte Wildkatzen oder vielleicht nur verwilderte Hauskatzen? Denn äußerlich unterscheidet sich die Europäische Wildkatze kaum von einer getigerten Hauskatze. Der Film berichtet außerdem über ein Projekt zur Rettung der Wildkatze. Am 10.5. zeigen wir die Dokumentation in unserer Reihe 'Filmabende im Rathaus' um 19 Uhr."
+                },
+                {
+                    id: "J",
+                    title: "In der Dauerausstellung, Wege in die Natur erfahren Sie alles über den Nationalpark Bayerischer Wald",
+                    content: "Warum ist der Wald wichtig für uns? Und wer oder was lebt dort eigentlich? Über all das und noch viel mehr bekommen die Besucher beim Rundgang Informationen. In unserem Kino präsentieren wir außerdem ein abwechslungsreiches Filmprogramm. Ort: Besucherzentrum Nationalpark Bayerischer Wald Öffnungszeiten: täglich von 9 bis 17 Uhr Der Eintritt ist frei"
+                },
+                {
+                    id: "K",
+                    title: "Heiße Rhythmen und kühle Drinks",
+                    content: "Am Samstag, dem 3. August, erwartet Sie im Waldschwimmbad Hainichen bei Rock am Pool ein Feuerwerk aus Musik und Unterhaltung. Einlass zum Konzert ist ab 18:30 Uhr. Die Bands, Lion Poem' und, Cosmos 1 heizen den Besuchern ordentlich ein. Das Konzertendet um 0:30 Uhr Dis 23 Uhr können die Besucher baden oder Beach-Volieyball spielen. Das Jugendzentrum Hainichen hat ein Programm für Jugendliche mit Lagerfeuer und Spielen vorbereitet. Für Essen und Getränke zu moderaten Preisen ist gesorgt Die Eintrittspreise: Erwachsene 8€ Kinder und Jugendliche von 7 bis 14 Jahren 6 €."
+                },
+                {
+                    id: "L",
+                    title: "Zeichenschule für Kinder",
+                    content: "Vom Kreis zum Schaf, vom Strich zum Krokodil: Mit Björn Henkels Buch 'Kinder zeichnen Tiere' lernen die Kleinen, Schritt für Schritt ihre Lieblingstiere zu zeichnen. Aus einfachen Grundelementen entstehen lustige Tiereschaf, Katze und Wellensittich, Igel, Biber, Eichhörnchen und Waschbär. Erfolg und Spaß sind garantiert. Björn Henkel malt und zeichnet, seit er einen Stift halten kann. Nach seinem Studium der Kunstgeschichte lebt er heute als selbständiger Autor und lustrator in Bochum. Das Buch ist geeignet für Kinder zwischen 4 und 6 Jahren. Broschiert, 8 €"
+                }
+            ],
+
+            // Sprachbausteine Teil 1
+            blankText1: {
+                content: `Liebe Meike,<br><br>
+vielen Dank für deine Mail! Es freut mich, dass du dich in Bremen wohlfühlst und mit <span class="blank">________</span> Arbeit zufrieden bist. Auch ich habe eine Menge zu erzählen. Du weißt ja, wie unzufrieden ich in letzter Zeit oft war. <span class="blank">________</span> ich einen neuen Chef habe, hat sich in der Firma viel verändert: Die Arbeitsatmosphäre ist schlechter geworden und ich muss viele Überstunden machen. Daher habe ich oft <span class="blank">________</span> nachgedacht, ob ein beruflicher Neuanfang das Richtige für mich wäre.<br><br>
+Nun, inzwischen habe ich einen ersten Schritt unternommen: Ich habe <span class="blank">________</span> an einer Fernuniversität für ein Psychologie-Studium eingeschrieben. <span class="blank">________</span> ich zuerst einige Bedenken hatte, bin ich nun sehr froh über meine Entscheidung. Anfangs war ich mir nicht sicher, ob ich nebenberuflich ein Studium schaffen <span class="blank">________</span>. Schließlich muss ich ja auch noch meinen Lebensunterhalt verdienen. Außerdem hatte ich Angst, dass mir das Lernen nicht mehr so leichtfallen würde <span class="blank">________</span> früher.<br><br>
+Das Studium macht mir wirklich Spaß. Allerdings habe ich es unterschätzt, wie viel Zeit die Vorbereitungen in Anspruch <span class="blank">________</span>. Manchmal fehlt mir bei dem Fernstudium auch der direkte Austausch mit Kommilitonen, denn den Lehrstoff arbeite ich alleine zuhause durch.<br><br>
+Für <span class="blank">________</span> ist es aber eine große Hilfe, dass die Fernuniversität Chatgruppen anbietet, in <span class="blank">________</span> man rund um die Uhr Fragen stellen kann. Ich bin jedenfalls gespannt, wie es mit meinem Studium weitergeht.<br><br>
+Wie wäre es, wenn wir demnächst mal wieder telefonieren? Ich würde mich freuen, bald von dir zu hören.<br><br>
+Herzliche Grüße<br><br>
+Elise`,
+                options: [
+                    ["neue", "neuen", "neuer"],      // 21
+                    ["Seit", "Sobald", "Solange"],   // 22
+                    ["daran", "darauf", "darüber"],  // 23
+                    ["es", "mich", "mir"],           // 24
+                    ["Damit", "Obwohl", "Wenn"],     // 25
+                    ["dürfte", "könnte", "müsste"],  // 26
+                    ["als", "nach", "wie"],          // 27
+                    ["nahmen", "nehmen", "nimmt"],   // 28
+                    ["mein", "mich", "mir"],         // 29
+                    ["denen", "der", "die"]          // 30
+                ],
+                answers: ["neuen", "Seit", "darüber", "mich", "Obwohl", "könnte", "wie", "nehmen", "mich", "denen"]
+            },
+
+            // Sprachbausteine Teil 2
+            blankText2: {
+                content: `Fische sind dumm, stumm und haben keine Empfindungen - diese Vorurteile halten sich hartnäckig. <span class="blank">________</span> das Gegenteil ist der Fall. Sie sind nämlich zu erstaunlichen kognitiven <span class="blank">________</span> und können sowohl Freude als auch Schmerz empfinden. Die meisten Menschen wüssten so gut wie nichts über Fische, beklagt der Verhaltensbiologe Douglas Allan. Wenn man genauer hinsehe, verändere sich aber die Sicht auf sie.<br><br>
+Denn das Leben im Wasser stellt die etwa 33.000 existierenden Arten vor besondere Herausforderungen. Im Laufe der Zeit <span class="blank">________</span> sie hochspezialisierte Sinnesfähigkeiten und Kommunikationsformen. So verständigen sie sich über Geräusche, Gerüche oder Berührungen. Einige Arten lernen durch <span class="blank">________</span> oder benutzen sogar Werkzeuge.<br><br>
+Bis in die 1930er Jahre wurde Fischen <span class="blank">________</span> nicht einmal zugetraut, dass sie hören können. Erst dem österreichischen Verhaltensforscher Karl von Frisch gelang der Nachweis: Er brachte seinem blinden Wels Xaverl bei, auf ein akustisches Signal zu reagieren. Wenn he pfiff, kam Xaverl aus seinem Versteck, um Futter in Empfang zu nehmen. Der Forscher bewies <span class="blank">________</span> auch als Erster, dass Fische Farben sehen können.<br><br>
+<span class="blank">________</span> warum wurden die Fähigkeiten der Fische so lange unterschätzt? 'Intelligent halten wir oft nur Tiere, die uns ähnlich sind', erklärt Douglas Allan. Fische hätten daher schlechte Karten. Schließlich müssten sie mit ganz anderen Lebensbedingungen zurechtkommen <span class="blank">________</span> Tiere an Land. Allan rät: <span class="blank">________</span> mehr über Fische herausfinden wolle, solle einfach mal in einem Aquarium im Zoo ein paar Minuten lang einen einzelnen Fisch beobachten. Dann erkenne man <span class="blank">________</span>, dass Fische nicht nur ein Bewusstsein, sondern auch einen eigenen Charakter und Bedürfnisse hätten.`,
+                options: ["ALS", "BEOBACHTUNG", "BETRACHTUNG", "DENN", "DER", "DEUTLICH", "DOCH", "ENTWARFEN", "ENTWICKELTEN", "FÄHIG", "FÜR", "GENAU", "NOCH", "ÜBRIGENS", "WER"],
+                answers: ["GENAU", "ENTWICKELTEN", "FÄHIG", "BEOBACHTUNG", "NOCH", "ÜBRIGENS", "DOCH", "FÜR", "ALS", "WER"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${heading.id})</strong> ${heading.text}
+                `;
+                headingItem.dataset.letter = heading.id;
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Question ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
+            const blankText1 = document.getElementById('blankText1');
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            blankText1.innerHTML = examData.blankText1.content;
+            
+            // إضافة الإجابات المخفية
+            document.querySelectorAll('#blankText1 .blank').forEach((blank, index) => {
+                const answerSpan = document.createElement('span');
+                answerSpan.className = 'blank-answer hidden';
+                answerSpan.textContent = examData.blankText1.answers[index];
+                blank.appendChild(answerSpan);
+            });
+
+            // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
+            const blankText2 = document.getElementById('blankText2');
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            blankText2.innerHTML = examData.blankText2.content;
+            
+            // إضافة الإجابات المخفية
+            document.querySelectorAll('#blankText2 .blank').forEach((blank, index) => {
+                const answerSpan = document.createElement('span');
+                answerSpan.className = 'blank-answer hidden';
+                answerSpan.textContent = examData.blankText2.answers[index];
+                blank.appendChild(answerSpan);
+            });
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === letter) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+    </script>
+</body>
+</html>
