@@ -4,10 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
-  
-  <!-- Supabase Library -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
   <style>
     /* ===== GLOBAL STYLES ===== */
     :root {
@@ -564,7 +560,6 @@
       border: 2px dashed #c8d9f6;
       border-radius: 6px;
       background: #f8fbff;
-      cursor: pointer;
     }
     
     .title-slot.has-title {
@@ -591,14 +586,11 @@
       border: 1px solid #dbe7fb;
       border-radius: 8px;
       background: #f8fbff;
-      cursor: pointer;
-      transition: all 0.2s;
+      cursor: grab;
     }
     
     .heading-item:hover {
       background: #e9f0ff;
-      transform: translateY(-2px);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .heading-item.used {
@@ -606,12 +598,6 @@
       cursor: not-allowed;
       background: #f8d7da;
       border-color: #f5c6cb;
-    }
-    
-    .heading-item.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     .result-correct {
@@ -629,6 +615,7 @@
       padding: 10px;
       border-radius: 6px;
       background: #f8f9fa;
+      border: 1px solid #e6eef8;
     }
     
     .instructions {
@@ -686,37 +673,23 @@
     
     .fill-blank-container {
       margin: 20px 0;
-      line-height: 2.2;
     }
     
     .blank-word {
       display: inline-block;
-      min-width: 100px;
-      padding: 6px 10px;
-      margin: 0 4px;
+      min-width: 120px;
+      padding: 4px 8px;
+      margin: 0 6px;
       background: #fff;
       cursor: pointer;
       position: relative;
-      border: 2px solid #dbe7fb;
-      border-radius: 6px;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-    
-    .blank-word:hover {
-      background: #e3f2fd;
-      border-color: #3498db;
+      border: 1px solid #dbe7fb;
+      border-radius: 4px;
     }
     
     .blank-word.has-answer {
       background: #e8fbe9;
       border-color: #2ecc71;
-    }
-    
-    .blank-word.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     .options-popup {
@@ -799,21 +772,12 @@
     }
     
     .bank-word-vertical {
-      padding: 12px;
-      border: 2px solid #dbe7fb;
-      border-radius: 8px;
+      padding: 10px;
+      border: 1px solid #dbe7fb;
+      border-radius: 6px;
       background: #f8fbff;
       text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-    
-    .bank-word-vertical:hover {
-      background: #e9f0ff;
-      border-color: #3498db;
-      transform: translateY(-2px);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      cursor: grab;
     }
     
     .bank-word-vertical.used {
@@ -823,41 +787,22 @@
       border-color: #f5c6cb;
     }
     
-    .bank-word-vertical.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
-    }
-    
     .blank-slot {
       display: inline-block;
       min-width: 100px;
-      padding: 6px 10px;
-      margin: 0 4px;
+      padding: 4px 8px;
+      margin: 0 6px;
       background: #fff;
       min-height: 30px;
       vertical-align: middle;
-      border: 2px solid #dbe7fb;
-      border-radius: 6px;
+      border: 1px solid #dbe7fb;
+      border-radius: 4px;
       cursor: pointer;
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-    
-    .blank-slot:hover {
-      background: #e3f2fd;
-      border-color: #3498db;
     }
     
     .blank-slot.has-answer {
       background: #e8fbe9;
       border-color: #2ecc71;
-    }
-    
-    .blank-slot.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     .footer-buttons {
@@ -871,12 +816,6 @@
       background: #f8d7da;
       border-color: #f5c6cb;
       color: #333;
-    }
-    
-    .situation-item.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     /* Listening Section Styles */
@@ -1569,126 +1508,6 @@
     </div>
   </div>
 
-  <!-- Login Error Modal (يظهر فقط عند رفض الدخول) -->
-  <div id="login-error-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center;">
-    <div style="background: white; border-radius: 16px; padding: 40px; max-width: 400px; text-align: center;">
-      <div style="font-size: 64px; margin-bottom: 20px;">❌</div>
-      <h2 style="color: #d32f2f; margin-bottom: 20px;">Zugriff verweigert</h2>
-      <p id="error-message" style="color: #333; margin-bottom: 30px; font-size: 16px;">Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.</p>
-      <button id="redirect-to-login" style="background: #d32f2f; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">Zum Login</button>
-    </div>
-  </div>
-
-  <script type="module">
-    // =============================================
-    // التحقق من تسجيل الدخول - نسخة محسنة وآمنة
-    // =============================================
-    
-    (async function() {
-      // تكوين Supabase
-      const SUPABASE_URL = 'https://afyiyavnehohqczsjtnr.supabase.co';
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmeWl5YXZuZWhvaHFjenNqdG5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3Mzg5MTgsImV4cCI6MjA4NjMxNDkxOH0.wha3C1mGvQPKxgPIysgiMqjNzeIiElTYhDiqrIBmj_s';
-      
-      // تهيئة Supabase
-      const { createClient } = window.supabase;
-      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      
-      // عناصر الصفحة
-      const body = document.getElementById('body');
-      const startPage = document.getElementById('start-page');
-      const loginErrorModal = document.getElementById('login-error-modal');
-      const errorMessage = document.getElementById('error-message');
-      
-      // دالة لعرض خطأ تسجيل الدخول
-      function showLoginError(message) {
-        // إخفاء محتوى الصفحة
-        startPage.style.display = 'none';
-        
-        // إظهار نافذة الخطأ
-        errorMessage.textContent = message || 'Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.';
-        loginErrorModal.style.display = 'flex';
-      }
-      
-      // التحقق من تسجيل الدخول
-      try {
-        // التحقق من الجلسة في Supabase
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError || !session) {
-          showLoginError('❌ Keine aktive Sitzung gefunden. Bitte melden Sie sich an.');
-          return;
-        }
-        
-        // التحقق من جدول permissions
-        const { data: permissions, error: permError } = await supabase
-          .from('user_permissions')
-          .select('can_access, subscription_type, subscription_expiry, trial_expiry')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-        
-        // إذا كان هناك خطأ أو لا يوجد صلاحيات
-        if (permError) {
-          console.error('Permissions error:', permError);
-          showLoginError('❌ Fehler bei der Überprüfung Ihrer Berechtigungen.');
-          return;
-        }
-        
-        // إذا لم يتم العثور على المستخدم في جدول permissions
-        if (!permissions) {
-          // محاولة إدراج المستخدم إذا لم يكن موجوداً
-          const { error: insertError } = await supabase
-            .from('user_permissions')
-            .insert({
-              user_id: session.user.id,
-              email: session.user.email,
-              can_access: true,
-              subscription_type: 'free',
-              created_at: new Date().toISOString()
-            });
-          
-          if (insertError) {
-            console.error('Insert error:', insertError);
-            showLoginError('❌ Fehler beim Erstellen Ihres Benutzerkontos.');
-            return;
-          }
-        } else if (!permissions.can_access) {
-          // إذا كان can_access = false
-          showLoginError('❌ Sie haben keine Berechtigung für den Zugriff auf diese Prüfung.');
-          return;
-        }
-        
-        // التحقق من انتهاء الاشتراك
-        const now = new Date();
-        
-        if (permissions && permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
-          const trialExpiry = new Date(permissions.trial_expiry);
-          if (trialExpiry < now) {
-            showLoginError('❌ Ihre Testphase ist abgelaufen. Bitte aktivieren Sie ein Abonnement.');
-            return;
-          }
-        }
-        
-        if (permissions && permissions.subscription_expiry) {
-          const subscriptionExpiry = new Date(permissions.subscription_expiry);
-          if (subscriptionExpiry < now) {
-            showLoginError('❌ Ihr Abonnement ist abgelaufen. Bitte erneuern Sie Ihr Abonnement.');
-            return;
-          }
-        }
-        
-        // إذا وصلنا إلى هنا، المستخدم مصرح له
-        console.log('✅ Zugriff gewährt für:', session.user.email);
-        
-        // إظهار محتوى الصفحة
-        startPage.style.display = 'flex';
-        
-      } catch (error) {
-        console.error('❌ Kritischer Fehler:', error);
-        showLoginError('❌ Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
-      }
-    })();
-  </script>
-
   <script>
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
@@ -1721,11 +1540,6 @@
         initErgebnissePage();
       }
     }
-
-    // ربط زر التوجيه للـ Login
-    document.getElementById('redirect-to-login').addEventListener('click', function() {
-      window.location.href = '../index.html';
-    });
 
     // ===== START PAGE FUNCTIONALITY =====
     let initialCounter = 30;
@@ -1814,498 +1628,297 @@
       timerEl.style.color = "#e53e3e";
     });
 
-    // ===== EXAM DATA =====
-    const EXAM_DATA = {
-      lesen: {
-        id: "exam-lesen-001",
+    // ===== LESEN PAGE FUNCTIONALITY =====
+    function initLesenPage() {
+      /* ===== Self-contained exam (embedded) ===== */
+      const exam = {
+        id: "exam-001",
         durationSec: 90 * 60,
         sections: [
           { 
             id: "s1", 
             title: "Leseverstehen, Teil 1", 
-            points: 25,
+            points: 10,
             passageTitle: "Aufgabe: Ziehen Sie die passenden Überschriften auf die Texte.",
             passage: "",
             questions: [],
             texts: [
               {
                 id: "text1",
-                content: "Für Raucher wird es an der Universität in Köln ab dem kommenden Wintersemester eng. Denn nach zahllosen Beschwerden sowohl vom Personal der Universität als auch von Studierenden erweiterte nun die Universitätsverwaltung das bereits bestehende Rauchverbot. Bisher erstreckte es sich nur auf Hörsäle und Seminarräume. Doch kaum waren die Veranstaltungen zu Ende, fand man sich in den Fluren, Foyers und Cafeterias eingehüllt in dicke Schwaden von Zigarettenqualm wieder. Dieser Zustand war vielen Nichtrauchern schon seit Längerem ein Dorn im Auge. Unterstützt von mehreren Untersuchungsberichten über die Gefahren des passiven Rauchens und angespornt von den guten Erfahrungen, die man an ausländischen Universitäten - vor allem in den USA - mit Rauchverboten gemacht hat, wollten die Nichtraucher diesen Zustand nicht länger hinnehmen. Das Rauchverbot gilt nun in allen Gebäuden einschließlich der Toiletten. Die Professoren und Studierenden, die das Qualmen auch künftig nicht lassen können, werden in ihren Rauchpausen im kommenden Winter irgendwo auf den Campus ganz sicher kalte Füße bekommen.",
-                correctAnswer: "f"
+                content: "Viele Tiere können im Winter auf Sparflamme schalten: Igel, Eichhörnchen und viele andere Tiere können das. Wenn es draußen kalt wird, gehen sie nämlich in den Winterschlaf. Wäre es nicht schön, wenn wir die kalten Tage ebenfalls einfach verschlafen könnten? Ganz so gemütlich, wie man es sich vorstellt, ist der Winterschlaf jedoch nicht, erläutert der Biologe Carsten Ortner. Denn der Name täuscht: Mit Schlaf hat das eigentlich nichts zu tun, sondern der Winterschlaf ist ein Energiesparprogramm. In der Wildbahn können Tiere auf diese Weise Nahrungsknappheit überstehen. Ausgelöst wird das Verhalten durch die Lichtverhältnisse der kürzeren Tage. Die meisten Tiere wachen aber zwischendurch auf, um ein paar Vorräte zu essen. Wichtig ist es, Tiere im Winterschlaf nicht zu stören, z. B. durch Bauarbeiten. „Das Aufwecken könnte ihnen schaden“, erklärt Carsten Ortner.",
+                correctAnswer: "g"
               },
               {
                 id: "text2", 
-                content: "Urlaub in den Bergen ist sehr gesund. Das fanden jetzt Wissenschaftler am Anatomischen Zentrum der Universität Köln heraus. Besonders die Höhenlagen um die 2.000 Meter wirken sich messbar positiv auf die Gesundheit aus. Die 'dünnere Luft' in Hochgebirgslagen bewirke eine Senkung des Blutdrucks und des Pulsschlages, eine verbesserte Leistungsfähigkeit des Herzens und damit eine Stärkung der Funktion von Herz, Lunge und Kreislauf. Wichtig sei es aber, in den ersten Tagen auf eine ausreichende Akklimatisierung zu achten. Denn etwa eine Woche benötige der Körper, um sich an die neuen klimatischen Bedingungen im Gebirge anzupassen. Während dieser Zeit solle man, so die Wissenschaftler, größere körperliche Anstrengungen und Extremsport vermeiden. Ab der zweiten Urlaubswoche habe man dann seine volle körperliche Leistungsfähigkeit erreicht.",
-                correctAnswer: "d"
+                content: "Licht kann sich positiv auf die Gesundheit auswirken. Ein kurzer Urlaub in wärmeren Gefilden ist deshalb ein bewährtes Mittel gegen den Winterblues. Eine ähnliche Wirkung von Tageslicht und Wärme spielt sich aber auch im Alltag ab. Eine Studie der Pariser Sorbonne zeigte, dass Tageslicht nicht nur gut für die Gesundheit und das Wohlbefinden ist, sondern auch die Leistungsfähigkeit verbessern kann. Wenn die Schüler in Klassenräumen mit größeren Fenstern arbeiteten, steigerte sich ihre Leistung deutlich – weil die Menge an Tageslicht dann größer ist und die Sicht nach draußen besser. Deshalb, so die Forscher, sollte man immer versuchen, Tageslicht als wichtigste Lichtquelle in Schulen und Gebäuden zu nutzen. Zwar müsse dieses Licht durch Kunstlicht ergänzt werden, doch generell sei Sonnenlicht zu bevorzugen.",
+                correctAnswer: "e"
               },
               {
                 id: "text3",
-                content: "Schlechte Haut, übler Atem, leere Brieftasche. Das ist eigentlich ziemlich 'uncool'. Und doch dauert es ziemlich lange, bis junge Raucher begriffen haben, dass Rauchen nicht hält, was viele Jugendliche in ihrer Phantasie damit verbinden: Freiheit und Attraktivität - der Glimmstängel macht 'cool' und begehrenswert. Stress und Leistungsdruck verfliegen angeblich, sobald man nur an der Zigarette zieht. Doch das Gegenteil ist der Fall: Die zuerst genannten Negativfolgen stellen sich oft schneller ein als gedacht. Häufig ist es aber dann schon zu spät, denn das Entwöhnen von der Sucht des Rauchens ist ein langwieriger und oft auch schmerzhafter Weg. Obwohl dies alles bekannt ist, finden es in Deutschland fast 50% aller Teenager zwischen 12 und 16 Jahren schick, Zigaretten zu konsumieren - ein eindeutig zu großer Anteil, warnen die Gesundheitsbehörden. Besonders groß ist der prozentuale Anteil der Raucher übrigens unter den jungen Mädchen. Als Raucherinnen fühlen sie sich erwachsen und der Cliquendruck - nahezu alle Freunde und Freundinnen rauchen auch - erzeugt oft ein vermeintliches Notwendigkeitsgefühl, auch zu rauchen.",
-                correctAnswer: "b"
+                content: "Im Winter würden wir morgens am liebsten lange im Bett bleiben. Je kürzer die Tage, desto schwerer fällt uns das Aufstehen. Auch bei der Arbeit kommen wir nur langsam in die Gänge und fühlen uns oft antriebslos. „Das ist völlig normal“, erklärt Christoph Jürgens, Professor für Chronobiologie. Müdigkeit und Schlafbedürfnis richten sich danach, wie viele Stunden es hell ist. Das Hormon Melatonin, das das Gehirn in der Dämmerung und Dunkelheit produziert, steuert den Wach- und Schlafrhythmus. Licht blockiert seine Produktion. Deshalb wird man im Herbst und Winter, wenn das Tageslicht schon am Nachmittag schwindet, müde – und erst am Vormittag richtig munter, nachdem die Sonne aufgegangen ist. „Die Menschen im Mittelalter folgten diesem natürlichen Programm des Körpers“, erklärt Jürgens. Heute aber folgen wir nach der Uhr, nicht mehr nach der Sonne – künstliches Licht macht das möglich.",
+                correctAnswer: "j"
               },
               {
                 id: "text4",
-                content: "Sport im Hochgebirge? Da denkt man zuallererst an Wintersport. Ski fahren, rodeln, eislaufen. Doch auch im Sommer ist das Hochgebirge ein Ort, an dem man sich vielfältig sportlich betätigen kann: Wandern, Klettern oder Schwimmen in einem der zahlreichen kristallklaren Bergseen erfreuen sich großer Beliebtheit bei Jung und Alt. In Deutschland ist Hochgebirgssport vor allem in den Alpenregionen im südlichen Bayern möglich. Es muss jedoch nicht unbedingt gleich Deutschlands höchster Berg - die Zugspitze - sein, die man als Ziel ansteuert. Auch rund um Oberstdorf, Füssen, Berchtesgaden oder rund um den Tegernsee bieten sich viele Möglichkeiten für sportliche Naturliebhaber wie für naturverbundene Sportler. Für die zumeist städtischen Urlauber, die hier vor allem Ruhe und Erholung vom Alltagsstress suchen, haben die deutschen Alpengebiete außerdem den Vorteil, dass man keine weiten Wege zurücklegen muss, wenn einen das Heimweh nach der Stadt packt, nach Schwimmhallen, Fußballstadien oder Golfplätzen. Denn für die Stadtsporter ist es von keinem Alpenort weiter als eine gute Stunde in die bayerische Landeshauptstadt München.",
-                correctAnswer: "a"
+                content: "Verfestigen sich gelernte Vokabeln, während wir schlafen? Ja, das funktioniert tatsächlich! Wer sich viel merken möchte, sollte auf regelmäßige Schlafzeiten achten, sagen Schlafforscher. Ob bei Säuglingen, Kindern oder Erwachsenen – im Schlaf prägen sich neue Informationen besser ein. „Mehrere Laborstudien zeigen bereits, dass das Schlafverhalten die geistige Leistungsfähigkeit stark beeinflusst“, erklärt die Psychologin Maja Kühn von der Goethe-Universität Frankfurt. Zusammen mit Kollegen untersuchte sie, ob sich das Schlafverhalten auf die Denkleistung von Kindern im Schulalltag auswirkt. Das Ergebnis: Hatten die Schulkinder gut geschlafen, schnitten sie am nächsten Morgen bei Denkaufgaben deutlich besser ab. Besonders wichtig seien regelmäßige Schlafzeiten, auch das zeige die Studie von Maja Kühn.",
+                correctAnswer: "b"
               },
               {
                 id: "text5",
-                content: "Sportvereine spielen eine immer wichtigere soziale Rolle für junge Leute in Deutschland. Das haben neueste Untersuchungen an den Tag gebracht. Ging man früher in einen Sportverein, um Fußball zu spielen, zu reiten oder zu turnen, geben die Clubs heute vielen Jugendlichen ein zweites Zuhause. Hier treffen sich Freunde, hier kümmern sich jemand um sie, hier haben sie eine Aufgabe. Zuhause fühlen sie sich einsam und überflüssig. Die Eltern arbeiten und sind nicht da, die Kommunikation mit dem Fernseher oder dem Computer ist eine recht einseitige Angelegenheit. Jugendliche, die in Sportvereinen Mitglied sind, sind geselliger, werden - so zahlreiche Studien - weniger gewalttätig, leben gesundheitsbewusster, rauchen deutlich weniger als ihre Altersgenossen, die nicht im Verein sind, konsumieren erheblich weniger Alkohol gar Drogen. Das Zugehörigkeitsgefühl zum Verein und das Gefühl, etwas zu leisten, tragen sehr strongly dazu bei, dass die jungen Leuten gegen die Verführungen der Zigaretten- und Alkoholindustrie resistent werden.",
-                correctAnswer: "e"
+                content: "Kürzere Tage, dunkle Wolken, Nieselregen: Die kalte Jahreszeit kann ganz schön aufs Gemüt schlagen und für trübe Stimmung sorgen. Sich deshalb zuhause zu verkriechen, wäre aber eine schlechte Idee. Besser: Bewegung im Freien! Eine Studie des Bundesministeriums für Wirtschaft und Technologie zeigte, dass Bewegung an der frischen Luft gegen den „Winterblues“ hilft. 91 % der Befragten fühlten sich danach besser und zufriedener. Das Sonnenlicht hebt die Stimmung und Bewegung im Freien wirkt als echter Stimmungsaufheller. Körperliche Aktivität setzt Glückshormone frei, Stresshormone werden abgebaut. Deshalb hilft Wandern oder Spazierengehen im Winter besonders gut gegen schlechte Laune.",
+                correctAnswer: "a"
               }
             ],
             headings: [
-              {id: "a", text: "Freizeitsport in den Alpen"},
-              {id: "b", text: "Mädchen geben mehr Geld für Zigaretten aus als Jungen"},
-              {id: "c", text: "Hochgebirge als Skiparadies"},
-              {id: "d", text: "Höhenluft - gut fürs Herz"},
-              {id: "e", text: "Junge Sportler: weniger suchtanfällig"},
-              {id: "f", text: "Mit der Zigarette an die frische Luft"},
-              {id: "g", text: "Rauchverbot in Sportvereinen"},
-              {id: "h", text: "Uni-Campus: rauchfreie Zone eingerichtet"},
-              {id: "i", text: "Zigaretten gegen Alleinsein"},
-              {id: "j", text: "Zum Leistungssport in die Berge"}
+              {id: "a", text: "Bewegung macht gute Laune."},
+              {id: "b", text: "Klug durch Schlaf."},
+              {id: "c", text: "Licht aus - Energiesparen im Klassenzimmer."},
+              {id: "d", text: "Professor fordert kürzere Arbeitszeiten."},
+              {id: "e", text: "Richtiges Licht fördert das Lernen."},
+              {id: "f", text: "Sind Frühaufsteher intelligenter?"},
+              {id: "g", text: "Tiere im Energiesparmodus."},
+              {id: "h", text: "Wandern im Dunkeln - Tipps für Nachtwanderungen"},
+              {id: "i", text: "Warum Menschen keinen Winterschlaf halten."},
+              {id: "j", text: "Was hinter unserer Wintermüdigkeit steckt"}
             ]
           },
           { 
-            id:"s2", 
-            title:"Leseverstehen, Teil 2", 
-            points:25,
-            passageTitle: "Wer parkt, muss zahlen - Parkuhren in Deutschland",
-            passage: `Es geschah am 1. Januar 1954. In Duisburg, einer Großstadt am Rhein zwischen Köln und der niederländischen Grenze am Rande des Ruhrgebiets, gibt es für die Autofahrer, die in der Straße "Am Buchenbaum" ihre Autos parken wollten, eine Überraschung. 20 etwa 1,5 Meter hohe Metallstangen mit unrenförmigen Aufsätzen standen am Straßenrand mit der unmissverständlichen Aufschrift: "Einwurf 10 Pfennig für eine Stunde". Die ersten Parkuhren in Deutschland waren aufgestellt.
-
-Nur Basel in der Schweiz und Stockholm in Schweden hatten vor Duisburg Parkuhren installiert, um Dauerparker aus den Stadtzentren zu vertreiben. Das eingenommene Geld wurde in Duisburg anfangs für gemeinnützige Zwecke ausgegeben: für Alte, Kranke Kriegsversehrte, für elternlose Kinder. Und die Stadtverwaltung war sich sicher, dass die Autofahrer Verständnis für die Parkuhren aufbringen würden, dienten sie doch einem guten Zweck.
-
-Doch bei den Autofahren war man nicht so erfreut über diese neuen Apparate. "Groschengrab" wurden sie dann auch bald überall genannt: ein Apparat, in den man Groschen – wie die 10-Pfennig-Stücke damals genannt wurden – hineinwarf. Dieser schluckte zwar gnadenlos Zehner, gab aber zum Verdruss vieler trotzdem oft keine Parkzeit frei. Tat er dies, dann aber in der Regel nur für höchstens 60 Minuten. Viele Autofahrer waren außerdem verärgert, weil sie immer passendes Kleingeld dabei haben mussten. Die ersten Parkuhren konnten nämlich nicht wechseln.
-
-Wer parkte, ohne zu zahlen, riskierte damals wie heute einen Strafbescheid, liebevoll "Knöllchen" genannt. In allen anderen deutschen Städten erschienen nach und nach auch Parkuhren. Bald gehörten sie zu den Innenstädten wie das Rad zum Auto. And das blieb so bis zum Ende der 1980er Jahre.
-
-Dann geschah so etwas wie eine Parkuhren-Revolution. Die guten, alten Parkuhren, die ein im Vergleich zu heute immer noch billiges Parken erlaubten, weil sie nicht beliebig oft auf neue Beträge umgestellt werden konnten, wurden mehr und mehr ersetzt durch die gerade neu entwickelten Parkscheinautomaten. Mit Solarenergie angetrieben, computergesteuert und beliebig programmierbar machten sie es nun möglich, ohne technische Beschränkungen die Preise und Zeiten für das Parken flexibel zu gestalten. Von Vorteil ist auch ihre Kundenfreundlichkeit: Die Zeiten, in denen nur Münzen als Zahlungsmittel akzeptiert wurden, sind passé; jetzt schlucken sie auch problemlos Papier- und Plastikgeld – und Wechselgeld wird ausgespuckt.
-
-Das Parken wurde immer teurer. Und längst dienten die eingenommenen Beträge nicht mehr gemeinnützigen Zwecken. Sie wurden vielmehr als Einnahmequelle entdeckt für die leeren Stadtkassen, die nach immer mehr Geld verlangten. Gut 2 Millionen Euro verdient zum Beispiel Duisburg in einem Jahr an den Parkgebühren. In Köln kommen etwa 10 Millionen Euro im Jahr zusammen. Noch einmal so viel Geld verdienen die Städte an den "Knöllchen" für falsches Parken.
-
-Aus 10 Pfennig für eine Stunde im Jahr 1954 – das wären heute etwa 5 Cents – sind inzwischen weit höhere Beträge geworden. Spitzenergie in Deutschland sind Düsseldorf und Berlin mit mehreren Euro pro Stunde. Tendenz steigend. Doch aus dem Kölner Rathaus heißt es an alle sich beschwerenden Autofahrer gerichtet, das Geld werde selbstverständlich zweckgebunden verwendet: für den Bau neuer Straßen. An denen neue Parkscheinautomaten stehen?`,
+            id: "s2", 
+            title: "Leseverstehen, Teil 2", 
+            points: 25,
+            passageTitle: "Im Nachtzug durch Europa",
+            passage: `Nachtzüge wecken heute oft nostalgische Vorstellungen. Man denkt etwa an den Luxus des Orient Express, der seine meist gut betuchte Kundschaft innerhalb weniger Tage von Paris nach Istanbul brachte, an Landschaften, die an den Zugfenstern vorbeirauschen, und das sanfte Rattern eines Zuges, das einen in den Schlaf wiegt. Doch hält die Realität, was solche Bilder versprechen? Teilweise', meint die Studentin Sofia Osterhasen. Sie ist schon im Nachtzug von München nach Florenz, von Oslo nach Bergen und von Stockholm nach Kiruna gereist. Bei ihrer ersten Fahrt habe sie vor Aufregung nicht geschlafen, erzählt sie. Und auch sonst seien die Nächte im Zug oft unruhig, dafür sorgten etwa schnarchende Passagiere. Natürlich wäre Fliegen schneller und auf vielen Strecken sogar günstiger. Doch die lange Anreise gebe ihre Zeit, sich mit Mitreisenden zu unterhalten. „Die Leute erzählen während einer Zugfahrt viel aus ihrem Leben, man erfährt mehr als es bei Zufallsbekanntschaften oft der Fall ist. Das fasziniert mich", erklärt sie. Zutun und kamen völlig übermüdet am Zielort an Doch als sein jüngster Sohn die Augen öffnete, rief er: Das war meine beste Reise! Ein fahrendes Bett! Ich will jetzt immer nur noch Nachtzug fahren. Vor allem der Kinder wegen haben die Schneiders auch für den diesjährigen Urlaub eine Fahrt im Nachtzug gebucht. Dass die Nachtzüge, die durch Europa fahren, nicht immer sonderlich bequem sind, darüber wird häufig geklagt. Fahrgäste bemängeln, dass die Waggons teilweise sehr in die Jahre gekommen sind und nur wenige Annehmlichkeiten bieten. Ist vielleicht auch dies ein Grund, warum Geschäftsreisende diese Transportmöglichkeit nur selten in Betracht ziehen? „Das würde für mich keine große Rolle spielen", meint Florian Kirsch, Vertriebsleiter eines mittelständischen Unternehmens. Viel wichtiger sei der Faktor Zeit: Wer will schon zwei Nächte im Zug verbringen, bloß weil er einen Termin in einer anderen Stadt hat? Wenn Nachtzüge konkurrenzfähig sein wollen, müssen sie mehr Schnelligkeit bieten, erklärt Florian Kirsch. Er selbst nimmt für längere Geschäftsreisen ausschließlich das Flugzeug.`,
             questions: [
               {
                 id: "s2q1",
                 type: "single",
-                text: "Die ersten Parkuhren Europas standen",
+                text: "Sofia Osterhagen fährt gerne mit dem Nachtzug, weil",
                 options: [
-                  {id: "s2q1o1", text: "in der Schweiz und in Deutschland."},
-                  {id: "s2q1o2", text: "in der Schweiz und in Schweden."},
-                  {id: "s2q1o3", text: "in Deutschland und in Schweden."}
+                  {id: "s2q1o1", text: "dieser im Vergleich zu Flugreisen oft billiger ist."},
+                  {id: "s2q1o2", text: "man dort leicht mit anderen Fahrgästen ins Gespräch kommt."},
+                  {id: "s2q1o3", text: "sie während der Fahrt meist gut schlafen kann."}
                 ],
                 correctAnswer: "s2q1o2"
               },
               {
                 id: "s2q2",
                 type: "single", 
-                text: "Früher wurden in Duisburg die Parkgebühren verwendet, um",
+                text: "Die Deutsche Bahn",
                 options: [
-                  {id: "s2q2o1", text: "Bedürftige zu unterstützen."},
-                  {id: "s2q2o2", text: "Dauerparker aus den Stadtzentren zu vertreiben."},
-                  {id: "s2q2o3", text: "Löcher im städtischen Haushalt zu stopfen."}
+                  {id: "s2q2o1", text: "hat der Österreichischen Bundesbahn einige Züge abgekauft."},
+                  {id: "s2q2o2", text: "möchte mehr Fahrten über Nacht anbieten."},
+                  {id: "s2q2o3", text: "verzichtete aus ökonomischen Gründen auf eigene Nachtzüge."}
                 ],
-                correctAnswer: "s2q2o1"
+                correctAnswer: "s2q2o3"
               },
               {
                 id: "s2q3",
                 type: "single",
-                text: "Die ersten Parkuhren",
+                text: "Die Reise mit dem Nachtzug",
                 options: [
-                  {id: "s2q3o1", text: "funktionierten problemlos."},
-                  {id: "s2q3o2", text: "gaben nur Groschen zurück."},
-                  {id: "s2q3o3", text: "konnten nur Münzen annehmen!"}
+                  {id: "s2q3o1", text: "empfand Tom Schneider insgesamt als erholsam."},
+                  {id: "s2q3o2", text: "hat Tom Schneiders Sohn begeistert."},
+                  {id: "s2q3o3", text: "möchte Tom Schneider nicht wiederholen."}
                 ],
-                correctAnswer: "s2q3o3"
+                correctAnswer: "s2q3o2"
               },
               {
                 id: "s2q4",
                 type: "single",
-                text: "Die neuen Parkscheinautomaten",
+                text: "Florian Kirsch verzichtet auf längere Zugreisen, weil",
                 options: [
-                  {id: "s2q4o1", text: "funktionieren nur bargeldlos."},
-                  {id: "s2q4o2", text: "geben kein Wechselgeld zurück."},
-                  {id: "s2q4o3", text: "sind flexibel im Hinblick auf die Art der Bezahlung!"}
+                  {id: "s2q4o1", text: "er im Zug ungern arbeitet."},
+                  {id: "s2q4o2", text: "er mit dem Flugzeug Zeit spart."},
+                  {id: "s2q4o3", text: "es ihm an Bequemlichkeit fehlt."}
                 ],
-                correctAnswer: "s2q4o3"
+                correctAnswer: "s2q4o2"
               },
               {
                 id: "s2q5", 
                 type: "single",
-                text: "In Berlin und in Düsseldorf",
+                text: "Die Züge des französischen Start-ups sollen",
                 options: [
-                  {id: "s2q5o1", text: "fließen die Parkgebühren nur in den Straßenbau."},
-                  {id: "s2q5o2", text: "nimmt die Zahl der Parkscheinautomaten zu."},
-                  {id: "s2q5o3", text: "werden die höchsten Parkgebühren verlangt!"}
+                  {id: "s2q5o1", text: "den Fahrgästen viel Privatsphäre bieten."},
+                  {id: "s2q5o2", text: "vor allem eine finanzkräftige Zielgruppe ansprechen."},
+                  {id: "s2q5o3", text: "zunächst Zielorte nördlich von Frankreich anfahren."}
                 ],
-                correctAnswer: "s2q5o3"
+                correctAnswer: "s2q5o1"
               }
             ]
           },
           { 
-            id:"s3", 
-            title:"Leseverstehen, Teil 3", 
-            points:25,
-            passageTitle:"Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchmal passt kein Text. Wählen Sie dann 'x'.",
+            id: "s3", 
+            title: "Leseverstehen, Teil 3", 
+            points: 20,
+            passageTitle: "Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchما passt kein Text. Wählen Sie dann 'x'.",
             passage: "",
-            questions:[],
+            questions: [],
             texts: [
-              {id: "A", text: "Bewerber sollten Bewerbungsgespräche um eine Stelle nicht dem Zufall überlassen. In der Regel fangen sie mit Smalltalk an: Man redet über das Wetter, den Verkehr und Ähnliches. Doch dabei kommt es schon auf das Wie? an. Wer viel kritisiert, hat schon verloren. Bei der Vorstellung ihrer Person sollten Bewerber darauf achten, dass sie ihre Fähigkeit und den Nutzen, den ihr potentiell zukünftiger Arbeitgeber von ihnen hat, in den Vordergrund stellen. Fragen nach Gesundheit, Familienplanung, Schwangerschaft oder Geld gehören nicht ins Bewerbungsgespräch. Sollten Sie dennoch gestellt werden, ist man nicht verpflichtet, diese wahrheitsgemäß zu beantworten.", correctAnswer: "11"},
-              {id: "B", text: "Die Postbank gibt Bewerbern um einen Ausbildungsplatz ein Thema für ein Projekt, das sie ausarbeiten und then präsentieren sollen. Nur wer diese Hürde nehmen kann und Engagement beweist, hat Chancen, aufgenommen zu werden. Schließlich sollen die Bewerber zeigen, dass sie belastbar und entscheidungsfähig sind. Der Banker von heute hat ein weit gestecktes Tätigkeitsfeld; Kassierer am Schalter, die nichts als Geld oder Formulare ausgeben oder entgegennehmen, wird es in Zukunft immer weniger geben.", correctAnswer: ""},
-              {id: "C", text: "Rhetoriktrainer raten dazu, dem Anfang und dem Schluss eines Referats besonderes Augenmerk zu schenken. In den ersten zwei Minuten eines Vortrags entscheide sich nämlich, ob ein Zuhörer an dem Referat Interesse hat oder nicht. Daher sei ein effektvoll und interessant gestalteter Einstieg äußerst wichtig. Am Schluss soll man den Zuhörern noch einmal mit auf den Weg geben, was dem Vortragenden besonders wichtig erscheint.", correctAnswer: ""},
-              {id: "D", text: "Robert Sonntag, Autor des Buches Hilfe, ich muss reden behauptet, die Angst vor einem größeren Publikum zu reden, sei ein Problem für die meisten Menschen. In Deutschland liegt in etwa 60 % der Menschen an diesem Phänomen. Dabei achten Zuhörer nur zu 7 % auf das, что jemand sagt, 93 % der Wirkung eines Vortrags erziele man durch Körpersprache und seine Stimme. Der Autor rät zu Entspannungstechniken wie dem Autogenen Training oder Yoga, um gelassener zu werden, und einer gründlichen Vorbereitung des Vortrags.Seminarangebote unter www.rs-rethorik.de.", correctAnswer: "19"},
-              {id: "E", text: "Bereiten Sie sich auf ein Vorstellungsgespräch intensiv vor. Überlegen Sie sich genau, что Sie Ihrer zukünftigen Firma an Nutzen bringen können, denn Sie werden danach gefragt werden, warum Sie sich gerade bei dieser und nicht bei einer anderen Firma beworben haben. Analysieren Sie Ihre persönlichen Stärken und Schwächen und überlegen Sie, wie Sie Ihre schwachen Seiten möglichst positiv präsentieren können. Überlegen Sie, was Ihre persönlichen Ziele sind, und sammeln Sie so viele Informationen wie möglich über Ihre zukünftige Arbeit und die Firma, bei der Sie sich beworben haben.", correctAnswer: ""},
-              {id: "F", text: "Nichts ist auf privaten Feierlichkeiten wie Hochzeiten, runden Geburtstagen oder sonstigen Jubiläen schlimmer als langatmige, nicht enden wollende Ansprachen von Familienmitgliedern. Deshalb bieten viele Volkshochschulen in Deutschland Weeksendseminare an, in denen der Aufbau und der Vortrag einer guten Festansprache trainiert werden. Das Ziel dieser Seminare ist es, die zukünftigen Teilnehmenden in die Lage zu versetzen, spritzige Reden frei halten zu können.", correctAnswer: "16"},
-              {id: "G", text: "Ein Auszubildender bei einer Bank oder Sparkasse bekommt 690.- Euro im ersten Ausbildungsjahr. Am Ende seiner Ausbildung steigt die Vergütung auf 800.- Euro. Das Einstiegsgehalt für Bankangestellte liegt bei etwas über 2.000.- Euro monatlich. Aufstiegschancen haben die jungen Banker nur, wenn sie sich intensiv um ihre berufliche Fortbildung kümmern. Dafür bieten die Banken ihren Mitarbeitern viele Möglichkeiten an, wie das BankCollege der Volksbanken oder die Sparkassen-Akademie. Manche Banken geben besonders qualifizierten Mitarbeitern sogar Stipendien für ein Studium.", correctAnswer: "13"},
-              {id: "H", text: "Wer zu seinem Vorstellungsgespräch eingeladen wird, sollte auf korrekte und saubere Kleidung achten. Für viele Firmen ist es wichtig, dass auch Auszubildende die Firma gegenüber den Kunden repräsentieren können. Zerrissene Jeans und selbst gefärbte T-Shirts mögen zwar trendy sein, zu einem Vorstellungsgespräch gehören sie aber nicht. In Zweifelsfällen ist es ratsam, sich bei Eltern oder Bekannten Rat zu holen.", correctAnswer: "18"},
-              {id: "I", text: "Für junge Leute kann das Internet zu einer Droge werden. Der typische Internet-Süchtige ist ca. 18 Jahre alt, männlich, Single und hat kaum soziale Kontakte. Er surft täglich um die 5 Stunden im World Wide Web und hat schlechte Laune, wenn er nicht vor dem Monitor sitzen kann. Pflichten werden oft vernachlässigt. Psychologen raten, die Surfzeiten schrittweise zu verringern und darüber ein Tagebuch zu führen sowie vor dem Surfen schriftlich zu notieren, was genau man im Internet suchen möchte. Wer diese strengen Regels einhält, kann aus der Internetsucht aussteigen.", correctAnswer: "14"},
-              {id: "J", text: "Zu einem zunehmend größer werdenden Problem am Arbeitsplatz wird die immer größer werdende Kluft zwischen dem Sprachgebrauch junger und alter Kollegen. Viele junge Leute verstehen laut einer Studie der Universität Kiel traditionelle Redewendungen wie z. B. Den Nagel auf den Kopf treffen oder Öl ins Feuer gießen nicht mehr, während Ältere nichts mit keinen Bock haben anzufangen wissen. Dadurch, dass Jung und Alt heute nicht more so lange wie in früheren Zeiten zusammenleben, sondern unter sich bleiben, verstärkt sich das Auseinanderdriften der Jugendsprache und der Sprache der Alten immer mehr.", correctAnswer: ""},
-              {id: "K", text: "GRUNDSÄTZLICH HAT JEDER DIE MÖGLICHKEIT, BEI UNS EINE AUSBILDUNG ZU MACHEN, heißt es bei der Sparkassen-Akademie in Bonn. Die Bewerber sollen aber gute bis sehr gute Noten in Deutsch und Mathematik von der Schule mitbringen, und sie müssen in Rollenspielen ihre kommunikativen Fähigkeiten unter Beweis stellen, etwa, wie sie mit einem aggressiven Kunden umgehen würden.", correctAnswer: "15"},
-              {id: "L", text: "Viele junge Leute flüchten sich in die virtuelle Scheinwelt, weil ihnen die Realität als eine zu große Belastung erscheint. Insbesondere Chatrooms verführen die Jugendlichen zu langen Sitzungen, die oft als Ersatz für mangelnde zwischenmenschliche Beziehungen herhalten. Häufige Folge: Vernachlässigung von Hausaufgaben und schlechte Zensuren. Eltern, die sich Sorgen um ihre Internetabhängigen Kinder machen, sollten viel mit ihnen sprechen - ohne Vorwürfe zu machen - und versuchen ihren Zöglingen Alternativen in der realen Welt aufzuzeigen.", correctAnswer: "20"}
+              {id: "A", text: "Das Comedy Filmfest tourt auch dieses Jahr durch Deutschland. In Berlin startet es am 14. August mit der belgischen Produktion „Schokolade und Pommes frites\". In dieser romantischen Komödie treffen zwei Charaktere aufeinander, die unterschiedlicher kaum sein könnten: Die zielstrebige, doch ein wenig schüchterne Marie hat sich mit einem Schokoladengeschäft ihren großen Traum verwirklicht. Alles läuft gut, bis auf der anderen Straßenseite der chaotische Lebenskünstler Michel einen Schnellimbiss eröffnet und Maries Leben reichlich durcheinanderwirbelt. „Schokolade und Pommes frites\": 14. August, 20 Uhr, Filmtheater Friedrichshain", correctAnswer: "18"},
+              {id: "B", text: "Als die Bilder laufen lernten Dieser Band lädt Sie ein, eine bewegte Kinoepoche zu entdecken. In den Jahren von 1895 bis 1930 entwickelte sich das Kino in atemberaubendem Tempo zum Unterhaltungsmedium schlechthin. Autorin Greta Valentino geht zurück bis zu den ersten Filmen der Brüder Lumière und den Anfängen des Westerns und taucht anschließend ein in die schillernden 1920er Jahre, als der Stummfilm seine goldene Ära feierte und Filmpaläste wie Pilze aus dem Boden schossen. Die Autorin studierte Kunstgeschichte in Paris und Amsterdam. Sie veröffentlichte Bücher sowie zahlreiche Artikel über Kunst und Kino.", correctAnswer: "11"},
+              {id: "C", text: "Berlin erleben Unsere Reise führt Sie in eine der abwechslungsreichsten Städte Deutschlands: Berlin. Mit historischen Bauwerken und Museen, breiten Prachtstraßen und Einkaufsmeilen sowie weitläufigen Parks und Gärten hat die Hauptstadt für jeden etwas zu bieten. Reisen Sie bequem mit der Deutschen Bahn und verbringen Sie aufregende Tage in Berlin. Übernachtung mit Frühstück im Hotel. Dauer: ab 4 Tage (Verlängerung möglich) Preis: ab 437 Euro pro Person im Doppelzimmer inklusive An- und Abreise mit der Deutschen Bahn Mehr Infos unter: www.bergmann-reisen.info.", correctAnswer: "20"},
+              {id: "D", text: "Berlin Gendarmenmarkt Im März beginnen die Dreharbeiten für den Film „Berlin Gendarmenmarkt\". Erzählt wird die Geschichte der sechzehnjährigen Ida, die Jugend und Erwachsenwerten im Berlin der Goldenen Zwanziger erlebt und von einer großen Karriere auf der Theaterbühne träumt. Die Romanvorlage für den Film lieferte die Schriftstellerin Marie Franck. Für kleinere Filmrollen oder als Komparsen werden noch Mitwirkende jeden Alters gesucht. Die Gage beträgt 75 € pro Drehtag. Bewerbungsschluss ist der 16. November. Infos und Bewerbung unter: www.film-gendarmenmarkt.info/casting", correctAnswer: "12"},
+              {id: "E", text: "Berlin in den Zwanziger Jahren Dreigroschenoper, Bubikopf, Dada, Bauhausarchitektur. Dieser Bildband erweckt das Berlin in den 1920ern wieder zum Leben. In dieser Dekade war Berlin eine moderne, von Fortschritt und Freiheit berauschte Weltstadt, die für Künstler und Intellektuelle zum Sehnsuchtsort wurde. Autor Gereon Kutscher nimmt Sie mit auf einen Streifzug durch eine Epoche der kulturellen Blüte und der Lebenslust. Gereon Kutscher: Berlin in den Zwanziger Jahren, Hardcover, 126 Seiten, 28 €", correctAnswer: null},
+              {id: "F", text: "Eine Karte, 30 Häuser Ob Meisterwerke der Kunst, archäologische Schätze aus sechs Jahrtausenden oder technische Errungenschaften – das alles finden Sie in den Berliner Museen. Mit dem Museumspass öffnen sich Ihnen die Türen von über 30 Häusern, darunter die Alte Nationalgalerie, das Pergamonmuseum, das Museum für Naturkunde und die Neue Nationalgalerie. An drei aufeinanderfolgenden Tagen haben Sie damit freien Eintritt. Preis: 29 €, ermäßigt 14,50 € Ticket hier online kaufen: https://shop.nmg.museum", correctAnswer: "11"},
+              {id: "G", text: "Feiern wie in den Goldenen Zwanzigern Ein ausgelassenes Lebensgefühl und rauschende Nächte. So stellt man sich die 1920er Jahre vor, an die Filme wie „Der große Gatsby\" und Serien wie „Babylon Berlin\" immer wieder erinnern. Gehen Sie auf eine glamouröse Zeitreise und lassen Sie diese Ära wiederauferstehen. Wir haben dafür die passende Kleidung für Sie. In unserem Online-Shop finden Sie alles, was Sie für einen glänzenden Auftritt auf einer Motroparty brauchen. Paillettenkleider und Kopfschmuck für Damen, Westen und Anzüge für Herren und Accessoires sowie Dekoartikel. www.golden20.com", correctAnswer: "19"},
+              {id: "H", text: "Stadtführungen in Berlin Sie erzählen gerne spannende Geschichten, sind gut zu Fuß und lieben es, andere für besondere Orte zu begeistern? Dann sind Sie bei uns richtig. Wir bieten Stadtführungen und Stadtrundgänge in Berlin an und suchen für eine langfristige Zusammenarbeit (mindestens ein Jahr) neue Kolleginnen und Kollegen. Wenn Sie gut mit Menschen umgehen können und kommunikativ sind, können Sie direkt bei uns als Stadtführer anfangen. Job auf 450-€-Basis, freie Zeiteinteilung auch für Freiberufler möglich. Interesse? Bewerben Sie sich hier: info@berlintouren-kraemer.net ", correctAnswer: "17"},
+              {id: "I", text: "Sie lieben Filme? Dann machen Sie doch das Kino zu Ihrem Arbeitsplatz und werden; Sie Teil unseres Teams! Das Metropolis Filmtheater Altenberg sucht eine Aushilfe als Urlaubsvertretung für die Monate Juli und August, 25 Stunden pro Woche. Zu Ihren Aufgaben gehören u. a. der Verkauf von Kinokarten, Popcorn und Getränken sowie die Einlasskontrolle und die Vorbereitung der Säle. Sie sind volljährig, zuverlässig und bereit, auch am Abend oder Wochenende zu arbeiten? Dann freuen wir uns auf Ihre Bewerbung mit kurzem Anschreiben und Lebenslauf per E-Mail.Metropolis Kino Altenberg info@metropolis-altenberg.net", correctAnswer: "13"},
+              {id: "J", text: "Das etwas gemütlichere Berlin Der wenig bekannte Berliner Stadtteil Friedenau ist bis heute eher ein Geheimtipp. Das Viertel besticht durch prächtig geschmückte Wohnhäuser, kleine Villen und eine bunt gemischte Gastronomie. Kommen Sie mit auf eine kulinarisch-kulturelle Führung durch das charmante, ruhige Friedenau. Erfahren Sie mehr über die berühmten Gesichter dieses Stadtviertels, entdecken Sie wunderschöne Altbauten und lernen Sie die beeindruckenden Goerz Höfe kennen. Unsere erfahrenen Stadtführer zeigen Ihnen außerdem spannende Orte zum Genießen, zum Beispiel ein italienisches Café, eine koreanische Snack-Bar und ein marokkanisches Bistro.  3 Stunden, ca. 3 km zu Fuß Preis: 39 €, ermäßigt 20 € Anmeldung unter: www.friedenau-touren.net ", correctAnswer: "14"},
+              {id: "K", text: "Wer hat die Kokosnuss geklaut? Bei dieser Tour geht es ins Affenhaus! Beobachte Gorillas, Paviane und Co. bei der Futtersuche und finde heraus, was sie am liebsten fressen. Natürlich bleibt noch Zeit, bei anderen Zoo-Bewohnern vorbeizuschauen. Geh zusammen mit einem Guide auf eine besondere Entdeckungstour durch den Zoo Berlin. Spannende Tier Fakten und exklusive Einblicke in den Zoo-Alltag warten auf dich! Führung für Kinder ab 8 Jahren. Zoologischer Garten Berlin Hardenberg Platz 8, 10787 Berlin Eintritt: Erwachsene 17,50 €, Kinder 9 € ", correctAnswer: "15"},
+              {id: "L", text: "Wer hat die Kokosnuss geklaut? Bei dieser Tour geht es ins Affenhaus! Beobachte Gorillas, Paviane und Co. bei der Futtersuche und finde heraus, was sie am liebsten fressen. Natürlich bleibt noch Zeit, bei anderen Zoo-Bewohnern vorbeizuschauen. Geh zusammen mit einem Guide auf eine besondere Entdeckungstour durch den Zoo Berlin. Spannende Tier- Fakten und exklusive Einblicke in den Zoo-Alltag warten auf dich! Führung für Kinder ab 8 Jahren. Zoologischer Garten Berlin Hardenbergplatz 8, 10787 Berlin Eintritt: Erwachsene 17,50 €, Kinder 9 €", correctAnswer: "16"}
             ],
             situations: [
-              {id: "11", text: "Ihre Schwägerin erwartet ein Kind. Sie ist nicht sicher, ob Sie in einem Vorstellungsgespräch darauf hinweisen muss."},
-              {id: "12", text: "Ihr Neffe sucht einen Ausbildungsplatz als Elektriker. Er weiß nicht genau, wie er seine Bewerbung korrekt schreiben soll."},
-              {id: "13", text: " Eine Bekannte möchte eine Ausbildung machen und vielleicht später einmal studieren."},
-              {id: "14", text: "Ein Freund surft täglich viele Stunden im Internet. Sie finden das zu viel und wollen ihm einen Rat geben."},
-              {id: "15", text: "Ein Freund möchte wissen, welche schulischen Leistungen für die Vergabe von Ausbildungsplätzen im Bankgewerbe besonders wichtig sind."},
-              {id: "16", text: "Ein älteres Ehepaar hat Goldene Hochzeit. Die Tochter möchte eine Rede halten und braucht dafür eine Anleitung."},
-              {id: "17", text: "Ein Bekannter ist Bankkaufmann und sucht eine Stelle."},
-              {id: "18", text: "Eine Freundin sucht einen Ausbildungsplatz. Sie ist zu einem Vorstellungsgespräch eingeladen und ist sich nicht sicher, was sie dazu anziehen soll."},
-              {id: "19", text: "Eine Freundin, 20 Jahre alt, muss oft vor Arbeitskollegen Referate halten. Ihr Hauptproblem ist ihre Nervosität."},
-              {id: "20", text: "Eine befreundete Frau möchte ihren Sohn davon abhalten, ständig im Internet zu surfen, weil seine schulischen Leistungen rapide nachlassen."}
+              {id: "11", text: "Ein Bekannter ist ein paar Tage in Berlin und würde sich gerne verschiedene Kunstausstellungen ansehen."},
+              {id: "12", text: "Eine Bekannte träumt davon, selbst einmal bei einem Film mitzuspielen."},
+              {id: "13", text: "Ein Freund würde sich gerne einen Dokumentarfilm über Tiere ansehen."},
+              {id: "14", text: "Eine Freundin sucht einen Nebenjob. Sie würde dabei gerne viel Zeit draußen verbringen."},
+              {id: "15", text: "hr Cousin ist Student und sucht für die Sommermonate einen Nebenjob."},
+              {id: "16", text: "Ihre achtjährige Nichte interessiert sich für Tiere und Natur. Sie möchten ihr zum Geburtstag ein Buch schenken."},
+              {id: "17", text: "Sie möchten eine besondere Stadtführung in Berlin buchen."},
+              {id: "18", text: "Sie möchten mit Freunden einen unterhaltsamen Film anschauen."},
+              {id: "19", text: "Sie sind zu einer Kostüm-Party eingeladen und brauchen dafür etwas zum Anziehen."},
+              {id: "20", text: "Sie würden gerne mit Freunden eine mehrtägige Stadttour machen und suchen ein Angebot."}
             ]
           },
           { 
-            id:"s4", 
-            title:"Sprachbausteine, Teil 1", 
-            points:15,
-            passageTitle:"Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
+            id: "s4", 
+            title: "Sprachbausteine, Teil 1", 
+            points: 15,
+            passageTitle: "Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
             passage: "",
-            questions:[],
+            questions: [],
             fillBlanks: [
               {
                 id: "21",
-                options: ["anstatt", "ohne", "um"],
-                correctAnswer: "um"
+                options: ["konntest", "musstest", "solltest"],
+                correctAnswer: "konntest"
               },
               {
                 id: "22",
-                options: ["dass", "ob", "während"],
-                correctAnswer: "ob"
+                options: ["sollte", "würde", "wurde"],
+                correctAnswer: "würde"
               },
               {
                 id: "23",
-                options: ["aber", "denn", "und"],
-                correctAnswer: "aber"
+                options: ["für", "nach", "um"],
+                correctAnswer: "für"
               },
               {
                 id: "24",
-                options: ["bestimmt", "unbedingt", "völlig"],
-                correctAnswer: "unbedingt"
+                options: ["lange", "vielen", "wenige"],
+                correctAnswer: "vielen"
               },
               {
                 id: "25",
-                options: ["dich", "mich", "sich"],
-                correctAnswer: "mich"
+                options: ["gefällt", "Mögen", "gefallen"],
+                correctAnswer: "gefällt"
               },
               {
                 id: "26",
-                options: ["als", "wenn", "wie"],
-                correctAnswer: "als"
+                options: ["denn", "obwohl", "weil"],
+                correctAnswer: "denn"
               },
               {
                 id: "27",
-                options: ["baldigen", "kommenden", "vergangenen"],
-                correctAnswer: "kommenden"
+                options: ["Als", "Dass", "Wenn"],
+                correctAnswer: "Wenn"
               },
               {
                 id: "28",
-                options: ["danach", "darüber", "dazu"],
-                correctAnswer: "dazu"
+                options: ["Dann", "Wann", "Während"],
+                correctAnswer: "Dann"
               },
               {
                 id: "29",
-                options: ["aber", "oder", "sondern"],
-                correctAnswer: "sondern"
+                options: ["ausgeräumt", "geschlossen", "vergessen"],
+                correctAnswer: "ausgeräumt"
               },
               {
                 id: "30",
-                options: ["für", "gegen", "ohne"],
-                correctAnswer: "für"
+                options: ["aber", "denn", "weil"],
+                correctAnswer: "weil"
               }
             ],
-            fillText: `Hallo Ferdinand,
+            fillText: `Lieber Julian,
 
-nun habe ich mich schon so lange nicht bei dir gemeldet - das tut mir wirklich leid! Ich hatte in den vergangenen Monaten viel Stress, weil ich ja nun studiere und nebenbei noch arbeiten muss, ________ meine Miete und alles andere bezahlen zu können. Zum Glück macht mir mein Nebenjob wenigstens Spaß. Ich weiß nicht, ________ ich das sonst durchhalten würde. Vielleicht habe ich dir schon erzählt, dass ich abends und am Wochenende in einer Kneipe in der Küche helfe. Das ist zwar oft sehr anstrengend, ________ anderseits ist dauernd was los, es wird nicht langweilig, und meine Kollegen sind total nett. Erinnerst du dich noch an unsere Zeit in der Grundschule? Mit acht Jahren wollte ich ja ________ Kellnerin werden, weil man da Trinkgeld bekommt. Naja, jetzt bin ich in der Küche gelandet, knapp daneben ist auch vorbei ;)
+wie geht es dir? Ich hoffe, du hattest eine schöne Reise und ________ dich gut erholen.
 
-Was macht denn deine Ausbildung? Wenn ich ________ nicht täusche, bist du ja in einem halben Jahr schon fertig, oder? Das ist ja nicht more lang!
+Ich ________ ja auch gerne mal wieder ans Meer fahren, aber im Moment habe ich leider keine Zeit ________ Urlaub. Wie du dir bestimmt vorstellen kannst, war ich in den letzten Wochen vor allem mit meinem Umzug beschäftigt. Du weißt ja, dass ich zuerst ziemlich skeptisch war. Nach so ________ Jahren in Berlin konnte ich mir gar nicht mehr vorstellen, mich in einer kleinen Stadt wie Bamberg niederzulassen. Bamberg hat nur rund 77.000 Einwohner, aber langweilig ist es hier trotzdem nicht, wie ich inzwischen festgestellt habe. Mittlerweile fühle ich mich hier sogar richtig wohl. Die Stadt hat wirklich viel zu bieten. Es gibt jahrhundertealte Sehenswürdigkeiten in Hülle und Fülle, und in der Altstadt ________ mir besonders die schönen Fachwerkhäuser, die überwiegend aus dem Mittelalter stammen. Ich gehe oft durch die Fußgängerzone, ________ dort gibt es viele kleine Läden, Cafés und Restaurants mit typisch fränkischen Spezialitäten. Ich glaube, dir würde es hier auch gefallen.
 
-Neulich habe ich übrigens Tina und Kevin hier in der Nähe der Uni getroffen - die waren ja schon ein Paar, ________ wir noch in der Schule gegangen sind, und jetzt will sie tatsächlich verheiratet!
+________ du willst, zeige ich dir gerne mal die Stadt. Hättest du vielleicht Lust, mich im nächsten Monat zu besuchen? ________ ist bei mir auch der Umzugsstress vorbei. Im Moment steht noch eine große Anzahl nicht ________ Kisten in meinem Wohnzimmer, die ausgepackt werden müssen. Mit meiner neuen Wohnung habe ich übrigens auch Glück gehabt, ________ sie geräumig und zentral gelegen ist. Wir können ja mal telefonieren, dann erzähle ich dir mehr.
 
-Wie sehen denn deine Pläne für die ________ Wochenenden aus? Wir könnten uns ja vielleicht mal wieder treffen und in Ruhe quatschen - hättest du Lust ________ ?
+Liebe Grüße,
 
-In meiner Straße hat vor einem Monat ein nettes kleines Café aufgemacht, die haben nicht nur sehr leckere Kuchen, ________ auch einige kleine Gerichte zu wirklich günstigen Preisen. Wäre das was ________ dich? Mail wir doch einfach, wenn du magst, ich würde mich freuen.
-
-Viele Grüße,
-
-Nadine`
+Anna`
           },
           { 
-            id:"s5", 
-            title:"Sprachbausteine, Teil 2", 
-            points:15,
-            passageTitle:"Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
+            id: "s5", 
+            title: "Sprachbausteine, Teil 2", 
+            points: 15,
+            passageTitle: "Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
             passage: "",
-            questions:[],
+            questions: [],
             fillBlanks2: [
               {
                 id: "31",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "KAUM"
+                options: ["doch", "Als", "SICHER", "Leitet", "Genau", "SONDERN", "Ankommt", "Erwerben", "MVON", "Nämlich", "Sondern", "WIE", "Darf", "Abgeschlossen", "ZU"],
+                correctAnswer: "doch"
               },
               {
                 id: "32", 
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "AUF"
+                options: ["doch", "Als", "SICHER", "Leitet", "Genau", "SONDERN", "Ankommt", "Erwerben", "MVON", "Nämlich", "Sondern", "WIE", "Darf", "Abgeschlossen", "ZU"],
+                correctAnswer: "Leitet"
               },
               {
                 id: "33",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "VORBEI"
+                options: ["doch", "Als", "SICHER", "Leitet", "Genau", "SONDERN", "Ankommt", "Erwerben", "MVON", "Nämlich", "Sondern", "WIE", "Darf", "Abgeschlossen", "ZU"],
+                correctAnswer: "Ankommt"
               },
               {
                 id: "34",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "STATT"
+                options: ["doch", "Als", "SICHER", "Leitet", "Genau", "SONDERN", "Ankommt", "Erwerben", "MVON", "Nämlich", "Sondern", "WIE", "Darf", "Abgeschlossen", "ZU"],
+                correctAnswer: "Nämlich"
               },
               {
                 id: "35",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "INNERHALB"
+                options: ["doch", "Als", "SICHER", "Leitet", "Genau", "SONDERN", "Ankommt", "Erwerben", "MVON", "Nämlich", "Sondern", "WIE", "Darf", "Abgeschlossen", "ZU"],
+                correctAnswer: "Darf"
               },
               {
                 id: "36",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "MÜSSEN"
+                options: ["doch", "Als", "SICHER", "Leitet", "Genau", "SONDERN", "Ankommt", "Erwerben", "MVON", "Nämlich", "Sondern", "WIE", "Darf", "Abgeschlossen", "ZU"],
+                correctAnswer: "Als"
               },
               {
                 id: "37",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "AN"
+                options: ["doch", "Als", "SICHER", "Leitet", "Genau", "SONDERN", "Ankommt", "Erwerben", "MVON", "Nämlich", "Sondern", "WIE", "Darf", "Abgeschlossen", "ZU"],
+                correctAnswer: "Genau"
               },
               {
                 id: "38",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "SOLLEN"
+                options: ["doch", "Als", "SICHER", "Leitet", "Genau", "SONDERN", "Ankommt", "Erwerben", "MVON", "Nämlich", "Sondern", "WIE", "Darf", "Abgeschlossen", "ZU"],
+                correctAnswer: "Erwerben"
               },
               {
                 id: "39",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "DANN"
+                options: ["doch", "Als", "SICHER", "Leitet", "Genau", "SONDERN", "Ankommt", "Erwerben", "MVON", "Nämlich", "Sondern", "WIE", "Darf", "Abgeschlossen", "ZU"],
+                correctAnswer: "Sondern"
               },
               {
                 id: "40",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "DENN"
+                options: ["doch", "Als", "SICHER", "Leitet", "Genau", "SONDERN", "Ankommt", "Erwerben", "MVON", "Nämlich", "Sondern", "WIE", "Darf", "Abgeschlossen", "ZU"],
+                correctAnswer: "Abgeschlossen"
               }
             ],
-            fillText2: `Das Fahrrad: ernsthafte Konkurrenz fürs Auto?
+            fillText2: `Es ist erst 6 Uhr morgens, und draußen herrscht noch Dunkelheit... ________ in der riesigen, hell erleuchteten Halle, in der sich Kisten mit Obst und Gemüse meterhoch stapeln, wird schon lange gearbeitet. Vor ein paar Stunden war hier noch viel mehr Betrieb », sagt Jens Rogall. Er ________ einen Berliner Großmarkt, auf dem Einkäufer von Supermärkten, Geschäften oder Restaurants frisches Obst und Gemüse besorgen.
 
-Welches Fortbewegungsmittel, denken Sie, wird in Deutschland am häufigsten benutzt? Natürlich das Automobil. Volkswagen, Porsche, Mercedes Benz, BMW, Audi: In ________ einem anderen Land gibt es so viele Automobilfabriken wie in Deutschland, spielt die Automobilindustrie eine so große Rolle. Nahezu jeder Haushalt verfügt über mindestens ein Auto, das Auto spielt im Leben der Deutschen eine große Rolle, sowohl als Fortbewegungsmittel zum Arbeitsplatz oder in den Urlaub als auch als Statussymbol: Zeig mir dein Auto und ich weiß, wer du bist.
+Die Ware hat oft schon eine lange Reise zurückgelegt, bis sie auf dem Großmarkt ________. Die meisten Früchte werden ________ auf dem Land-, Luft- oder Seeweg aus wärmeren Ländern nach Deutschland transportiert. Wenn die Ware per Schiff nach Europa gebracht wird, kommt sie in großen Seehäfen wie Rotterdam oder Hamburg an. Von dort aus geht es mit dem Lastwagen weiter. Auf seinem Weg ________ das empfindliche Obst und Gemüse keinesfalls Schaden nehmen.,, Nichts ist schlimmer ________ verdorbene Ware >>>, sagt Rogall.
 
-Doch hat das Autofahren auch Schattenseiten. Mangelnde Bewegungsmöglichkeiten, gesundheitliche Probleme und Stress bringen zumindest in den Großstädten immer more Autofahrer dazu, sich vom Automobil freizumachen und ________ ein anderes Verkehrsmittel umzusteigen, das in dem Ruf steht, gesünder zu sein als das Auto: das Fahrrad. Not only in der Freizeit, sondern auch auf dem Weg zum Arbeitsplatz wird das Rad benutzt. "Ich habe keine Lust, Morgen für Morgen im Stau zu stehen und Zeit zu verlieren", sagt Bettina Meier (25): "Da ist es viel entspannender, auf den zumeist gut ausgebauten Fahrradwegen an den im Stau wartenden Fahrzeugen ________ und ausgeruht am Arbeitsplatz anzukommen."
-
-Dass Fahrradfahren um einiges gesünder ist, als hinter dem Lenkrad zu sitzen, bestätigen auch die Mediziner. Wer Fahrrad fährt ________ zu sitzen, bringt seinen Blutkreislauf in Schwung, stärkt die Abwehrkräfte des Körpers und trainiert seinen Körper. Auch die Bewegung an der frischen Luft tut Menschen gut, die sich sonst die meiste Zeit ________ geschlossener Räume in Büros, Schulen oder Fabriken aufhalten ________.
-
-Auch die Geschäftswelt hat die Fahrradfahrer als Kunden entdeckt. Ein breites Angebot ________ Zubehör für Fahrräder von schicken Radfelgen über sportliche Mehrganggetriebe, mit denen Berge kein Problem mehr darstellen, bis zur Designer-Trinkflasche machen aus dem einfachen Fahrrad ein exklusives Fahrzeug. Und natürlich darf bei keinem Fahrradfahrer eine aufwändige Sicherheitsausstattung more fehlen: Schutzhelme, Ellenbogen- und Knieschützer, die das Fahrrad im Falle eines Unfalls fast so sicher wie einen Panzer machen ________.
-
-Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ________ sind die Autoschlangen wieder länger. ________ einen praktischen Wetterschutz für Radfahrer haben die Geschäfte noch nicht im Angebot.`
+Auf dem Großmarkt schauen sich die Käufer alles ________ an. Für makellose Salatköpfe, Beeren und Kräuter zahlen sie höhere Preise, krumme Gurken oder verwachsene Kartoffeln ________ sie dagegen günstiger. Diese werden später nicht in Geschäften zum Verkauf angeboten, ________ direkt verarbeitet. „Es ist egal, wie Gurken aussehen, die ohnehin im Fertigsalat landen », erklärt Rogall. Wenn die Preisverhandlungen erfolgreich ________ sind, werden die Paletten voller Obst und Gemüse hinaus zu den Lieferwagen gebracht. Die Fahrer müssen dann zügig zu den Geschäften und Restaurants fahren, um die Ware abzuliefern.`
           }
         ]
-      },
-      
-      hoeren: {
-        id: "exam-hörverstehen",
-        durationSec: 17 * 60,
-        sections: [
-          { 
-            id:"hörverstehen1", 
-            title:"Hörverstehen, Teil 1", 
-            points:25,
-            correctAnswers: { "41": "falsch", "42": "richtig", "43": "richtig", "44": "falsch", "45": "falsch" },
-            questions: [
-              {
-                id: "41",
-                text: "Die Wetterlage in den Alpen wird sich in den nächsten Tagen verbessern."
-              },
-              {
-                id: "42", 
-                text: "Die Fans des FC Neustadt waren von dem Sieg ihrer Mannschaft überrascht."
-              },
-              {
-                id: "43",
-                text: "Erzieherinnen verlangen eine bessere Bezahlung."
-              },
-              {
-                id: "44",
-                text: "Im Berliner Zoo gibt es eine große Pandafamilie."
-              },
-              {
-                id: "45",
-                text: "Die Zahl der Deutschland-Urlauber ist rückläufig."
-              }
-            ]
-          },
-          { 
-            id:"hörverstehen2", 
-            title:"Hörverstehen, Teil 2", 
-            points:25,
-            correctAnswers: { "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "falsch", "51": "falsch", "52": "falsch", "53": "richtig", "54": "richtig", "55": "falsch" },
-            questions: [
-              {
-                id: "46",
-                text: "In dem Restaurant gab es einen Wasserschaden."
-              },
-              {
-                id: "47",
-                text: "Anton Laurito ist bei seinen Großeltern aufgewachsen."
-              },
-              {
-                id: "48", 
-                text: "Im Haus der Großeltern lebten auch andere Kinder."
-              },
-              {
-                id: "49",
-                text: "Der Stress störte den Studiogast während der Ausbildung nicht."
-              },
-              {
-                id: "50",
-                text: "Bei neuen Mitarbeitern legt Anton Laurito am meisten Wert auf viel Erfahrung."
-              },
-              {
-                id: "51",
-                text: "Aussehen und Geschlecht der Speisen haben für den Koch den gleichen Stellenwert."
-              },
-              {
-                id: "52",
-                text: "In der Essschule können Kinder kochen lernen."
-              },
-              {
-                id: "53",
-                text: "Anton Laurito lehnt Fastfood nicht grundsätzlich ab."
-              },
-              {
-                id: "54",
-                text: "Der Koch hat eine gesunde Einstellung zum Thema Wettbewerb."
-              },
-              {
-                id: "55",
-                text: "Zuhause probiert er gerne komplizierte Gerichte aus."
-              }
-            ]
-          },
-          { 
-            id:"hörverstehen3", 
-            title:"Hörverstehen, Teil 3", 
-            points:25,
-            correctAnswers: { "56": "richtig", "57": "richtig", "58": "richtig", "59": "falsch", "60": "falsch" },
-            questions: [
-              {
-                id: "56",
-                text: "Am Wochenanfang soll man einen Aufenthalt im Freien vermeiden."
-              },
-              {
-                id: "57",
-                text: "Abends ist das Risiko, einen Wildunfall zu haben, am größten."
-              },
-              {
-                id: "58",
-                text: "Man kann bei dem Fest an verschiedenen Orten Musik hören."
-              },
-              {
-                id: "59",
-                text: "In dringenden Fällen können Sie die Firma ab Montag erreichen."
-              },
-              {
-                id: "60",
-                text: "Am Abend werden Verkehrsbehinderungen erwartet."
-              }
-            ]
-          }
-        ]
-      },
-      
-      schreiben: {
-        id: "exam-schreiben-001",
-        durationSec: 30 * 60,
-        sections: [
-          { 
-            id:"s1", 
-            title:"Schreiben, Teil 1", 
-            points:45,
-            passageTitle:"Aufgabe: Schreiben Sie eine E-Mail",
-            passage: "",
-            writingTask: {
-              prompt: `Engagement für Jugendliche
+      };
 
-Wie soll es nach dem Schulabschluss weitergehen? 
-Was wäre der ideale Beruf? 
-Wie findet man einen Ausbildungsplatz und wie bewirbt man sich? 
-
-Wollen Sie Jugendlichen dabei helfen, die richtigen Antworten auf diese Fragen zu finden 
-und so ihre Zukunftsperspektiven zu verbessern? 
-
-Dann werden Sie Bildungspatin/Bildungspate! 
-
-Wir suchen Bildungspatinnen und Bildungspaten, die Schülerinnen und Schüler ab 14 Jahren 
-unterstützen können: 
-- bei Problemen mit dem Schulabschluss, 
-- bei der Suche nach einem Ausbildungsplatz, 
-- beim Bewerbungsprozess, 
-- beim Berufseinstieg. 
-
-Sie helfen einer Schülerin oder einem Schüler dabei, den Übergang zwischen Schule und Beruf 
-zu meistern. 
-
-In drei Wochenendseminaren bereiten wir Sie auf diese spannende und anspruchsvolle 
-Aufgabe vor. 
-
-Sie erhalten außerdem regelmäßig Beratung und Unterstützung durch unser erfahrenes Team. 
-
-Setzen Sie Ihre Zeit, Ihr Wissen und Ihr Engagement ein, um das Leben eines Jugendlichen 
-positiv zu beeinflussen! 
-
-Mehr Informationen erhalten Sie unter: www.bildungspaten-für-jugendliche.net 
-
-Adresse: 
-Bildungspaten für Jugendliche e. V. 
-Hamburger Str. 112 
-60824 Frankfurt am Main`,
-              requirements: [
-                "Beschreiben Sie, welche Erfahrungen Sie bei Ihrem Engagement in dem Verein gemacht haben.",
-                "Erklären Sie, warum Sie Jugendlichen helfen wollten.",
-                "Beschreiben Sie, wie Sie sich die Mitarbeit im Verein vorgestellt haben.",
-                "Machen Sie Verbesserungsvorschläge."
-              ],
-              wordCount: 0
-            }
-          }
-        ]
-      }
-    };
-
-    // ===== LESEN PAGE FUNCTIONALITY =====
-    function initLesenPage() {
-      const exam = EXAM_DATA.lesen;
-      
-      // Global variables for click selection mode
-      window.selectedHeadingId = null;
-      window.selectedSituationId = null;
-      window.selectedWordId = null;
-      window.selectedWord = null;
-      
       /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
@@ -2315,8 +1928,7 @@ Hamburger Str. 112
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null,
-        examEnded: false
+        timerInterval: null
       };
       const topTiles = document.getElementById('topTiles-lesen');
       const passageTitleEl = document.getElementById('passageTitle-lesen');
@@ -2331,43 +1943,7 @@ Hamburger Str. 112
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
-      /* ===== Timer Functions with Auto-Submit ===== */
-      function handleTimeExpired() {
-        if (state.examEnded) return;
-        state.examEnded = true;
-        
-        // Stop timer
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-          state.timerInterval = null;
-        }
-        
-        // Show results
-        state.showResults = true;
-        renderAll();
-        
-        // Check if there's next exam
-        const nextBtn = document.getElementById('nextBtn-lesen');
-        if (nextBtn && !nextBtn.disabled) {
-          // Auto navigate to next exam after 2 seconds
-          setTimeout(() => {
-            if (state.sectionIndex < exam.sections.length - 1) {
-              state.sectionIndex++;
-              state.showResults = false;
-              state.examEnded = false;
-              renderAll();
-            } else {
-              showPage('hoeren-page');
-            }
-          }, 2000);
-        } else {
-          // Go to results page
-          setTimeout(() => {
-            showPage('ergebnisse-page');
-          }, 2000);
-        }
-      }
-
+      /* ===== Timer Functions ===== */
       function startTimer(){
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -2378,7 +1954,6 @@ Hamburger Str. 112
           if(state.remaining <= 0){
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
-            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -2392,7 +1967,6 @@ Hamburger Str. 112
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
-        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -2456,8 +2030,6 @@ Hamburger Str. 112
       }
 
       function renderAll(){
-        if (state.examEnded) return;
-        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         sectionNameEl.textContent = section.title;
@@ -2486,7 +2058,7 @@ Hamburger Str. 112
       function renderPart1(){
         const section = exam.sections[state.sectionIndex];
         
-        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden. (Klicken: Titel auswählen → auf Text klicken)</div>`;
+        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden.</div>`;
         
         section.texts.forEach((text, idx) => {
           const letter = String.fromCharCode(97 + idx);
@@ -2496,7 +2068,7 @@ Hamburger Str. 112
             <div class="text-container">
               <div class="text-title">Text ${letter.toUpperCase()}</div>
               <div class="text-content">${text.content}</div>
-              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}" onclick="window.lesenApp.handleSlotClick('${text.id}')">
+              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}">
                 ${selectedHeading ? getHeadingTextById(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
               </div>
             </div>
@@ -2510,10 +2082,7 @@ Hamburger Str. 112
           const isUsed = section.texts.some(text => state.answers[text.id] === heading.id);
           
           headingsHTML += `
-            <div class="heading-item ${isUsed ? 'used' : ''} ${window.selectedHeadingId === heading.id ? 'selected' : ''}" 
-                 draggable="${!isUsed}" 
-                 data-heading-id="${heading.id}"
-                 onclick="window.lesenApp.handleHeadingClick('${heading.id}')">
+            <div class="heading-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-heading-id="${heading.id}">
               ${heading.id}) ${heading.text}
             </div>
           `;
@@ -2527,41 +2096,6 @@ Hamburger Str. 112
         
         questionBodyEl.innerHTML = '';
         questionTitleEl.textContent = '';
-      }
-
-      function handleHeadingClick(headingId) {
-        const section = exam.sections[state.sectionIndex];
-        const isUsed = section.texts.some(text => state.answers[text.id] === headingId);
-        if (isUsed) return;
-        
-        // Deselect if already selected
-        if (window.selectedHeadingId === headingId) {
-          window.selectedHeadingId = null;
-        } else {
-          window.selectedHeadingId = headingId;
-        }
-        renderPart1();
-      }
-
-      function handleSlotClick(textId) {
-        // If a heading is selected, place it in the slot
-        if (window.selectedHeadingId) {
-          // Remove any previous usage of this heading
-          Object.keys(state.answers).forEach(key => {
-            if (state.answers[key] === window.selectedHeadingId) {
-              delete state.answers[key];
-            }
-          });
-          
-          state.answers[textId] = window.selectedHeadingId;
-          window.selectedHeadingId = null;
-          renderAll();
-        } 
-        // If slot already has a heading, return it to bank
-        else if (state.answers[textId]) {
-          delete state.answers[textId];
-          renderAll();
-        }
       }
 
       function getHeadingTextById(id){
@@ -2602,7 +2136,6 @@ Hamburger Str. 112
             });
             
             state.answers[textId] = headingId;
-            window.selectedHeadingId = null;
             renderAll();
           });
         });
@@ -2646,7 +2179,7 @@ Hamburger Str. 112
         const section = exam.sections[state.sectionIndex];
         
         let textsHTML = `
-          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. Sie können jede Situation nur einmal verwenden. Manchmal passt keine Situation. (Klicken: Situation auswählen → auf Text klicken)</div>
+          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. Sie können jede Situation nur einmal verwenden. Manchmal passt keine Situation.</div>
           <div class="texts-list">
             <h3>Texte (A-L)</h3>
         `;
@@ -2659,9 +2192,7 @@ Hamburger Str. 112
             <div class="text-item" data-text-id="${text.id}">
               <div class="text-letter">${text.id})</div>
               <div class="text-content">${text.text}</div>
-              <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" 
-                   data-text-id="${text.id}" 
-                   onclick="window.lesenApp.handleSituationSlotClick('${text.id}')">
+              <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" data-text-id="${text.id}">
                 ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
               </div>
             </div>
@@ -2683,13 +2214,10 @@ Hamburger Str. 112
           const isX = state.answers[situation.id] === 'X';
           
           situationsHTML += `
-            <div class="situation-item ${isUsed ? 'used' : ''} ${window.selectedSituationId === situation.id ? 'selected' : ''}" 
-                 draggable="${!isUsed}" 
-                 data-situation-id="${situation.id}"
-                 onclick="${!isUsed ? `window.lesenApp.handleSituationClick('${situation.id}')` : ''}">
+            <div class="situation-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-situation-id="${situation.id}">
               <div class="situation-number">${situationNumber}.</div>
               <div class="situation-text">${situation.text}</div>
-              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}'); event.stopPropagation();">X - Kein passender Text</button>` : ''}
+              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}')">X - Kein passender Text</button>` : ''}
             </div>
           `;
         });
@@ -2703,39 +2231,6 @@ Hamburger Str. 112
         setupPart3DragAndDrop();
       }
 
-      function handleSituationClick(situationId) {
-        if (window.selectedSituationId === situationId) {
-          window.selectedSituationId = null;
-        } else {
-          window.selectedSituationId = situationId;
-        }
-        renderPart3();
-      }
-
-      function handleSituationSlotClick(textId) {
-        // If a situation is selected, place it in the slot
-        if (window.selectedSituationId) {
-          // Remove any previous usage of this situation
-          Object.keys(state.answers).forEach(key => {
-            if (state.answers[key] === window.selectedSituationId) {
-              delete state.answers[key];
-            }
-          });
-          
-          state.answers[window.selectedSituationId] = textId;
-          window.selectedSituationId = null;
-          renderAll();
-        } 
-        // If slot already has a situation, return it to bank
-        else {
-          const situationId = Object.keys(state.answers).find(key => state.answers[key] === textId);
-          if (situationId) {
-            delete state.answers[situationId];
-            renderAll();
-          }
-        }
-      }
-
       function markNoMatch(situationId) {
         Object.keys(state.answers).forEach(key => {
           if(state.answers[key] === situationId) {
@@ -2744,7 +2239,8 @@ Hamburger Str. 112
         });
         
         state.answers[situationId] = 'X';
-        window.selectedSituationId = null;
+        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
+        
         renderAll();
       }
 
@@ -2782,7 +2278,6 @@ Hamburger Str. 112
             });
             
             state.answers[situationId] = textId;
-            window.selectedSituationId = null;
             renderAll();
           });
         });
@@ -2806,13 +2301,19 @@ Hamburger Str. 112
         section.fillBlanks.forEach(blank => {
           const userAnswer = state.answers[blank.id];
           const displayText = userAnswer ? userAnswer : '________';
-          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}" onclick="window.lesenApp.handleBlankClick('${blank.id}')">${displayText}</span>`);
+          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}">${displayText}</span>`);
         });
         
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können die Lücken in beliebiger Reihenfolge ausfüllen.</div>
+          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können die Lücken في beliebiger Reihenfolge ausfüllen.</div>
           <div class="fill-blank-container">${tempText}</div>
         `;
+        
+        document.querySelectorAll('.blank-word').forEach(blank => {
+          blank.addEventListener('click', (e) => {
+            showOptionsPopup(e.target);
+          });
+        });
         
         let optionsHTML = `<div class="horizontal-options" style="gap: 8px;">`;
         
@@ -2842,10 +2343,17 @@ Hamburger Str. 112
         headingsBankContainer.innerHTML = '';
       }
 
-      function handleBlankClick(blankId) {
-        const section = exam.sections[state.sectionIndex];
+      function showOptionsPopup(blankElement){
+        const existingPopup = document.querySelector('.options-popup');
+        if(existingPopup) {
+          existingPopup.remove();
+        }
+        
+        const blankId = blankElement.getAttribute('data-blank-id');
+        const section = exam.sections.find(s => s.id === 's4');
         const blank = section.fillBlanks.find(b => b.id === blankId);
-        if (!blank) return;
+        
+        if(!blank) return;
         
         const popup = document.createElement('div');
         popup.className = 'options-popup';
@@ -2856,19 +2364,12 @@ Hamburger Str. 112
           optionItem.textContent = opt;
           optionItem.onclick = () => {
             selectSprachbausteine1(blankId, opt);
-            document.querySelectorAll('.options-popup').forEach(p => p.remove());
+            popup.remove();
           };
           popup.appendChild(optionItem);
         });
         
-        // Remove any existing popup
-        document.querySelectorAll('.options-popup').forEach(p => p.remove());
-        
-        // Find the clicked element and append popup
-        const element = document.querySelector(`[data-blank-id="${blankId}"]`);
-        if (element) {
-          element.appendChild(popup);
-        }
+        blankElement.appendChild(popup);
       }
 
       function selectSprachbausteine1(blankId, answer){
@@ -2878,49 +2379,54 @@ Hamburger Str. 112
 
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
-        
-        // Build text with placeholders
+        // Build text but replace blanks with unique placeholders first (prevents ambiguous replacements)
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
         section.fillBlanks2.forEach(blank => {
           const ph = `BLANK_${blank.id}`;
           placeholders.push({id: blank.id, ph});
+          // replace first occurrence of the visual underline with placeholder
           textWithPlaceholders = textWithPlaceholders.replace('________', ph);
         });
 
-        // Replace placeholders with span elements
+        // Now replace placeholders with actual span elements showing current answer (or underscore)
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
-          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''} ${window.selectedWordId === item.id ? 'selected' : ''}" data-blank-id="${item.id}" onclick="window.lesenApp.handleWordSlotClick('${item.id}')">${displayText}</span>`;
+          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''}" data-blank-id="${item.id}">${displayText}</span>`;
           textWithPlaceholders = textWithPlaceholders.replace(item.ph, span);
         });
 
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf eine Lücke und dann auf ein Wort aus der Liste. (Klicken: Wort auswählen → auf Lücke klicken)</div>
+          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können jedes Wort nur einmal verwenden.</div>
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
+
+        // attach click handlers to slots
+        document.querySelectorAll('.blank-slot').forEach(slot => {
+          slot.addEventListener('click', (e) => {
+            // use the element itself to open popup
+            showSprachbausteine2Options(slot);
+          });
+        });
 
         // Build word bank on the right
         let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
         const usedWords = Object.values(state.answers);
+        // Use section.wordBank if present, otherwise derive from fillBlanks2 options
         const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
-        
         bank.forEach(word => {
           const isUsed = usedWords.includes(word);
-          const isSelected = window.selectedWord === word;
-          
           wordBankHTML += `
-            <div class="bank-word-vertical ${isUsed ? 'used' : ''} ${isSelected ? 'selected' : ''}" 
+            <div class="bank-word-vertical ${isUsed ? 'used' : ''}" 
                  draggable="${!isUsed}" 
                  data-word="${word}"
-                 onclick="${!isUsed ? `window.lesenApp.handleWordClick('${word}')` : ''}">
+                 ${!isUsed ? `onclick="window.lesenApp.selectSprachbausteine2FromBank('${word}')"` : ''}>
               ${word}
             </div>
           `;
         });
         wordBankHTML += `</div>`;
-        
         questionBodyEl.innerHTML = wordBankHTML;
         questionTitleEl.textContent = '';
         headingsBankContainer.innerHTML = '';
@@ -2928,91 +2434,142 @@ Hamburger Str. 112
         setupSprachbausteine2DragAndDrop();
       }
 
-      function handleWordClick(word) {
-        // Toggle selection
-        if (window.selectedWord === word) {
-          window.selectedWord = null;
-          window.selectedWordId = null;
-        } else {
-          window.selectedWord = word;
-          window.selectedWordId = null;
-        }
-        renderSprachbausteine2();
-      }
-
-      function handleWordSlotClick(blankId) {
-        // If a word is selected, place it in the slot
-        if (window.selectedWord) {
-          const word = window.selectedWord;
-          
-          // Remove this word from any other slot if it exists
-          Object.keys(state.answers).forEach(key => {
-            if (state.answers[key] === word) {
-              delete state.answers[key];
-            }
-          });
-          
-          // Remove previous answer from this slot if any
-          if (state.answers[blankId]) {
-            // Word will be freed automatically as it's not in answers anymore
-          }
-          
-          state.answers[blankId] = word;
-          window.selectedWord = null;
-          renderSprachbausteine2();
-        } 
-        // If slot already has a word, return it to bank
-        else if (state.answers[blankId]) {
-          delete state.answers[blankId];
-          renderSprachbausteine2();
-        }
-      }
+      // --- Added functions to handle drag/drop and clicks for Sprachbausteine Teil 2 ---
+      let lastClickedSprachSlot = null;
 
       function setupSprachbausteine2DragAndDrop(){
-        const wordItems = document.querySelectorAll('.bank-word-vertical:not(.used)');
-        const blankSlots = document.querySelectorAll('.blank-slot');
-        
-        wordItems.forEach(item => {
-          item.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', e.target.dataset.word);
-          });
+        // bank words: make draggable if not used, attach dragstart
+        const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
+        bankWords.forEach(el => {
+          const word = el.dataset.word;
+          if(!el.classList.contains('used')){
+            el.setAttribute('draggable','true');
+          } else {
+            el.setAttribute('draggable','false');
+          }
+          // ensure single attached listener
+          el.removeEventListener('dragstart', el._dstart);
+          el._dstart = (e) => {
+            e.dataTransfer.setData('text/plain', word);
+            // also set an indicator
+            e.dataTransfer.setData('source', 'bank');
+          };
+          el.addEventListener('dragstart', el._dstart);
+
+          // keep onclick behavior (select into clicked slot)
+          el.removeEventListener('click', el._onclick);
+          el._onclick = () => {
+            if(el.classList.contains('used')) return;
+            selectSprachbausteine2FromBank(word);
+          };
+          el.addEventListener('click', el._onclick);
         });
-        
-        blankSlots.forEach(slot => {
+
+        // blank slots: allow drop
+        const slots = Array.from(document.querySelectorAll('.blank-slot'));
+        slots.forEach(slot => {
           slot.addEventListener('dragover', (e) => {
             e.preventDefault();
-            slot.style.background = '#e8f4ff';
+            slot.classList.add('drag-over');
           });
-          
           slot.addEventListener('dragleave', (e) => {
-            slot.style.background = slot.classList.contains('has-answer') ? '#e8fbe9' : '#f8fbff';
+            slot.classList.remove('drag-over');
           });
-          
           slot.addEventListener('drop', (e) => {
             e.preventDefault();
-            const word = e.dataTransfer.getData('text/plain');
+            slot.classList.remove('drag-over');
+            const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
+            if(!word) return;
+            // Determine blank id
             const blankId = slot.dataset.blankId;
-            
-            selectSprachbausteine2(blankId, word);
+            if(!blankId) return;
+            // If this word is already used in another slot, free it
+            Object.keys(state.answers).forEach(k => {
+              if(state.answers[k] === word){
+                delete state.answers[k];
+              }
+            });
+            // If slot had a previous answer, free that bank word
+            const prev = state.answers[blankId];
+            if(prev){
+              const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
+              if(prevEl){
+                prevEl.classList.remove('used');
+                prevEl.setAttribute('draggable','true');
+                prevEl.addEventListener('click', prevEl._onclick);
+              }
+            }
+            // mark bank word used
+            const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
+            if(bankEl){
+              bankEl.classList.add('used');
+              bankEl.setAttribute('draggable','false');
+              // remove click to prevent double-placing
+              bankEl.removeEventListener('click', bankEl._onclick);
+            }
+            // assign to state and re-render
+            state.answers[blankId] = word;
+            renderAll();
           });
         });
       }
 
-      function selectSprachbausteine2(blankId, word){
-        // Remove this word from any other slot
-        Object.keys(state.answers).forEach(key => {
-          if (state.answers[key] === word) {
-            delete state.answers[key];
+      function showSprachbausteine2Options(slot){
+        // highlight selected slot so click from bank knows target
+        document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
+        slot.classList.add('selected-sprach');
+        lastClickedSprachSlot = slot;
+      }
+
+      function selectSprachbausteine2FromBank(word){
+        // choose target slot: prefer lastClicked, otherwise first empty
+        let slot = lastClickedSprachSlot;
+        if(!slot){
+          slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
+            const id = s.dataset.blankId;
+            return !state.answers[id];
+          });
+        }
+        if(!slot) {
+          // if none available, do nothing
+          return;
+        }
+        const blankId = slot.dataset.blankId;
+        // free previous occurrence of word
+        Object.keys(state.answers).forEach(k => {
+          if(state.answers[k] === word){
+            delete state.answers[k];
           }
         });
-        
+        // free previous word in target slot
+        const prev = state.answers[blankId];
+        if(prev){
+          const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
+          if(prevEl){
+            prevEl.classList.remove('used');
+            prevEl.setAttribute('draggable','true');
+            if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
+          }
+        }
+        // mark selected bank word as used
+        const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
+        if(bankEl){
+          bankEl.classList.add('used');
+          bankEl.setAttribute('draggable','false');
+          if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
+        }
+        // assign value
         state.answers[blankId] = word;
-        window.selectedWord = null;
-        renderSprachbausteine2();
+        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
+        
+        lastClickedSprachSlot = null;
+        renderAll();
       }
 
       function selectOption(questionId, optionId){
         state.answers[questionId] = optionId;
+        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
+        
         renderAll();
       }
 
@@ -3118,8 +2675,6 @@ Hamburger Str. 112
           state.sectionIndex++;
           state.questionIndex = 0;
           renderAll();
-        } else {
-          showPage('hoeren-page');
         }
       });
 
@@ -3152,39 +2707,147 @@ Hamburger Str. 112
         }
       });
 
+      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
+        showPage('hoeren-page');
+      });
+
       /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
+      // Expose functions to global scope for event handlers
       window._lesenState = state;
       window.lesenApp = {
         selectOption,
         markNoMatch,
         selectSprachbausteine1,
-        selectSprachbausteine2,
-        handleHeadingClick,
-        handleSlotClick,
-        handleSituationClick,
-        handleSituationSlotClick,
-        handleBlankClick,
-        handleWordClick,
-        handleWordSlotClick
+        selectSprachbausteine2FromBank
       };
     }
 
     // ===== HÖREN PAGE FUNCTIONALITY =====
     function initHoerenPage() {
-      const exam = EXAM_DATA.hoeren;
+      /* ===== Self-contained exam (embedded) ===== */
+      const exam = {
+        id: "exam-hörverstehen",
+        durationSec: 17 * 60, // 17 minutes in seconds
+        sections: [
+          { 
+            id: "hörverstehen1", 
+            title: "Hörverstehen, Teil 1", 
+            points: 25,
+            correctAnswers: { "19": "falsch", "20": "richtig", "21": "richtig", "22": "falsch", "23": "falsch" },
+            questions: [
+              {
+                id: "19",
+                text: "Die Deutsche Lufthansa hat ihre Führungsposition verloren."
+              },
+              {
+                id: "20", 
+                text: "Ein Bonner Sportverein zeigt der Öffentlichkeit sein Angebot."
+              },
+              {
+                id: "21",
+                text: "Die Situation im Pflegesektor hat sich noch nicht verbessert."
+              },
+              {
+                id: "22",
+                text: "Durch moderne Wärmedämmung konnten die Heizkosten deutlich reduziert werden."
+              },
+              {
+                id: "23",
+                text: "Das Nationale Olympische Komitee hat die Dopingsperre für Tom Sanders aufgehoben."
+              }
+            ]
+          },
+          { 
+            id: "hörverstehen2", 
+            title: "Hörverstehen, Teil 2", 
+            points: 25,
+            correctAnswers: { "24": "falsch", "25": "falsch", "26": "richtig", "27": "richtig", "28": "falsch", "29": "falsch", "30": "richtig", "31": "falsch", "32": "falsch", "33": "falsch" },
+            questions: [
+              {
+                id: "24",
+                text: "Die Zahl der deutschen Mallorca-Urlauber hat nur leicht abgenommen."
+              },
+              {
+                id: "25",
+                text: "Nach Professor Kirsch achten die Deutschen bei der Wahl ihrer Urlaubsreisen nicht besonders auf die Kosten."
+              },
+              {
+                id: "26", 
+                text: "Einige Einheimische in Mallorca haben begonnen, sich gegen das Vordringen der deutschen Sprache zu wehren."
+              },
+              {
+                id: "27",
+                text: "In Mallorca wird der Staat wegen der Umweltbelastungen zur Kasse bitten."
+              },
+              {
+                id: "28",
+                text: "Viele Deutsche haben jetzt Rumänien und Ungarn als Reiseziel entdeckt."
+              },
+              {
+                id: "29",
+                text: "Professor Kirsch weist auf günstige Angebote für Golfspieler am Plattensee hin."
+              },
+              {
+                id: "30",
+                text: "Bulgarien hat sich als Urlaubsland sehr positiv entwickelt."
+              },
+              {
+                id: "31",
+                text: "Viele Westdeutsche meiden Bulgarien, weil die Einreisemodalitäten abschreckend sind."
+              },
+              {
+                id: "32",
+                text: "Seit Ende der neunziger Jahre geben die Deutschen mehr Geld für den Urlaub aus."
+              },
+              {
+                id: "33",
+                text: "Durch die Vielzahl aktiver Senioren entsteht eine höhere Nachfrage nach Abenteuerreisen in ferne Länder."
+              }
+            ]
+          },
+          { 
+            id: "hörverstehen3", 
+            title: "Hörverstehen, Teil 3", 
+            points: 25,
+            correctAnswers: { "34": "richtig", "35": "falsch", "36": "falsch", "37": "richtig", "38": "falsch" },
+            questions: [
+              {
+                id: "34",
+                text: "Bei der Fahrschule kann man sich über das Internet anmelden."
+              },
+              {
+                id: "35",
+                text: "Die Anruferin ist im Hinblick auf die Abfahrtszeit flexibel."
+              },
+              {
+                id: "36",
+                text: "Für den Halb-Marathon kann man sich noch am Sonntag registrieren lassen."
+              },
+              {
+                id: "37",
+                text: "Bei dem Flug nach Mallorca ändert sich die Abflugzeit."
+              },
+              {
+                id: "38",
+                text: "In Halle D wird aus E-Books vorgelesen."
+              }
+            ]
+          }
+        ]
+      };
 
+      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null,
-        examEnded: false
+        timerInterval: null
       };
       
       const topTiles = document.getElementById('topTiles-hoeren');
@@ -3192,37 +2855,7 @@ Hamburger Str. 112
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
 
-      function handleTimeExpired() {
-        if (state.examEnded) return;
-        state.examEnded = true;
-        
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-          state.timerInterval = null;
-        }
-        
-        state.showResults = true;
-        renderAll();
-        
-        const nextBtn = document.getElementById('nextBtn-hoeren');
-        if (nextBtn && !nextBtn.disabled) {
-          setTimeout(() => {
-            if (state.sectionIndex < exam.sections.length - 1) {
-              state.sectionIndex++;
-              state.showResults = false;
-              state.examEnded = false;
-              renderAll();
-            } else {
-              showPage('schreiben-page');
-            }
-          }, 2000);
-        } else {
-          setTimeout(() => {
-            showPage('ergebnisse-page');
-          }, 2000);
-        }
-      }
-
+      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3233,7 +2866,6 @@ Hamburger Str. 112
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
-            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -3247,7 +2879,6 @@ Hamburger Str. 112
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
-        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -3258,6 +2889,7 @@ Hamburger Str. 112
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
+      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3280,8 +2912,6 @@ Hamburger Str. 112
       }
 
       function renderAll() {
-        if (state.examEnded) return;
-        
         renderTopTiles();
         
         if (state.showResults) {
@@ -3363,6 +2993,7 @@ Hamburger Str. 112
           state.answers[sectionId] = {};
         }
         state.answers[sectionId][questionId] = answer;
+        try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
         renderTopTiles();
       }
@@ -3426,6 +3057,7 @@ Hamburger Str. 112
         contentContainer.innerHTML = resultsHTML;
       }
 
+      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3439,8 +3071,6 @@ Hamburger Str. 112
           state.sectionIndex++;
           state.showResults = false;
           renderAll();
-        } else {
-          showPage('schreiben-page');
         }
       });
 
@@ -3470,6 +3100,11 @@ Hamburger Str. 112
         }
       });
 
+      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
+        showPage('schreiben-page');
+      });
+
+      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
@@ -3482,16 +3117,73 @@ Hamburger Str. 112
 
     // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
-      const exam = EXAM_DATA.schreiben;
+      /* ===== Self-contained exam (embedded) ===== */
+      const exam = {
+        id: "exam-002",
+        durationSec: 30 * 60, // 30 minutes in seconds
+        sections: [
+          { 
+            id: "s1", 
+            title: "Schreiben, Teil 1", 
+            points: 45,
+            passageTitle: "Aufgabe: Schreiben Sie eine E-Mail",
+            passage: "",
+            writingTask: {
+              prompt: `Engagement für Jugendliche
 
+Wie soll es nach dem Schulabschluss weitergehen? 
+Was wäre der ideale Beruf? 
+Wie findet man einen Ausbildungsplatz und wie bewirbt man sich? 
+
+Wollen Sie Jugendlichen dabei helfen, die richtigen Antworten auf diese Fragen zu finden 
+und so ihre Zukunftsperspektiven zu verbessern? 
+
+Dann werden Sie Bildungspatin/Bildungspate! 
+
+Wir suchen Bildungspatinnen und Bildungspaten, die Schülerinnen und Schüler ab 14 Jahren 
+unterstützen können: 
+- bei Problemen mit dem Schulabschluss, 
+- bei der Suche nach einem Ausbildungsplatz, 
+- beim Bewerbungsprozess, 
+- beim Berufseinstieg. 
+
+Sie helfen einer Schülerin oder einem Schüler dabei, den Übergang zwischen Schule und Beruf 
+zu meistern. 
+
+In drei Wochenendseminaren bereiten wir Sie auf diese spannende und anspruchsvolle 
+Aufgabe vor. 
+
+Sie erhalten außerdem regelmäßig Beratung und Unterstützung durch unser erfahrenes Team. 
+
+Setzen Sie Ihre Zeit, Ihr Wissen und Ihr Engagement ein, um das Leben eines Jugendlichen 
+positiv zu beeinflussen! 
+
+Mehr Informationen erhalten Sie unter: www.bildungspaten-für-jugendliche.net 
+
+Adresse: 
+Bildungspaten für Jugendliche e. V. 
+Hamburger Str. 112 
+60824 Frankfurt am Main`,
+              requirements: [
+                "Beschreiben Sie, welche Erfahrungen Sie bei Ihrem Engagement in dem Verein gemacht haben.",
+                "Erklären Sie, warum Sie Jugendlichen helfen wollten.",
+                "Beschreiben Sie, wie Sie sich die Mitarbeit im Verein vorgestellt haben.",
+                "Machen Sie Verbesserungsvorschläge."
+              ],
+              wordCount: 0
+            }
+          }
+        ]
+      };
+
+      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null,
-        examEnded: false
+        timerInterval: null
       };
       
       const topTiles = document.getElementById('topTiles-schreiben');
@@ -3501,23 +3193,7 @@ Hamburger Str. 112
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
 
-      function handleTimeExpired() {
-        if (state.examEnded) return;
-        state.examEnded = true;
-        
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-          state.timerInterval = null;
-        }
-        
-        state.showResults = true;
-        renderAll();
-        
-        setTimeout(() => {
-          showPage('ergebnisse-page');
-        }, 2000);
-      }
-
+      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3528,7 +3204,6 @@ Hamburger Str. 112
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
-            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -3542,7 +3217,6 @@ Hamburger Str. 112
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
-        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -3553,6 +3227,7 @@ Hamburger Str. 112
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
+      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3569,8 +3244,6 @@ Hamburger Str. 112
       }
 
       function renderAll() {
-        if (state.examEnded) return;
-        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         passageTitleEl.textContent = section.passageTitle;
@@ -3626,6 +3299,7 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
 
       function updateWritingAnswer(sectionId, text) {
         state.answers[sectionId] = text;
+        try{ localStorage.setItem('schreibenAnswers', JSON.stringify({content: state.answers[sectionId], wordCount: (state.answers[sectionId]||'').trim().split(/\s+/).filter(Boolean).length})); }catch(e){}
         
         const wordCount = countWords(text);
         document.querySelector('.word-counter .count').textContent = wordCount;
@@ -3654,6 +3328,7 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
         writingContainer.innerHTML = '';
       }
 
+      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-schreiben').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3667,8 +3342,6 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
           state.sectionIndex++;
           state.showResults = false;
           renderAll();
-        } else {
-          showPage('ergebnisse-page');
         }
       });
 
@@ -3678,7 +3351,7 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
       });
 
       document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöschت.')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3698,6 +3371,11 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
         }
       });
 
+      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
+        showPage('ergebnisse-page');
+      });
+
+      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
@@ -3709,92 +3387,241 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
     }
 
     // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
+    // ===== KORREKTE ANTWORTEN FÜR DIESE PRÜFUNG =====
+    const CORRECT_ANSWERS = {
+      lesen: {
+        // Teil 1: Überschriften zuordnen (text1-text5)
+        "text1": "g",
+        "text2": "e", 
+        "text3": "j",
+        "text4": "b",
+        "text5": "a",
+        
+        // Teil 2: Fragen zum Text (s2q1-s2q5)
+        "s2q1": "s2q1o2",
+        "s2q2": "s2q2o3",
+        "s2q3": "s2q3o2",
+        "s2q4": "s2q4o2",
+        "s2q5": "s2q5o1",
+        
+        // Teil 3: Texte zuordnen (11-20)
+        "11": "F",
+        "12": "D",
+        "13": "X",
+        "14": "X",
+        "15": "K",
+        "16": "L",
+        "17": "J",
+        "18": "A",
+        "19": "I",
+        "20": "C",
+        
+        // Sprachbausteine Teil 1 (21-30)
+        "21": "konntest",
+        "22": "würde",
+        "23": "für",
+        "24": "vielen",
+        "25": "gefallen",
+        "26": "denn",
+        "27": "Wenn",
+        "28": "Dann",
+        "29": "ausgeräumt",
+        "30": "weil",
+        
+        // Sprachbausteine Teil 2 (31-40)
+        "31": "doch",
+        "32": "Leitet",
+        "33": "Ankommt",
+        "34": "Nämlich",
+        "35": "Darf",
+        "36": "Als",
+        "37": "Genau",
+        "38": "Erwerben",
+        "39": "Sondern",
+        "40": "Abgeschlossen"
+      },
+      
+      hoeren: {
+        // Hören Teil 1 (19-23)
+        "19": "falsch",
+        "20": "richtig",
+        "21": "richtig",
+        "22": "falsch",
+        "23": "falsch",
+        
+        // Hören Teil 2 (24-33)
+        "24": "falsch",
+        "25": "falsch",
+        "26": "richtig",
+        "27": "richtig",
+        "28": "falsch",
+        "29": "falsch",
+        "30": "richtig",
+        "31": "falsch",
+        "32": "falsch",
+        "33": "falsch",
+                
+        // Hören Teil 3 (34-38)
+        "34": "richtig",
+        "35": "falsch",
+        "36": "falsch",
+        "37": "richtig",
+        "38": "falsch"
+      }
+    };
+
     function initErgebnissePage() {
       const CONFIG = {
         totals: { 
-          lesen: 105, 
+          lesen: 85, 
           hoeren: 75, 
           schreiben: 45, 
-          gesamt: 225 
+          gesamt: 205 
         },
         counts: { 
           lesen: 40, 
-          hoeren: 20 
-        }
+          hoeren: 15 
+        },
+        hoerenCorrect: CORRECT_ANSWERS.hoeren,
+        lesenCorrect: CORRECT_ANSWERS.lesen
       };
 
-      const CORRECT_ANSWERS = {
-        lesen: {
-          "text1": "f",
-          "text2": "d",
-          "text3": "b",
-          "text4": "a",
-          "text5": "e",
-          "s2q1": "s2q1o2",
-          "s2q2": "s2q2o1",
-          "s2q3": "s2q3o3",
-          "s2q4": "s2q4o3",
-          "s2q5": "s2q5o3",
-          "11": "A",
-          "12": "X",
-          "13": "G",
-          "14": "I",
-          "15": "K",
-          "16": "F",
-          "17": "X",
-          "18": "H",
-          "19": "D",
-          "20": "L",
-          "21": "um",
-          "22": "ob",
-          "23": "aber",
-          "24": "unbedingt",
-          "25": "mich",
-          "26": "als",
-          "27": "kommenden",
-          "28": "dazu",
-          "29": "sondern",
-          "30": "für",
-          "31": "KAUM",
-          "32": "AUF",
-          "33": "VORBEI",
-          "34": "STATT",
-          "35": "INNERHALB",
-          "36": "MÜSSEN",
-          "37": "AN",
-          "38": "SOLLEN",
-          "39": "DANN",
-          "40": "DENN"
-        },
-        hoeren: {
-          "41": "falsch",
-          "42": "richtig",
-          "43": "richtig",
-          "44": "falsch",
-          "45": "falsch",
-          "46": "richtig",
-          "47": "falsch",
-          "48": "richtig",
-          "49": "richtig",
-          "50": "falsch",
-          "51": "falsch",
-          "52": "richtig",
-          "53": "richtig",
-          "54": "richtig",
-          "55": "falsch",
-          "56": "richtig",
-          "57": "richtig",
-          "58": "richtig",
-          "59": "falsch",
-          "60": "falsch"
-        }
-      };
+      function normalizeAnswer(a) {
+        if (a === null || a === undefined) return '';
+        let s = String(a).trim();
+        if (s === '') return '';
+        const low = s.toLowerCase();
+        if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
+        if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
+        return s;
+      }
+
+      function getHeadingText(headingId) {
+        if (!headingId || headingId === '-') return '-';
+        const headings = {
+          "a": "Für unterwegs: Leckereien im Zugrestaurant In der",
+          "b": "Stadt der warmen Quellen",
+          "c": "Eine Wanderung macht gute Laune",
+          "d": "„Die Arbeit von Forschern erfordert weniger Zeit\"",
+          "e": "Naschen statt wegwerfen",
+          "f": "Neues Thermalbad in Rom",
+          "g": "Reisen: Die beliebtesten Thermalbäder",
+          "h": "Klug durch Schlafen",
+          "i": "Tiere Energiesparmodus",
+          "j": "Licht aus dem Klassenzimmer"
+        };
+        return headings[headingId] || headingId;
+      }
+
+      function getOptionText(questionId, optionId) {
+        if (!optionId || optionId === '-') return '-';
+        const options = {
+          "s2q1o1": "dieser im Vergleich zu Flugreisen oft billiger ist.",
+          "s2q1o2": "man dort leicht mit anderen Fahrgästen ins Gespräch kommt.",
+          "s2q1o3": "sie während der Fahrt meist gut schlafen kann.",
+          "s2q2o1": "hat der Österreichischen Bundesbahn einige Züge abgekauft.",
+          "s2q2o2": "möchte mehr Fahrten über Nacht anbieten.",
+          "s2q2o3": "verzichtete aus ökonomischen Gründen auf eigene Nachtzüge.",
+          "s2q3o1": "empfand Tom Schneider insgesamt als erholsam.",
+          "s2q3o2": "hat Tom Schneiders Sohn begeistert.",
+          "s2q3o3": "möchte Tom Schneider nicht wiederholen.",
+          "s2q4o1": "er im Zug ungern arbeitet.",
+          "s2q4o2": "er mit dem Flugzeug Zeit spart.",
+          "s2q4o3": "es ihm an Bequemlichkeit fehlt.",
+          "s2q5o1": "den Fahrgästen viel Privatsphäre bieten.",
+          "s2q5o2": "vor allem eine finanzkräftige Zielgruppe ansprechen.",
+          "s2q5o3": "zunächst Zielorte nördlich von Frankreich anfahren."
+        };
+        return options[optionId] || optionId;
+      }
+
+      function getSituationText(id) {
+        const situations = {
+          "11": "Ein Bekannter ist ein paar Tage in Berlin und würde sich gerne verschiedene Kunstausstellungen ansehen.",
+          "12": "Eine Bekannte träumt davon, selbst einmal bei einem Film mitzuspielen.",
+          "13": "Ein Freund würde sich gerne einen Dokumentarfilm über Tiere ansehen.",
+          "14": "Eine Freundin sucht einen Nebenjob. Sie würde dabei gerne viel Zeit draußen verbringen.",
+          "15": "hr Cousin ist Student und sucht für die Sommermonate einen Nebenjob.",
+          "16": "Ihre achtjährige Nichte interessiert sich für Tiere und Natur. Sie möchten ihr zum Geburtstag ein Buch schenken.",
+          "17": "Sie möchten eine besondere Stadtführung in Berlin buchen.",
+          "18": "Sie möchten mit Freunden einen unterhaltsamen Film anschauen.",
+          "19": "Sie sind zu einer Kostüm-Party eingeladen und brauchen dafür etwas zum Anziehen.",
+          "20": "Sie würden gerne mit Freunden eine mehrtägige Stadttour machen und suchen ein Angebot."
+        };
+        return situations[id] || id;
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
 
       function readExamResults() {
         try {
-          const lesen = window._lesenState ? window._lesenState.answers : {};
-          const hoeren = window._hoerenState ? window._hoerenState.answers : {};
-          const schreiben = window._schreibenState ? window._schreibenState.answers : {};
+          const lesen = {};
+          const hoeren = {};
+          const schreiben = { content: '', wordCount: 0 };
+
+          try {
+            if (window._lesenState && window._lesenState.answers) {
+              Object.keys(window._lesenState.answers).forEach(k => {
+                lesen[k] = window._lesenState.answers[k];
+              });
+            }
+          } catch (e) {}
+
+          try {
+            if (window._hoerenState && window._hoerenState.answers) {
+              Object.keys(window._hoerenState.answers).forEach(sectionId => {
+                const sec = window._hoerenState.answers[sectionId] || {};
+                Object.keys(sec).forEach(q => {
+                  hoeren[q] = sec[q];
+                });
+              });
+            }
+          } catch (e) {}
+
+          try {
+            if (window._schreibenState && window._schreibenState.answers) {
+              const answers = window._schreibenState.answers;
+              if (answers['s1']) {
+                schreiben.content = answers['s1'];
+              } else {
+                const keys = Object.keys(answers);
+                if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
+              }
+              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
+            }
+          } catch (e) {}
+
+          try {
+            if (Object.keys(lesen).length === 0) {
+              const storedL = localStorage.getItem('lesenAnswers');
+              if (storedL) Object.assign(lesen, JSON.parse(storedL));
+            }
+          } catch (e) {}
+
+          try {
+            if (Object.keys(hoeren).length === 0) {
+              const storedH = localStorage.getItem('hoerenAnswers');
+              if (storedH) Object.assign(hoeren, JSON.parse(storedH));
+            }
+          } catch (e) {}
+
+          try {
+            if (!schreiben.content) {
+              const storedS = localStorage.getItem('schreibenAnswers');
+              if (storedS) {
+                const obj = JSON.parse(storedS);
+                schreiben.content = obj.content || '';
+                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
+              }
+            }
+          } catch (e) {}
 
           return { hoeren, lesen, schreiben };
         } catch (e) {
@@ -3802,343 +3629,378 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
         }
       }
 
-      function calculateLesenResults(answers) {
-        const exam = EXAM_DATA.lesen;
-        let correct = 0;
-        let total = 0;
+      function gradeHoeren(u) {
+        const c = CONFIG.hoerenCorrect;
+        let okCount = 0;
+        const d = [];
         
-        exam.sections.forEach(section => {
-          if (section.id === 's1') {
-            section.texts.forEach(text => {
-              total++;
-              if (answers[text.id] === text.correctAnswer) correct++;
-            });
-          } else if (section.id === 's2') {
-            section.questions.forEach(question => {
-              total++;
-              if (answers[question.id] === question.correctAnswer) correct++;
-            });
-          } else if (section.id === 's3') {
-            section.situations.forEach(situation => {
-              total++;
-              const correctText = section.texts.find(t => t.correctAnswer === situation.id);
-              if (answers[situation.id] === (correctText ? correctText.id : null)) correct++;
-            });
-          } else if (section.id === 's4') {
-            section.fillBlanks.forEach(blank => {
-              total++;
-              if (answers[blank.id] === blank.correctAnswer) correct++;
-            });
-          } else if (section.id === 's5') {
-            section.fillBlanks2.forEach(blank => {
-              total++;
-              if (answers[blank.id] === blank.correctAnswer) correct++;
-            });
-          }
-        });
+        for (let q = 19; q <= 38; q++) {
+          const k = String(q);
+          const uA = normalizeAnswer(u[k] || '');
+          const exp = normalizeAnswer(c[k] || '');
+          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
+          if (ok) okCount++;
+          const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
+          d.push({
+            frage: k,
+            user: uA || '-',
+            correct: exp || '-',
+            richtig: ok,
+            punkte: ok ? ptsPer.toFixed(2) : '0'
+          });
+        }
         
-        const points = Math.round((correct / total) * CONFIG.totals.lesen);
-        
-        return { correct, total, points };
+        const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
+        return { okCount, total, details: d };
       }
 
-      function calculateHoerenResults(answers) {
-        const exam = EXAM_DATA.hoeren;
-        let correct = 0;
-        let total = 0;
+      function gradeLesen(u) {
+        const c = CONFIG.lesenCorrect;
+        let okCount = 0;
+        const d = [];
         
-        exam.sections.forEach(section => {
-          section.questions.forEach(question => {
-            total++;
-            if (answers[section.id] && answers[section.id][question.id] === section.correctAnswers[question.id]) {
-              correct++;
-            }
+        Object.keys(c).forEach(k => {
+          const exp = normalizeAnswer(c[k]);
+          const uA = normalizeAnswer(u[k] || '');
+          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
+          if (ok) okCount++;
+          const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
+          d.push({
+            frage: k,
+            user: uA || '-',
+            correct: exp || '-',
+            richtig: ok,
+            punkte: ok ? ptsPer.toFixed(2) : '0'
           });
         });
         
-        const points = Math.round((correct / total) * CONFIG.totals.hoeren);
-        
-        return { correct, total, points };
+        const total = Number((okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2));
+        return { okCount, total, details: d };
       }
 
-      function getHeadingText(questionId, answerId) {
-        if (!answerId || answerId === '-') return '';
+      function buildTable(title, dets, total, max) {
+        let h = `<div class="result-item">
+                <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                <div class="section-table">
+                  <table class="true-false-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 10%">Frage</th>
+                        <th style="width: 40%">Ihre Antwort</th>
+                        <th style="width: 40%">Richtige Antwort</th>
+                        <th style="width: 10%">Ergebnis</th>
+                      </tr>
+                    </thead>
+                    <tbody>`;
         
-        const headings = EXAM_DATA.lesen.sections[0].headings;
-        const heading = headings.find(h => h.id === answerId);
-        return heading ? heading.text : '';
-      }
-
-      function getAnswerText(section, questionId, answerId) {
-        if (!answerId || answerId === '-') return '-';
+        dets.forEach(x => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
+          
+          h += `<tr class="${rowClass}">
+                <td><strong>${x.frage}</strong></td>
+                <td>${escapeHtml(x.user)}</td>
+                <td>${escapeHtml(x.correct)}</td>
+                <td><strong>${resultIcon}</strong></td>
+              </tr>`;
+        });
         
-        if (section === 'lesen') {
-          const lesenExam = EXAM_DATA.lesen;
-          const teil2 = lesenExam.sections[1];
-          const question = teil2.questions.find(q => q.id === questionId);
-          if (question) {
-            const option = question.options.find(o => o.id === answerId);
-            return option ? option.text : answerId;
-          }
-        }
-        return answerId;
+        h += `</tbody>
+            </table>
+            <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+              <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+            </div>
+          </div></div>`;
+        return h;
       }
 
       function renderLesenDetails(answers) {
-        let html = `<div class="section-table">`;
+        const c = CORRECT_ANSWERS.lesen;
+        let html = `<div class="result-item">
+                  <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
         
-        html += `<h4>Teil 1: Überschriften zuordnen</h4><table class="true-false-table">`;
-        html += `<thead><tr><th>Text</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        html += `<h4>Teil 1: Überschriften zuordnen</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Text</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
         
-        for(let i = 1; i <= 5; i++) {
-          const questionId = `text${i}`;
-          const userAnswer = answers[questionId] || '-';
-          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+        for (let i = 1; i <= 5; i++) {
+          const key = `text${i}`;
+          const userAnswer = answers[key] || '-';
+          const correctAnswer = c[key] || '-';
           const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
           
-          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
-                    <td>Text ${String.fromCharCode(96 + i).toUpperCase()}</td>
-                    <td>${userAnswer}) ${getHeadingText(questionId, userAnswer)}</td>
-                    <td>${correctAnswer}) ${getHeadingText(questionId, correctAnswer)}</td>
-                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+          html += `<tr class="${rowClass}">
+                    <td><strong>Text ${i}</strong></td>
+                    <td>${getHeadingText(userAnswer)}</td>
+                    <td>${getHeadingText(correctAnswer)}</td>
+                    <td><strong>${resultIcon}</strong></td>
                   </tr>`;
         }
+        
         html += `</tbody></table>`;
         
-        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4><table class="true-false-table">`;
-        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Frage</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
         
-        for(let i = 1; i <= 5; i++) {
-          const questionId = `s2q${i}`;
-          const userAnswer = answers[questionId] || '-';
-          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+        for (let i = 1; i <= 5; i++) {
+          const key = `s2q${i}`;
+          const userAnswer = answers[key] || '-';
+          const correctAnswer = c[key] || '-';
           const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
           
-          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
-                    <td>Frage ${i}</td>
-                    <td>${getAnswerText('lesen', questionId, userAnswer)}</td>
-                    <td>${getAnswerText('lesen', questionId, correctAnswer)}</td>
-                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+          html += `<tr class="${rowClass}">
+                    <td><strong>Frage ${i}</strong></td>
+                    <td>${getOptionText(key, userAnswer)}</td>
+                    <td>${getOptionText(key, correctAnswer)}</td>
+                    <td><strong>${resultIcon}</strong></td>
                   </tr>`;
         }
+        
         html += `</tbody></table>`;
         
-        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4><table class="true-false-table">`;
-        html += `<thead><tr><th>Situation</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Situation</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
         
-        for(let i = 11; i <= 20; i++) {
-          const questionId = `${i}`;
-          const userAnswer = answers[questionId] || '-';
-          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+        for (let i = 11; i <= 20; i++) {
+          const key = `${i}`;
+          const userAnswer = answers[key] || '-';
+          const correctAnswer = c[key] || '-';
           const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
           
-          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
-                    <td>Situation ${i}</td>
-                    <td>${userAnswer === 'X' ? 'X - Kein Text' : (userAnswer || '-')}</td>
-                    <td>${correctAnswer || 'X - Kein Text'}</td>
-                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
+                    <td>${userAnswer === 'X' ? 'X - Keine passende Situation' : userAnswer}</td>
+                    <td>${correctAnswer === 'X' ? 'X - Keine passende Situation' : correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
                   </tr>`;
         }
+        
         html += `</tbody></table>`;
         
-        html += `<h4 style="margin-top: 20px;">Sprachbausteine</h4><table class="true-false-table">`;
-        html += `<thead><tr><th>Lücke</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Lücke</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
         
-        for(let i = 21; i <= 40; i++) {
-          const questionId = `${i}`;
-          const userAnswer = answers[questionId] || '-';
-          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+        for (let i = 21; i <= 30; i++) {
+          const key = `${i}`;
+          const userAnswer = answers[key] || '-';
+          const correctAnswer = c[key] || '-';
           const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
           
-          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
-                    <td>Lücke ${i}</td>
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
                     <td>${userAnswer}</td>
                     <td>${correctAnswer}</td>
-                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                    <td><strong>${resultIcon}</strong></td>
                   </tr>`;
         }
-        html += `</tbody></table></div>`;
         
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Lücke</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+        
+        for (let i = 31; i <= 40; i++) {
+          const key = `${i}`;
+          const userAnswer = answers[key] || '-';
+          const correctAnswer = c[key] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table></div>`;
         return html;
       }
 
-      function renderHoerenDetails(answers) {
-        let html = `<div class="section-table">`;
+      function buildHoerenDetails(answers) {
+        let html = `<table class="true-false-table">
+                  <thead>
+                    <tr>
+                      <th>Frage</th>
+                      <th>Ihre Antwort</th>
+                      <th>Richtige Antwort</th>
+                      <th>Ergebnis</th>
+                    </tr>
+                  </thead>
+                  <tbody>`;
         
-        html += `<h4>Teil 1</h4><table class="true-false-table">`;
-        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-        
-        for(let i = 41; i <= 45; i++) {
-          const questionId = `${i}`;
-          const section = 'hörverstehen1';
-          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
-          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+        for (let i = 19; i <= 38; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(answers[id] || '');
+          const correctAnswer = CORRECT_ANSWERS.hoeren[id];
           const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
           
-          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
-                    <td>${questionId}</td>
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
                     <td>${userAnswer}</td>
                     <td>${correctAnswer}</td>
-                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                    <td><strong>${resultIcon}</strong></td>
                   </tr>`;
         }
+        
         html += `</tbody></table>`;
-        
-        html += `<h4 style="margin-top: 20px;">Teil 2</h4><table class="true-false-table">`;
-        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-        
-        for(let i = 46; i <= 55; i++) {
-          const questionId = `${i}`;
-          const section = 'hörverstehen2';
-          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
-          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
-          const isCorrect = userAnswer === correctAnswer;
-          
-          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
-                    <td>${questionId}</td>
-                    <td>${userAnswer}</td>
-                    <td>${correctAnswer}</td>
-                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
-                  </tr>`;
-        }
-        html += `</tbody></table>`;
-        
-        html += `<h4 style="margin-top: 20px;">Teil 3</h4><table class="true-false-table">`;
-        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-        
-        for(let i = 56; i <= 60; i++) {
-          const questionId = `${i}`;
-          const section = 'hörverstehen3';
-          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
-          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
-          const isCorrect = userAnswer === correctAnswer;
-          
-          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
-                    <td>${questionId}</td>
-                    <td>${userAnswer}</td>
-                    <td>${correctAnswer}</td>
-                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
-                  </tr>`;
-        }
-        html += `</tbody></table></div>`;
-        
         return html;
       }
 
-      function calculateResults() {
+      function renderResults() {
         const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
+        const h = gradeHoeren(st.hoeren || {});
+        const l = gradeLesen(st.lesen || {});
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
+        const sScoreRaw = localStorage.getItem('schreibenScore');
+        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
 
         details.innerHTML = '';
         tiles.innerHTML = '';
 
-        const lesenResults = calculateLesenResults(st.lesen);
-        const hoerenResults = calculateHoerenResults(st.hoeren);
-        
         const tL = `<div class="results-tile">
-                    <h3>Lesen</h3>
-                    <div class="score">${lesenResults.points}/${CONFIG.totals.lesen} Punkte</div>
-                    <div class="small-muted">(${lesenResults.correct}/${lesenResults.total} richtig)</div>
-                  </div>`;
-                  
+                  <h3>Lesen</h3>
+                  <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
+                  <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
+                </div>`;
+                
         const tH = `<div class="results-tile">
-                    <h3>Hören</h3>
-                    <div class="score">${hoerenResults.points}/${CONFIG.totals.hoeren} Punkte</div>
-                    <div class="small-muted">(${hoerenResults.correct}/${hoerenResults.total} richtig)</div>
-                  </div>`;
-                  
+                  <h3>Hören</h3>
+                  <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
+                  <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
+                </div>`;
+                
         const tS = `<div class="results-tile">
-                    <h3>Schreiben</h3>
-                    <div class="score">Manuelle Bewertung</div>
-                    <div class="small-muted">(45 Punkte max.)</div>
-                  </div>`;
-                  
+                  <h3>Schreiben</h3>
+                  <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
+                  <div class="small-muted">Manuelle Eingabe</div>
+                </div>`;
+                
         tiles.innerHTML = tL + tH + tS;
 
-        details.innerHTML = `
-          <h2>📊 Detaillierte Ergebnisse</h2>
-          <div class="instructions">
-            Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:
-          </div>
-          
-          <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>
-        `;
-        
+        details.innerHTML += `<div class="result-item">
+                            <h2>📊 Detaillierte Ergebnisse</h2>
+                            <div class="instructions">Hier sehen Sie eine detaillierte Auswertung Ihrer Prüfung mit Vergleich Ihrer Antworten mit den korrekten Lösungen.</div>
+                          </div>`;
+
         details.innerHTML += renderLesenDetails(st.lesen);
         
-        details.innerHTML += `
-          <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
-        `;
-        details.innerHTML += renderHoerenDetails(st.hoeren);
+        details.innerHTML += `<div class="result-item">
+                            <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+                            ${buildHoerenDetails(st.hoeren)}
+                          </div>`;
+
+        let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
+        const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
+        const wc = st.schreiben.wordCount || '-';
         
-        details.innerHTML += `
-          <h3>✍️ Schreiben</h3>
-          <div class="writing-task">
-            <div class="writing-requirements">
-              <h4>Ihre Antwort:</h4>
-              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">
-                ${st.schreiben['s1'] || 'Keine Antwort vorhanden'}
-              </div>
-              <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center">
-                Punkte vergeben (0–45): 
-                <input id="schreibenInput" type="number" min="0" max="45" step="1" value="0"> 
-                <button id="saveSchreiben" class="results-btn">Speichern</button>
-              </div>
-            </div>
-          </div>
-        `;
+        sHtml += `<div class="small-muted">Wörter: ${wc}</div>
+                <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
+                <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
+                  Punkte (0–45): 
+                  <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
+                  <button id="saveS" class="results-btn">Speichern</button>
+                </div></div>`;
+                
+        details.innerHTML += sHtml;
 
-        const totalPoints = lesenResults.points + hoerenResults.points;
-        const maxPoints = CONFIG.totals.lesen + CONFIG.totals.hoeren;
-        const percentage = Math.round((totalPoints / maxPoints) * 100);
-
+        const total = (l.total + h.total + sScore).toFixed(2);
+        const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
+        
         document.getElementById('finalSummary-ergebnisse').innerHTML = `
           <div class="left">
-            Gesamtergebnis (ohne Schreiben)<br>
-            <span class="small-muted">Automatisch korrigierte Bereiche</span>
+            Gesamtpunktzahl: <strong>${total}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
+            <span class="small-muted">Lesen + Hören + Schreiben</span>
           </div>
           <div class="right">
-            <strong>${totalPoints}/${maxPoints} Punkte (${percentage}%)</strong>
+            Prozentsatz: <strong>${percent} %</strong>
           </div>`;
 
-        document.getElementById('saveSchreiben').onclick = function() {
-          const points = parseInt(document.getElementById('schreibenInput').value) || 0;
-          localStorage.setItem('schreibenPoints', points);
-          alert('Schreiben-Punkte gespeichert!');
+        document.getElementById('saveS').onclick = () => {
+          const v = Number(document.getElementById('sInput').value) || 0;
+          localStorage.setItem('schreibenScore', v);
+          document.getElementById('schreibenScoreDisplay').textContent = `${v.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte`;
+          
+          const newTotal = (l.total + h.total + v).toFixed(2);
+          const newPercent = ((newTotal / CONFIG.totals.gesamt) * 100).toFixed(2);
+          
+          document.getElementById('finalSummary-ergebnisse').innerHTML = `
+            <div class="left">
+              Gesamtpunktzahl: <strong>${newTotal}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
+              <span class="small-muted">Lesen + Hören + Schreiben</span>
+            </div>
+            <div class="right">
+              Prozentsatz: <strong>${newPercent} %</strong>
+            </div>`;
         };
       }
 
-      document.getElementById('calcBtn-ergebnisse').onclick = () => calculateResults();
+      document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
       document.getElementById('backBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
         showPage('start-page');
       };
       
-      calculateResults();
+      renderResults();
     }
-
-    // تحسين نظام السحب والإفلات للشاشات التي تعمل باللمس
-    function setupTouchDragAndDrop() {
-      if ('ontouchstart' in window) {
-        document.querySelectorAll('[draggable="true"]').forEach(item => {
-          item.addEventListener('touchstart', handleTouchStart);
-          item.addEventListener('touchend', handleTouchEnd);
-        });
-        
-        document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
-          slot.addEventListener('touchmove', handleTouchMove);
-          slot.addEventListener('touchend', handleTouchDrop);
-        });
-      }
-    }
-
-    function handleTouchStart(e) {
-      // تنفيذ السحب عند اللمس
-    }
-
-    // استدعاء الدالة عند تحميل الصفحة
-    document.addEventListener('DOMContentLoaded', setupTouchDragAndDrop);
   </script>
 </body>
 </html>
